@@ -179,7 +179,7 @@ public class BankPaymentCn {
                     OneforAllfunc.info("Operation Failed", "Please Select Data");
                 } else {
                     try {
-                        OneforAllfunc.confirm("Are You sure to delete this data?", "Deleted Data Cannot be recover");
+                        OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
                         if (Staticvar.isyes == true) {
                             Staticvar.isyes = false;
                             String query = "DELETE FROM TB_BP_MASTER a WHERE a.BPM_DOC_NO = ?";

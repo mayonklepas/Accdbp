@@ -6,9 +6,14 @@
 package accdbp.helper;
 
 import accdbp.view.CConfirmDialog;
+import accdbp.view.CConfirmDialogwithpass;
 import accdbp.view.CMessageDialog;
 import accdbp.view.Home;
 import java.awt.Dialog;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,17 +30,17 @@ import javax.swing.JDialog;
  * @author Minami
  */
 public class OneforAllfunc {
-
+    
     public static String datetodb(Date ref) {
         String sdate = new SimpleDateFormat("yyyy-MM-dd").format(ref);
         return sdate;
     }
-
+    
     public static String dateviewtable(Date ref) {
         String sdate = new SimpleDateFormat("dd/MM/yyyy").format(ref);
         return sdate;
     }
-
+    
     public static Date datefromdb(String ref) {
         Date ddate = null;
         try {
@@ -45,7 +50,22 @@ public class OneforAllfunc {
         }
         return ddate;
     }
-
+    
+    public static String getdate(Date Ref) {
+        String date = new SimpleDateFormat("dd").format(Ref);
+        return date;
+    }
+    
+    public static String getmonth(Date Ref) {
+        String month = new SimpleDateFormat("M").format(Ref);
+        return month;
+    }
+    
+    public static String getyear(Date Ref) {
+        String year = new SimpleDateFormat("yyyy").format(Ref);
+        return year;
+    }
+    
     public static double doubleformat(String ref) {
         double res = 0;
         try {
@@ -55,7 +75,7 @@ public class OneforAllfunc {
         }
         return res;
     }
-
+    
     public static int intformat(String ref) {
         int res = 0;
         try {
@@ -65,7 +85,7 @@ public class OneforAllfunc {
         }
         return res;
     }
-
+    
     public static String nfcurrency(double ref) {
         String res = "0";
         try {
@@ -74,10 +94,10 @@ public class OneforAllfunc {
         } catch (Exception e) {
             res = "0";
         }
-
+        
         return res;
     }
-
+    
     public static String nf(double ref) {
         String res = "0";
         try {
@@ -86,10 +106,10 @@ public class OneforAllfunc {
         } catch (Exception e) {
             res = "0";
         }
-
+        
         return res;
     }
-
+    
     public static void info(String header, String detail) {
         JDialog jd = new JDialog(new Home());
         jd.setResizable(false);
@@ -100,7 +120,7 @@ public class OneforAllfunc {
         jd.setLocationRelativeTo(null);
         jd.setVisible(true);
     }
-
+    
     public static void confirm(String header, String detail) {
         JDialog jd = new JDialog(new Home());
         jd.setResizable(false);
@@ -111,7 +131,18 @@ public class OneforAllfunc {
         jd.setLocationRelativeTo(null);
         jd.setVisible(true);
     }
-
+    
+    public static void confirmwitpass(String header, String detail) {
+        JDialog jd = new JDialog(new Home());
+        jd.setResizable(false);
+        jd.add(new CConfirmDialogwithpass(header, detail));
+        jd.pack();
+        jd.setTitle("Confirmation");
+        jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        jd.setLocationRelativeTo(null);
+        jd.setVisible(true);
+    }
+    
     public static boolean accountcheck(String id) {
         boolean resl = false;
         int counrow = 0;
@@ -133,5 +164,22 @@ public class OneforAllfunc {
         }
         return resl;
     }
-
+    
+    public static String shahash256(String ref) {
+        String resfinal = "";
+        try {
+            MessageDigest msd = MessageDigest.getInstance("SHA-256");
+            byte[] encodehash = msd.digest(ref.getBytes(StandardCharsets.UTF_8));
+            BigInteger no = new BigInteger(1, encodehash);
+            String reshash = no.toString(16);
+            while (reshash.length() < 32) {
+                reshash = "0" + reshash;
+            }
+            resfinal = reshash;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resfinal;
+    }
+    
 }

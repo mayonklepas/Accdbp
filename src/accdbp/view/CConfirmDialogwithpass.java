@@ -5,22 +5,34 @@
  */
 package accdbp.view;
 
+import accdbp.controller.LoginCn;
+import accdbp.helper.Dbconnection;
+import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 
 /**
  *
  * @author Minami
  */
-public class CConfirmDialog extends javax.swing.JPanel {
+public class CConfirmDialogwithpass extends javax.swing.JPanel {
+
+    Dbconnection c = new Dbconnection();
 
     /**
      * Creates new form CConfirmDialog
      */
-    public CConfirmDialog(String header, String detail) {
+    public CConfirmDialogwithpass(String header, String detail) {
         initComponents();
         lheader.setText(header);
-        tadetail.setText(detail);
+        ldetail.setText(detail);
 
     }
 
@@ -36,8 +48,9 @@ public class CConfirmDialog extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tadetail = new javax.swing.JTextArea();
+        ldetail = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        edpassword = new javax.swing.JPasswordField();
         lheader = new javax.swing.JLabel();
         bno = new javax.swing.JButton();
         byes = new javax.swing.JButton();
@@ -58,7 +71,7 @@ public class CConfirmDialog extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,15 +84,18 @@ public class CConfirmDialog extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail Message", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 13))); // NOI18N
 
-        tadetail.setEditable(false);
-        tadetail.setColumns(20);
-        tadetail.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
-        tadetail.setLineWrap(true);
-        tadetail.setRows(5);
-        tadetail.setCaretColor(new java.awt.Color(102, 102, 102));
-        tadetail.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        tadetail.setEnabled(false);
-        jScrollPane1.setViewportView(tadetail);
+        ldetail.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        ldetail.setText("Deleted Data cannot be recover");
+
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        jLabel2.setText("Admin Password");
+
+        edpassword.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        edpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edpasswordKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,14 +103,23 @@ public class CConfirmDialog extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(edpassword)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(ldetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                .addComponent(ldetail)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(edpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -152,9 +177,34 @@ public class CConfirmDialog extends javax.swing.JPanel {
 
     private void byesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byesActionPerformed
         // TODO add your handling code here:
-        Staticvar.isyes = true;
-        JDialog jd = (JDialog) this.getRootPane().getParent();
-        jd.dispose();
+        String username = "";
+        String password = "";
+        int type = 0;
+        try {
+            String query = "SELECT U_USERNAME,U_PASSWORD,U_TYPE FROM TB_USER WHERE U_USERNAME=? AND U_PASSWORD=?";
+            PreparedStatement pres = c.cn().prepareStatement(query);
+            pres.setString(1, Staticvar.username);
+            pres.setString(2, OneforAllfunc.shahash256(edpassword.getText()));
+            ResultSet res = pres.executeQuery();
+            while (res.next()) {
+                username = res.getString("U_USERNAME");
+                password = res.getString("U_PASSWORD");
+                type = res.getInt("U_TYPE");
+            }
+            if (username.trim().equals("") || username.trim().equals("NULL")) {
+                OneforAllfunc.info("Permission Denied", "Username Or Password is wrong");
+            } else {
+                Staticvar.isyes = true;
+                JDialog jd = (JDialog) this.getRootPane().getParent();
+                jd.dispose();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginCn.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            c.dc();
+        }
+
     }//GEN-LAST:event_byesActionPerformed
 
     private void bnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnoActionPerformed
@@ -163,14 +213,22 @@ public class CConfirmDialog extends javax.swing.JPanel {
         jd.dispose();
     }//GEN-LAST:event_bnoActionPerformed
 
+    private void edpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edpasswordKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            byes.doClick();
+        }
+    }//GEN-LAST:event_edpasswordKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton bno;
     public javax.swing.JButton byes;
+    public javax.swing.JPasswordField edpassword;
     public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
-    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel ldetail;
     public javax.swing.JLabel lheader;
-    public javax.swing.JTextArea tadetail;
     // End of variables declaration//GEN-END:variables
 }

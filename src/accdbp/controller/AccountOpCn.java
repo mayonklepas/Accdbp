@@ -15,12 +15,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -213,6 +216,20 @@ public final class AccountOpCn {
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
                 JDialog jd = (JDialog) pane.getRootPane().getParent();
                 jd.dispose();
+            }
+        });
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JDialog jdin = (JDialog) pane.getRootPane().getParent();
+                jdin.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        pane.bcancel.doClick();
+                    }
+
+                });
             }
         });
     }

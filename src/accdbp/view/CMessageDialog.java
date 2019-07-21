@@ -19,7 +19,7 @@ public class CMessageDialog extends javax.swing.JPanel {
     public CMessageDialog(String header, String detail) {
         initComponents();
         lheader.setText(header);
-        ldetail.setText(detail);
+        tadetail.setText(detail);
     }
 
     /**
@@ -33,10 +33,13 @@ public class CMessageDialog extends javax.swing.JPanel {
 
         bclose = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        ldetail = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tadetail = new javax.swing.JTextArea();
         lheader = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         bclose.setText("Close");
         bclose.addActionListener(new java.awt.event.ActionListener() {
@@ -45,9 +48,18 @@ public class CMessageDialog extends javax.swing.JPanel {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Detail Message"));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail Message", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 13))); // NOI18N
 
-        ldetail.setText("Deleted Data cannot be recover");
+        tadetail.setEditable(false);
+        tadetail.setColumns(20);
+        tadetail.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        tadetail.setLineWrap(true);
+        tadetail.setRows(5);
+        tadetail.setCaretColor(new java.awt.Color(102, 102, 102));
+        tadetail.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        tadetail.setEnabled(false);
+        jScrollPane1.setViewportView(tadetail);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -55,23 +67,23 @@ public class CMessageDialog extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ldetail)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ldetail)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        lheader.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lheader.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         lheader.setText("Are You Sure To Delete This Data ?");
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_error_outline_white_24dp.png"))); // NOI18N
         jLabel1.setText("Information");
@@ -83,7 +95,7 @@ public class CMessageDialog extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,8 +129,8 @@ public class CMessageDialog extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(lheader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bclose)
                 .addContainerGap())
         );
@@ -135,7 +147,8 @@ public class CMessageDialog extends javax.swing.JPanel {
     public javax.swing.JLabel jLabel1;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
-    public javax.swing.JLabel ldetail;
+    public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lheader;
+    public javax.swing.JTextArea tadetail;
     // End of variables declaration//GEN-END:variables
 }

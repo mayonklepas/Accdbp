@@ -14,6 +14,7 @@ import accdbp.view.CashPaymentView;
 import accdbp.view.CashReceiptView;
 import accdbp.view.Home;
 import accdbp.view.JournalView;
+import accdbp.view.LoginView;
 import accdbp.view.PaymentpaneView;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -56,7 +58,21 @@ public class HomeCn {
         jdmenupay.setModalityType(Dialog.ModalityType.MODELESS);
         Insets is = hm.getInsets();
         jdmenupay.setLocation(hm.ppaymain.getLocation().x, (hm.ppaymain.getHeight() + is.top) - 3);
+        viewlogin();
 
+    }
+
+    private void viewlogin() {
+        JDialog jd = new JDialog(new Home());
+        jd.setResizable(false);
+        jd.setTitle("Login");
+        jd.add(new LoginView());
+        jd.pack();
+        jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        jd.setLocationRelativeTo(null);
+        jd.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        jd.setVisible(true);
+        jd.toFront();
     }
 
     private void skinning() {
