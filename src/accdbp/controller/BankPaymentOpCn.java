@@ -50,6 +50,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -176,14 +177,23 @@ public final class BankPaymentOpCn {
         JTableHeader jthead = pane.tabledata.getTableHeader();
         jthead.setFont(new Font("Century Gothic", Font.BOLD, 14));
         pane.tabledata.setRowHeight(23);
-        dtm.addColumn("Account Code");
-        dtm.addColumn("Account Name");
+        dtm.addColumn("Acc Code");
+        dtm.addColumn("Acc Name");
         dtm.addColumn("Amount");
         dtm.addColumn("Desc");
         pane.tabledata.setModel(dtm);
         DefaultTableCellRenderer rightrender = new DefaultTableCellRenderer();
         rightrender.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
         pane.tabledata.getColumn("Amount").setCellRenderer(rightrender);
+        setheader();
+    }
+
+    private void setheader() {
+        TableColumnModel tcm = pane.tabledata.getColumnModel();
+        tcm.getColumn(0).setMinWidth(80);
+        tcm.getColumn(0).setMaxWidth(80);
+        tcm.getColumn(2).setMinWidth(110);
+        tcm.getColumn(2).setMaxWidth(110);
     }
 
     private void loaddata() {

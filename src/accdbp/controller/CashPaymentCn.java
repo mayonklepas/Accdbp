@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -79,37 +80,43 @@ public class CashPaymentCn {
     }
 
     private void loaddata() {
-        pane.tabledata.clearSelection();
-        dtm.getDataVector().removeAllElements();
-        dtm.fireTableDataChanged();
-        try {
-            String query = "SELECT FIRST 100 a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
-                 + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
-                 + " FROM TB_CP_MASTER a INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE ORDER BY a.CPM_DATE_CREATED DESC;";
-            PreparedStatement pres = c.cn().prepareStatement(query);
-            ResultSet res = pres.executeQuery();
-            while (res.next()) {
-                Object o[] = new Object[6];
-                o[0] = res.getString("CRP_DOC_NO");
-                o[1] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_TRANS"));
-                o[2] = res.getString("CPM_REF_NO");
-                o[3] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_REF"));
-                o[4] = res.getString("ACC_NAME");
-                o[5] = OneforAllfunc.nf(res.getDouble("TOTAL"));
-                dtm.addRow(o);
-            }
-            pane.tabledata.setModel(dtm);
-            c.dc();
-        } catch (SQLException ex) {
-            OneforAllfunc.info("Error", ex.getMessage());
-            Logger.getLogger(CashPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-            c.dc();
-        }
-        int recdata = (int) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("recdata");
-        double sumdata = (double) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("sumdata");
-        pane.lcountdata.setText("Record Count : " + recdata);
-        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(sumdata));
+                pane.tabledata.clearSelection();
+                dtm.getDataVector().removeAllElements();
+                dtm.fireTableDataChanged();
+                try {
+                    String query = "SELECT  a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
+                         + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
+                         + " FROM TB_CP_MASTER a INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE ORDER BY a.CPM_DATE_CREATED DESC;";
+                    PreparedStatement pres = c.cn().prepareStatement(query);
+                    ResultSet res = pres.executeQuery();
+                    while (res.next()) {
+                        Object o[] = new Object[6];
+                        o[0] = res.getString("CRP_DOC_NO");
+                        o[1] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_TRANS"));
+                        o[2] = res.getString("CPM_REF_NO");
+                        o[3] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_REF"));
+                        o[4] = res.getString("ACC_NAME");
+                        o[5] = OneforAllfunc.nf(res.getDouble("TOTAL"));
+                        dtm.addRow(o);
+                    }
+                    pane.tabledata.setModel(dtm);
+                    c.dc();
+                } catch (SQLException ex) {
+                    OneforAllfunc.info("Error", ex.getMessage());
+                    Logger.getLogger(CashPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+
+                    c.dc();
+                }
+                int recdata = (int) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("recdata");
+                double sumdata = (double) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("sumdata");
+                pane.lcountdata.setText("Record Count : " + recdata);
+                pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(sumdata));
+            }
+        });
     }
 
     private void insertdata() {
@@ -222,50 +229,55 @@ public class CashPaymentCn {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    pane.tabledata.clearSelection();
-                    dtm.getDataVector().removeAllElements();
-                    dtm.fireTableDataChanged();
-                    try {
-                        String query = "SELECT FIRST 100 a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
-                             + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,"
-                             + "(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
-                             + " FROM TB_CP_MASTER a "
-                             + "INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE "
-                             + "WHERE lower(a.CRP_DOC_NO) LIKE ? "
-                             + "OR lower(a.CPM_REF_NO) LIKE ? "
-                             + "OR lower(b.ACC_NAME) LIKE ? "
-                             + "OR a.CPM_DATE_TRANS LIKE ?  ORDER BY a.CPM_DATE_CREATED DESC;";
-                        PreparedStatement pres = c.cn().prepareStatement(query);
-                        pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
-                        pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
-                        pres.setString(3, "%" + pane.edfind.getText().toLowerCase() + "%");
-                        pres.setString(4, "%" + pane.edfind.getText() + "%");
-                        ResultSet res = pres.executeQuery();
-                        while (res.next()) {
-                            Object o[] = new Object[6];
-                            o[0] = res.getString("CRP_DOC_NO");
-                            o[1] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_TRANS"));
-                            o[2] = res.getString("CPM_REF_NO");
-                            o[3] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_REF"));
-                            o[4] = res.getString("ACC_NAME");
-                            o[5] = OneforAllfunc.nf(res.getDouble("TOTAL"));
-                            dtm.addRow(o);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            pane.tabledata.clearSelection();
+                            dtm.getDataVector().removeAllElements();
+                            dtm.fireTableDataChanged();
+                            try {
+                                String query = "SELECT  a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
+                                     + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,"
+                                     + "(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
+                                     + " FROM TB_CP_MASTER a "
+                                     + "INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE "
+                                     + "WHERE lower(a.CRP_DOC_NO) LIKE ? "
+                                     + "OR lower(a.CPM_REF_NO) LIKE ? "
+                                     + "OR lower(b.ACC_NAME) LIKE ? "
+                                     + "OR a.CPM_DATE_TRANS LIKE ?  ORDER BY a.CPM_DATE_CREATED DESC;";
+                                PreparedStatement pres = c.cn().prepareStatement(query);
+                                pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
+                                pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
+                                pres.setString(3, "%" + pane.edfind.getText().toLowerCase() + "%");
+                                pres.setString(4, "%" + pane.edfind.getText() + "%");
+                                ResultSet res = pres.executeQuery();
+                                while (res.next()) {
+                                    Object o[] = new Object[6];
+                                    o[0] = res.getString("CRP_DOC_NO");
+                                    o[1] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_TRANS"));
+                                    o[2] = res.getString("CPM_REF_NO");
+                                    o[3] = OneforAllfunc.dateviewtable(res.getDate("CPM_DATE_REF"));
+                                    o[4] = res.getString("ACC_NAME");
+                                    o[5] = OneforAllfunc.nf(res.getDouble("TOTAL"));
+                                    dtm.addRow(o);
+                                }
+                                pane.tabledata.setModel(dtm);
+                                c.dc();
+                            } catch (SQLException ex) {
+                                OneforAllfunc.info("Error", ex.getMessage());
+                                Logger.getLogger(CashPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+
+                                c.dc();
+                            }
+                            pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
+                            double total_amount = 0;
+                            for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
+                                total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
+                            }
+
+                            pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(total_amount));
                         }
-                        pane.tabledata.setModel(dtm);
-                        c.dc();
-                    } catch (SQLException ex) {
-                        OneforAllfunc.info("Error", ex.getMessage());
-                        Logger.getLogger(CashPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
-
-                        c.dc();
-                    }
-                    pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
-                    double total_amount = 0;
-                    for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-                        total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-                    }
-
-                    pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(total_amount));
+                    });
 
                 }
             }

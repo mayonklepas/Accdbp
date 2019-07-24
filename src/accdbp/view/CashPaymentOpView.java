@@ -62,6 +62,7 @@ public class CashPaymentOpView extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(950, 600));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 

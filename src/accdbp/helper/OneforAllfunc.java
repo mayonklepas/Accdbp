@@ -220,7 +220,8 @@ public class OneforAllfunc {
     public static HashMap getrecandsum(String table, String column) {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
-        String query = "SELECT COUNT(*) AS RECDATA,SUM(" + column + ") AS SUMDATA FROM " + table + "";
+        String mastertable = table.replace("DETAIL", "MASTER");
+        String query = "SELECT (SELECT COUNT(*) FROM " + mastertable + ") AS RECDATA,SUM(" + column + ") AS SUMDATA FROM " + table + "";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
             ResultSet res = pres.executeQuery();
@@ -241,7 +242,7 @@ public class OneforAllfunc {
     public static HashMap getrecandsumjurnal() {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
-        String query = "SELECT COUNT(*) AS RECDATA,SUM(JD_AMOUNT_DEBIT) AS SUMDATADEBIT,SUM(JD_AMOUNT_KREDIT) AS SUMDATAKREDIT FROM TB_JOURNAL_DETAIL";
+        String query = "SELECT (SELECT COUNT(*) FROM TB_JOURNAL_MASTER) AS RECDATA,SUM(JD_AMOUNT_DEBIT) AS SUMDATADEBIT,SUM(JD_AMOUNT_KREDIT) AS SUMDATAKREDIT FROM TB_JOURNAL_DETAIL";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
             ResultSet res = pres.executeQuery();

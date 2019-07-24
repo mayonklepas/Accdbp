@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -80,40 +81,46 @@ public class JournalCn {
     }
 
     private void loaddata() {
-        pane.tabledata.clearSelection();
-        dtm.getDataVector().removeAllElements();
-        dtm.fireTableDataChanged();
-        try {
-            String query = "SELECT FIRST 100 a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
-                 + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
-                 + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
-                 + " FROM TB_JOURNAL_MASTER a ORDER BY a.JM_DATE_CREATED DESC;";
-            PreparedStatement pres = c.cn().prepareStatement(query);
-            ResultSet res = pres.executeQuery();
-            while (res.next()) {
-                Object o[] = new Object[7];
-                o[0] = res.getString("JM_DOC_NO");
-                o[1] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_TRANS"));
-                o[2] = res.getString("JM_REF_NO");
-                o[3] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_REF"));
-                o[4] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
-                o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
-                dtm.addRow(o);
-            }
-            pane.tabledata.setModel(dtm);
-            c.dc();
-        } catch (SQLException ex) {
-            OneforAllfunc.info("Error", ex.getMessage());
-            Logger.getLogger(JournalCn.class.getName()).log(Level.SEVERE, null, ex);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-            c.dc();
-        }
-        int recdata = (int) OneforAllfunc.getrecandsumjurnal().get("recdata");
-        double sumdatadebit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatadebit");
-        double sumdatakredit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatakredit");
-        pane.lcountdata.setText("Record Count : " + recdata);
-        pane.ltotaldebit.setText("Total Debit : " + OneforAllfunc.nfcurrency(sumdatadebit));
-        pane.ltotalkredit.setText("Total Kredit : " + OneforAllfunc.nfcurrency(sumdatakredit));
+                pane.tabledata.clearSelection();
+                dtm.getDataVector().removeAllElements();
+                dtm.fireTableDataChanged();
+                try {
+                    String query = "SELECT  a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
+                         + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
+                         + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
+                         + " FROM TB_JOURNAL_MASTER a ORDER BY a.JM_DATE_CREATED DESC;";
+                    PreparedStatement pres = c.cn().prepareStatement(query);
+                    ResultSet res = pres.executeQuery();
+                    while (res.next()) {
+                        Object o[] = new Object[7];
+                        o[0] = res.getString("JM_DOC_NO");
+                        o[1] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_TRANS"));
+                        o[2] = res.getString("JM_REF_NO");
+                        o[3] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_REF"));
+                        o[4] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
+                        o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
+                        dtm.addRow(o);
+                    }
+                    pane.tabledata.setModel(dtm);
+                    c.dc();
+                } catch (SQLException ex) {
+                    OneforAllfunc.info("Error", ex.getMessage());
+                    Logger.getLogger(JournalCn.class.getName()).log(Level.SEVERE, null, ex);
+
+                    c.dc();
+                }
+                int recdata = (int) OneforAllfunc.getrecandsumjurnal().get("recdata");
+                double sumdatadebit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatadebit");
+                double sumdatakredit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatakredit");
+                pane.lcountdata.setText("Record Count : " + recdata);
+                pane.ltotaldebit.setText("Total Debit : " + OneforAllfunc.nfcurrency(sumdatadebit));
+                pane.ltotalkredit.setText("Total Kredit : " + OneforAllfunc.nfcurrency(sumdatakredit));
+            }
+        });
     }
 
     private void insertdata() {
@@ -230,7 +237,7 @@ public class JournalCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT FIRST 100 a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
+                        String query = "SELECT  a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                              + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                              + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT,"
                              + " FROM TB_JOURNAL_MASTER a "
