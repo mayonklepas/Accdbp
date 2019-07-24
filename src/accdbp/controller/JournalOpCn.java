@@ -25,6 +25,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -95,15 +97,32 @@ public final class JournalOpCn {
         if (id.equals("")) {
             dtm.addRow(o);
             pane.tabledata.setModel(dtm);
-            pane.eddate_trans.setDate(new Date());
-            pane.edref_date.setDate(new Date());
+            String curmonth = OneforAllfunc.getmonth(new Date());
+            String curyear = OneforAllfunc.getyear(new Date());
+            if (curmonth.equals(Staticvar.month_periode) && curyear.equals(Staticvar.year_periode)) {
+                pane.eddate_trans.setDate(new Date());
+                pane.edref_date.setDate(new Date());
+            } else {
+                String setdate = Staticvar.year_periode + "-" + Staticvar.month_periode + "-1";
+                Date dt = OneforAllfunc.datefromdb(setdate);
+                pane.eddate_trans.setDate(dt);
+                pane.edref_date.setDate(dt);
+            }
+            String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix, "TB_JOURNAL_MASTER", "JM_DOC_NO"));
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pane.edref_no.requestFocus();
+                }
+            });
         } else {
             loaddata();
         }
         tableoperation();
         savedata();
         cancel();
-        checkaccount();
+        checkperiode();
     }
 
     private void skinning() {
@@ -172,8 +191,7 @@ public final class JournalOpCn {
     private void loaddata() {
         try {
             String query = "SELECT a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF, "
-                 + "a.JM_ACC,b.ACC_NAME,a.JM_DATE_CREATED FROM TB_JOURNAL_MASTER a "
-                 + "INNER JOIN TB_ACC b ON a.JM_ACC=b.ACC_CODE WHERE a.JM_DOC_NO=?";
+                 + "a.JM_DATE_CREATED FROM TB_JOURNAL_MASTER a WHERE a.JM_DOC_NO=?";
             PreparedStatement pres = c.cn().prepareStatement(query);
             pres.setString(1, id);
             ResultSet res = pres.executeQuery();
@@ -183,8 +201,6 @@ public final class JournalOpCn {
                 pane.eddate_trans.setDate(res.getDate("JM_DATE_TRANS"));
                 pane.edref_no.setText(res.getString("JM_REF_NO"));
                 pane.edref_date.setDate(res.getDate("JM_DATE_REF"));
-                pane.edaccount.setText(res.getString("JM_ACC"));
-                pane.edaccountname.setText(res.getString("ACC_NAME"));
             }
             c.dc();
 
@@ -222,24 +238,21 @@ public final class JournalOpCn {
         pane.bsave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (pane.eddoc_no.getText().equals("") || pane.edaccount.getText().equals("")) {
+                if (pane.eddoc_no.getText().equals("")) {
                     OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
                 } else {
                     if (id.equals("")) {
                         try {
-                            if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
-                                OneforAllfunc.info("Operation Failed", "Account Code not found");
-                            } else if (total_debit != total_kredit) {
+                            if (total_debit != total_kredit) {
                                 OneforAllfunc.info("Operation Failed", "Amount not balance");
                             } else {
                                 String query = "INSERT INTO TB_JOURNAL_MASTER (JM_DOC_NO, JM_DATE_TRANS, "
-                                     + "JM_REF_NO, JM_DATE_REF,JM_ACC) VALUES (?,?,?,?,?);";
+                                     + "JM_REF_NO, JM_DATE_REF) VALUES (?,?,?,?);";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, pane.eddoc_no.getText());
                                 pres.setString(2, OneforAllfunc.datetodb(pane.eddate_trans.getDate()));
                                 pres.setString(3, pane.edref_no.getText());
                                 pres.setString(4, OneforAllfunc.datetodb(pane.edref_date.getDate()));
-                                pres.setString(5, pane.edaccount.getText());
                                 pres.executeUpdate();
                                 c.dc();
 
@@ -271,20 +284,17 @@ public final class JournalOpCn {
 
                     } else {
                         try {
-                            if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
-                                OneforAllfunc.info("Operation Failed", "Account Code not found");
-                            } else if (total_debit != total_kredit) {
+                            if (total_debit != total_kredit) {
                                 OneforAllfunc.info("Operation Failed", "Amount not balance");
                             } else {
                                 String query = "UPDATE TB_JOURNAL_MASTER SET JM_DOC_NO=?, JM_DATE_TRANS=?, "
-                                     + "JM_REF_NO=?, JM_DATE_REF=?,JM_ACC=? WHERE JM_DOC_NO=?;";
+                                     + "JM_REF_NO=?, JM_DATE_REF=? WHERE JM_DOC_NO=?;";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, pane.eddoc_no.getText());
                                 pres.setString(2, OneforAllfunc.datetodb(pane.eddate_trans.getDate()));
                                 pres.setString(3, pane.edref_no.getText());
                                 pres.setString(4, OneforAllfunc.datetodb(pane.edref_date.getDate()));
-                                pres.setString(5, pane.edaccount.getText());
-                                pres.setString(6, id);
+                                pres.setString(5, id);
                                 pres.executeUpdate();
                                 c.dc();
                                 String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?;";
@@ -565,65 +575,6 @@ public final class JournalOpCn {
         }
     }
 
-    private void checkaccount() {
-        pane.bcheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String query = "SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE=?";
-                    PreparedStatement pres = c.cn().prepareStatement(query);
-                    pres.setString(1, pane.edaccount.getText());
-                    ResultSet res = pres.executeQuery();
-                    String resl = "";
-                    while (res.next()) {
-                        resl = String.valueOf(res.getString("ACC_NAME"));
-
-                    }
-                    if (resl.equals("") || resl.toLowerCase().equals("null")) {
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                        oldaccountname = pane.edaccountname.getText();
-                        oldaccountval = pane.edaccount.getText();
-                        JDialog jd = new JDialog(new Home());
-                        jd.setResizable(false);
-                        jd.setTitle("Select Account");
-                        jd.add(new PopupdatachooserView());
-                        jd.pack();
-                        jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        jd.setLocationRelativeTo(null);
-                        jd.setVisible(true);
-                        jd.toFront();
-                        if (Staticvar.isupdate == true) {
-                            Staticvar.isupdate = false;
-                            pane.edaccount.setText(Staticvar.global_val);
-                            pane.edaccountname.setText(Staticvar.global_name);
-                        } else {
-                            pane.edaccountname.setText(oldaccountname);
-                            pane.edaccount.setText(oldaccountval);
-                        }
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(Staticvar.keydis);
-                    } else {
-                        pane.edaccountname.setText(resl);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(JournalOpCn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        KeyAdapter keadap = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    pane.bcheck.doClick();
-                }
-            }
-
-        };
-
-        pane.edaccount.addKeyListener(keadap);
-
-    }
-
     private void calctotal() {
         int rowcount = pane.tabledata.getRowCount();
         total_debit = 0;
@@ -636,6 +587,46 @@ public final class JournalOpCn {
         }
         pane.ldebittotal.setText(OneforAllfunc.nfcurrency(total_debit));
         pane.lkredit_total.setText(OneforAllfunc.nfcurrency(total_kredit));
+    }
+
+    private void checkperiode() {
+        pane.eddate_trans.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("date")) {
+                    Date zaman_old = (Date) evt.getOldValue();
+                    Date zaman_now = (Date) evt.getNewValue();
+                    boolean month_analis = OneforAllfunc.getmonth(zaman_now).equals(Staticvar.month_periode);
+                    boolean year_analis = OneforAllfunc.getyear(zaman_now).equals(Staticvar.year_periode);
+                    if (month_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Month not match with accounting periode");
+                        pane.eddate_trans.setDate(zaman_old);
+                    } else if (year_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
+                        pane.eddate_trans.setDate(zaman_old);
+                    }
+                }
+            }
+        });
+
+        pane.edref_date.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("date")) {
+                    Date zaman_old = (Date) evt.getOldValue();
+                    Date zaman_now = (Date) evt.getNewValue();
+                    boolean month_analis = OneforAllfunc.getmonth(zaman_now).equals(Staticvar.month_periode);
+                    boolean year_analis = OneforAllfunc.getyear(zaman_now).equals(Staticvar.year_periode);
+                    if (month_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Month not match with accounting periode");
+                        pane.edref_date.setDate(zaman_old);
+                    } else if (year_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
+                        pane.edref_date.setDate(zaman_old);
+                    }
+                }
+            }
+        });
     }
 
 }

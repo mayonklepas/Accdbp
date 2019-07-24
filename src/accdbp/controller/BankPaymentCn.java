@@ -83,7 +83,7 @@ public class BankPaymentCn {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
+            String query = "SELECT FIRST 100 a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
                  + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED,(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=a.BPM_DOC_NO) AS TOTAL"
                  + " FROM TB_BP_MASTER a INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE ORDER BY a.BPM_DATE_CREATED DESC;";
             PreparedStatement pres = c.cn().prepareStatement(query);
@@ -106,12 +106,10 @@ public class BankPaymentCn {
 
             c.dc();
         }
-        pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
-        double total_amount = 0;
-        for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-            total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-        }
-        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(total_amount));
+        int recdata = (int) OneforAllfunc.getrecandsum("TB_BP_DETAIL", "BPD_AMOUNT").get("recdata");
+        double sumdata = (double) OneforAllfunc.getrecandsum("TB_BP_DETAIL", "BPD_AMOUNT").get("sumdata");
+        pane.lcountdata.setText("Record Count : " + recdata);
+        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(sumdata));
     }
 
     private void insertdata() {
@@ -228,7 +226,7 @@ public class BankPaymentCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
+                        String query = "SELECT FIRST 100 a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
                              + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED,"
                              + "(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=a.BPM_DOC_NO) AS TOTAL"
                              + " FROM TB_BP_MASTER a "

@@ -15,6 +15,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.plaf.multi.MultiLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
+import org.apache.log4j.BasicConfigurator;
 
 /**
  *
@@ -29,6 +30,7 @@ public class Accdbp {
         try {
             //
             // TODO code application logic here
+            BasicConfigurator.configure();
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Accdbp.class.getName()).log(Level.SEVERE, null, ex);

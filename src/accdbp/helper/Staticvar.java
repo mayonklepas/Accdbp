@@ -23,6 +23,8 @@ public class Staticvar {
     public static int type = 0;
     public static boolean isclose = false;
     public static boolean isfirst = false;
+    public static String month_periode = "";
+    public static String year_periode = "";
     public static String keyholdnumeric[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
         "0", "NUMPAD1", "NUMPAD2", "NUMPAD3", "NUMPAD4", "NUMPAD5", "NUMPAD6", "NUMPAD7", "NUMPAD8", "NUMPAD9",
         "NUMPAD0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",

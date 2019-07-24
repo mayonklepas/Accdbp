@@ -83,7 +83,7 @@ public class CashReceiptCn {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT a.CRM_DOC_NO, a.CRM_DATE_TRANS, a.CRM_REF_NO, a.CRM_DATE_REF, "
+            String query = "SELECT FIRST 100 a.CRM_DOC_NO, a.CRM_DATE_TRANS, a.CRM_REF_NO, a.CRM_DATE_REF, "
                  + "a.CRM_ACC,b.ACC_NAME,a.CRM_DATE_CREATED,(SELECT SUM(CRD_AMOUNT) FROM TB_CR_DETAIL WHERE CRD_CRM_MASTER=a.CRM_DOC_NO) AS TOTAL"
                  + " FROM TB_CR_MASTER a INNER JOIN TB_ACC b ON a.CRM_ACC=b.ACC_CODE ORDER BY a.CRM_DATE_CREATED DESC;";
             PreparedStatement pres = c.cn().prepareStatement(query);
@@ -106,12 +106,10 @@ public class CashReceiptCn {
 
             c.dc();
         }
-        pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
-        double total_amount = 0;
-        for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-            total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-        }
-        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(total_amount));
+        int recdata = (int) OneforAllfunc.getrecandsum("TB_CR_DETAIL", "CRD_AMOUNT").get("recdata");
+        double sumdata = (double) OneforAllfunc.getrecandsum("TB_CR_DETAIL", "CRD_AMOUNT").get("sumdata");
+        pane.lcountdata.setText("Record Count : " + recdata);
+        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(sumdata));
     }
 
     private void insertdata() {
@@ -228,7 +226,7 @@ public class CashReceiptCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT a.CRM_DOC_NO, a.CRM_DATE_TRANS, a.CRM_REF_NO, a.CRM_DATE_REF, "
+                        String query = "SELECT FIRST 100 a.CRM_DOC_NO, a.CRM_DATE_TRANS, a.CRM_REF_NO, a.CRM_DATE_REF, "
                              + "a.CRM_ACC,b.ACC_NAME,a.CRM_DATE_CREATED,"
                              + "(SELECT SUM(CRD_AMOUNT) FROM TB_CR_DETAIL WHERE CRD_CRM_MASTER=a.CRM_DOC_NO) AS TOTAL"
                              + " FROM TB_CR_MASTER a "

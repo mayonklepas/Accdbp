@@ -25,6 +25,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -93,8 +95,26 @@ public final class CashReceiptOpCn {
         if (id.equals("")) {
             dtm.addRow(o);
             pane.tabledata.setModel(dtm);
-            pane.eddate_trans.setDate(new Date());
-            pane.edref_date.setDate(new Date());
+            String curmonth = OneforAllfunc.getmonth(new Date());
+            String curyear = OneforAllfunc.getyear(new Date());
+            if (curmonth.equals(Staticvar.month_periode) && curyear.equals(Staticvar.year_periode)) {
+                pane.eddate_trans.setDate(new Date());
+                pane.edref_date.setDate(new Date());
+            } else {
+                String setdate = Staticvar.year_periode + "-" + Staticvar.month_periode + "-1";
+                Date dt = OneforAllfunc.datefromdb(setdate);
+                pane.eddate_trans.setDate(dt);
+                pane.edref_date.setDate(dt);
+            }
+            String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix, "TB_CR_MASTER", "CRM_DOC_NO"));
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pane.edref_no.requestFocus();
+                }
+            });
+
         } else {
             loaddata();
         }
@@ -102,6 +122,7 @@ public final class CashReceiptOpCn {
         savedata();
         cancel();
         checkaccount();
+        checkperiode();
     }
 
     private void skinning() {
@@ -609,4 +630,43 @@ public final class CashReceiptOpCn {
         pane.lgrandtotal.setText(OneforAllfunc.nfcurrency(total));
     }
 
+    private void checkperiode() {
+        pane.eddate_trans.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("date")) {
+                    Date zaman_old = (Date) evt.getOldValue();
+                    Date zaman_now = (Date) evt.getNewValue();
+                    boolean month_analis = OneforAllfunc.getmonth(zaman_now).equals(Staticvar.month_periode);
+                    boolean year_analis = OneforAllfunc.getyear(zaman_now).equals(Staticvar.year_periode);
+                    if (month_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Month not match with accounting periode");
+                        pane.eddate_trans.setDate(zaman_old);
+                    } else if (year_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
+                        pane.eddate_trans.setDate(zaman_old);
+                    }
+                }
+            }
+        });
+
+        pane.edref_date.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("date")) {
+                    Date zaman_old = (Date) evt.getOldValue();
+                    Date zaman_now = (Date) evt.getNewValue();
+                    boolean month_analis = OneforAllfunc.getmonth(zaman_now).equals(Staticvar.month_periode);
+                    boolean year_analis = OneforAllfunc.getyear(zaman_now).equals(Staticvar.year_periode);
+                    if (month_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Month not match with accounting periode");
+                        pane.edref_date.setDate(zaman_old);
+                    } else if (year_analis == false) {
+                        OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
+                        pane.edref_date.setDate(zaman_old);
+                    }
+                }
+            }
+        });
+    }
 }

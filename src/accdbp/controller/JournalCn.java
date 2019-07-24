@@ -70,7 +70,6 @@ public class JournalCn {
         dtm.addColumn("Date Trans");
         dtm.addColumn("No. Ref");
         dtm.addColumn("Date Ref");
-        dtm.addColumn("Account");
         dtm.addColumn("Total Debit");
         dtm.addColumn("Total Kredit");
         pane.tabledata.setModel(dtm);
@@ -85,11 +84,10 @@ public class JournalCn {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF, "
-                 + "a.JM_ACC,b.ACC_NAME,a.JM_DATE_CREATED,"
+            String query = "SELECT FIRST 100 a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                  + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                  + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
-                 + " FROM TB_JOURNAL_MASTER a INNER JOIN TB_ACC b ON a.JM_ACC=b.ACC_CODE ORDER BY a.JM_DATE_CREATED DESC;";
+                 + " FROM TB_JOURNAL_MASTER a ORDER BY a.JM_DATE_CREATED DESC;";
             PreparedStatement pres = c.cn().prepareStatement(query);
             ResultSet res = pres.executeQuery();
             while (res.next()) {
@@ -98,9 +96,8 @@ public class JournalCn {
                 o[1] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_TRANS"));
                 o[2] = res.getString("JM_REF_NO");
                 o[3] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_REF"));
-                o[4] = res.getString("ACC_NAME");
-                o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
-                o[6] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
+                o[4] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
+                o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
                 dtm.addRow(o);
             }
             pane.tabledata.setModel(dtm);
@@ -111,15 +108,12 @@ public class JournalCn {
 
             c.dc();
         }
-        pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
-        double total_debit = 0;
-        double total_kredit = 0;
-        for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-            total_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-            total_kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 6)));
-        }
-        pane.ltotaldebit.setText("Total Debit : " + OneforAllfunc.nfcurrency(total_debit));
-        pane.ltotalkredit.setText("Total Kredit : " + OneforAllfunc.nfcurrency(total_kredit));
+        int recdata = (int) OneforAllfunc.getrecandsumjurnal().get("recdata");
+        double sumdatadebit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatadebit");
+        double sumdatakredit = (double) OneforAllfunc.getrecandsumjurnal().get("sumdatakredit");
+        pane.lcountdata.setText("Record Count : " + recdata);
+        pane.ltotaldebit.setText("Total Debit : " + OneforAllfunc.nfcurrency(sumdatadebit));
+        pane.ltotalkredit.setText("Total Kredit : " + OneforAllfunc.nfcurrency(sumdatakredit));
     }
 
     private void insertdata() {
@@ -236,12 +230,10 @@ public class JournalCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF, "
-                             + "a.JM_ACC,b.ACC_NAME,a.JM_DATE_CREATED,"
+                        String query = "SELECT FIRST 100 a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                              + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                              + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT,"
                              + " FROM TB_JOURNAL_MASTER a "
-                             + "INNER JOIN TB_ACC b ON a.JM_ACC=b.ACC_CODE "
                              + "WHERE lower(a.JM_DOC_NO) LIKE ? "
                              + "OR lower(a.JM_REF_NO) LIKE ? "
                              + "OR lower(b.ACC_NAME) LIKE ? "
@@ -258,9 +250,8 @@ public class JournalCn {
                             o[1] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_TRANS"));
                             o[2] = res.getString("JM_REF_NO");
                             o[3] = OneforAllfunc.dateviewtable(res.getDate("JM_DATE_REF"));
-                            o[4] = res.getString("ACC_NAME");
-                            o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
-                            o[6] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
+                            o[4] = OneforAllfunc.nf(res.getDouble("TOTAL_DEBIT"));
+                            o[5] = OneforAllfunc.nf(res.getDouble("TOTAL_KREDIT"));
                             dtm.addRow(o);
                         }
                         pane.tabledata.setModel(dtm);
@@ -275,8 +266,8 @@ public class JournalCn {
                     double total_debit = 0;
                     double total_kredit = 0;
                     for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-                        total_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-                        total_kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 6)));
+                        total_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 4)));
+                        total_kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
                     }
                     pane.ltotaldebit.setText("Total Debit : " + OneforAllfunc.nfcurrency(total_debit));
                     pane.ltotalkredit.setText("Total Kredit : " + OneforAllfunc.nfcurrency(total_kredit));

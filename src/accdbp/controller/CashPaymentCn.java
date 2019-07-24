@@ -83,7 +83,7 @@ public class CashPaymentCn {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
+            String query = "SELECT FIRST 100 a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
                  + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
                  + " FROM TB_CP_MASTER a INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE ORDER BY a.CPM_DATE_CREATED DESC;";
             PreparedStatement pres = c.cn().prepareStatement(query);
@@ -106,12 +106,10 @@ public class CashPaymentCn {
 
             c.dc();
         }
-        pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
-        double total_amount = 0;
-        for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-            total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 5)));
-        }
-        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(total_amount));
+        int recdata = (int) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("recdata");
+        double sumdata = (double) OneforAllfunc.getrecandsum("TB_CP_DETAIL", "CPD_AMOUNT").get("sumdata");
+        pane.lcountdata.setText("Record Count : " + recdata);
+        pane.ltotalamount.setText("Total Amount : " + OneforAllfunc.nfcurrency(sumdata));
     }
 
     private void insertdata() {
@@ -228,7 +226,7 @@ public class CashPaymentCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
+                        String query = "SELECT FIRST 100 a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
                              + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,"
                              + "(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
                              + " FROM TB_CP_MASTER a "

@@ -25,6 +25,7 @@ public class Dbconnection {
     Connection con;
 
     public Dbconnection() {
+        System.out.println(host);
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
         } catch (ClassNotFoundException ex) {
