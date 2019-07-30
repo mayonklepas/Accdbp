@@ -116,6 +116,11 @@ public class AccountsOpView extends javax.swing.JPanel {
 
         cmbaccount_group.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
         cmbaccount_group.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assets", "Income", "Liability", "Expenditure" }));
+        cmbaccount_group.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbaccount_groupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -182,6 +187,10 @@ public class AccountsOpView extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbaccount_groupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbaccount_groupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbaccount_groupActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton bcancel;

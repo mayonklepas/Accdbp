@@ -39,6 +39,7 @@ public class ReportView extends javax.swing.JPanel {
         lonaccountbalance = new javax.swing.JLabel();
         lontrialbalance = new javax.swing.JLabel();
         lbalancesheet = new javax.swing.JLabel();
+        lcashbookprint = new javax.swing.JLabel();
         preportview = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -95,6 +96,10 @@ public class ReportView extends javax.swing.JPanel {
         lbalancesheet.setText("P&L, Balance Sheet");
         lbalancesheet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        lcashbookprint.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        lcashbookprint.setText("Cash Book Print");
+        lcashbookprint.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,7 +112,8 @@ public class ReportView extends javax.swing.JPanel {
                     .addComponent(ljournal)
                     .addComponent(lontrialbalance)
                     .addComponent(lonaccountbalance)
-                    .addComponent(lbalancesheet))
+                    .addComponent(lbalancesheet)
+                    .addComponent(lcashbookprint))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -125,7 +131,9 @@ public class ReportView extends javax.swing.JPanel {
                 .addComponent(lonaccountbalance)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbalancesheet)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lcashbookprint)
+                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         preportview.setBackground(new java.awt.Color(255, 255, 255));
@@ -171,6 +179,7 @@ public class ReportView extends javax.swing.JPanel {
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JLabel lbalancesheet;
+    public javax.swing.JLabel lcashbookprint;
     public javax.swing.JLabel ljournal;
     public javax.swing.JLabel lledger;
     public javax.swing.JLabel lmasterlist;

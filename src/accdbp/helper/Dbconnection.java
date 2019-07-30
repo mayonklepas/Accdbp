@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class Dbconnection {
 
     String filecon = new File("ACCDB.FDB").getAbsolutePath();
-    String host = "jdbc:firebirdsql://localhost:3050/" + filecon;
+    String host = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
     String username = "SYSDBA";
     String passsword = "masterkey";
     Connection con;
