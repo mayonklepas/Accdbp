@@ -25,7 +25,7 @@ public class Dbconnection {
     Connection con;
 
     public Dbconnection() {
-        System.out.println(host);
+        //System.out.println(host);
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
         } catch (ClassNotFoundException ex) {
@@ -40,7 +40,6 @@ public class Dbconnection {
     public Connection cn() {
         try {
             con = DriverManager.getConnection(host, username, passsword);
-            con.setAutoCommit(true);
         } catch (SQLException ex) {
             Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);
         }

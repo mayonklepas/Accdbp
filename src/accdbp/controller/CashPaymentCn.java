@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -187,19 +188,47 @@ public class CashPaymentCn {
                         OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
                         if (Staticvar.isyes == true) {
                             Staticvar.isyes = false;
-                            String query = "DELETE FROM TB_CP_MASTER a WHERE a.CRP_DOC_NO = ?";
-                            PreparedStatement pres = c.cn().prepareStatement(query);
+                            double allamount = 0.0;
                             int row = pane.tabledata.getSelectedRow();
                             String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
+                            String querysel = "SELECT SUM(CPD_AMOUNT) AS TOTAL FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=?";
+                            PreparedStatement pres = c.cn().prepareStatement(querysel);
                             pres.setString(1, value);
-                            pres.executeUpdate();
+                            ResultSet res = pres.executeQuery();
+                            while (res.next()) {
+                                allamount = res.getDouble("TOTAL");
+                            }
+                            pres.close();
+                            res.close();
+
+                            String acc_code = "";
+                            String querysel2 = "SELECT CPM_ACC AS COD FROM TB_CP_MASTER WHERE CRP_DOC_NO=?";
+                            PreparedStatement pres2 = c.cn().prepareStatement(querysel2);
+                            pres2.setString(1, value);
+                            ResultSet res2 = pres2.executeQuery();
+                            while (res2.next()) {
+                                acc_code = res2.getString("COD");
+                            }
+                            pres2.close();
+                            res2.close();
+
+                            Statement st = c.cn().createStatement();
+                            String querydeldetail = "DELETE FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER = '" + value + "'";
+                            st.addBatch(querydeldetail);
+                            String querydelmaster = "DELETE FROM TB_CP_MASTER WHERE CRP_DOC_NO = '" + value + "'";
+                            st.addBatch(querydelmaster);
+                            String queryupopbal = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(allamount) + " "
+                                 + "WHERE ACC_CODE='" + acc_code + "' ";
+                            st.addBatch(queryupopbal);
+                            st.executeBatch();
+                            st.close();
                             c.dc();
                             loaddata();
                         }
 
                     } catch (SQLException ex) {
                         OneforAllfunc.info("Error", ex.getMessage());
-                        Logger.getLogger(CashPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(BankPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
 
                     }
                 }

@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -191,12 +192,33 @@ public class JournalCn {
                         OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
                         if (Staticvar.isyes == true) {
                             Staticvar.isyes = false;
-                            String query = "DELETE FROM TB_JOURNAL_MASTER a WHERE a.JM_DOC_NO = ?";
-                            PreparedStatement pres = c.cn().prepareStatement(query);
                             int row = pane.tabledata.getSelectedRow();
                             String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
-                            pres.setString(1, value);
-                            pres.executeUpdate();
+                            String queryseldel = "SELECT JD_ID,JD_AMOUNT_KREDIT,JD_AMOUNT_DEBIT FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?";
+                            PreparedStatement preseldel = c.cn().prepareStatement(queryseldel);
+                            preseldel.setString(1, value);
+                            ResultSet reseldel = preseldel.executeQuery();
+                            Statement stdelup = c.cn().createStatement();
+                            while (reseldel.next()) {
+                                String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_ID='" + reseldel.getString("JD_ID") + "'";
+                                stdelup.addBatch(querydel);
+                                String queryup = "";
+                                if (reseldel.getDouble("JD_AMOUNT_DEBIT") == 0) {
+                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + reseldel.getDouble("JD_AMOUNT_KREDIT") + "";
+                                } else {
+                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + reseldel.getDouble("JD_AMOUNT_DEBIT") + "";
+                                }
+                                stdelup.addBatch(queryup);
+                            }
+
+                            stdelup.executeBatch();
+                            stdelup.close();
+
+                            String querydelmaster = "DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO=?";
+                            PreparedStatement predelmaster = c.cn().prepareStatement(querydelmaster);
+                            predelmaster.setString(1, value);
+                            predelmaster.executeUpdate();
+                            predelmaster.close();
                             c.dc();
                             loaddata();
                         }

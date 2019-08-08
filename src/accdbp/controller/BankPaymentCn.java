@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -107,7 +108,6 @@ public class BankPaymentCn {
                 } catch (SQLException ex) {
                     OneforAllfunc.info("Error", ex.getMessage());
                     Logger.getLogger(BankPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
-
                     c.dc();
                 }
                 int recdata = (int) OneforAllfunc.getrecandsum("TB_BP_DETAIL", "BPD_AMOUNT").get("recdata");
@@ -187,12 +187,40 @@ public class BankPaymentCn {
                         OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
                         if (Staticvar.isyes == true) {
                             Staticvar.isyes = false;
-                            String query = "DELETE FROM TB_BP_MASTER a WHERE a.BPM_DOC_NO = ?";
-                            PreparedStatement pres = c.cn().prepareStatement(query);
+                            double allamount = 0.0;
                             int row = pane.tabledata.getSelectedRow();
                             String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
+                            String querysel = "SELECT SUM(BPD_AMOUNT) AS TOTAL FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=?";
+                            PreparedStatement pres = c.cn().prepareStatement(querysel);
                             pres.setString(1, value);
-                            pres.executeUpdate();
+                            ResultSet res = pres.executeQuery();
+                            while (res.next()) {
+                                allamount = res.getDouble("TOTAL");
+                            }
+                            pres.close();
+                            res.close();
+
+                            String acc_code = "";
+                            String querysel2 = "SELECT BPM_ACC AS COD FROM TB_BP_MASTER WHERE BPM_DOC_NO=?";
+                            PreparedStatement pres2 = c.cn().prepareStatement(querysel2);
+                            pres2.setString(1, value);
+                            ResultSet res2 = pres2.executeQuery();
+                            while (res2.next()) {
+                                acc_code = res2.getString("COD");
+                            }
+                            pres2.close();
+                            res2.close();
+
+                            Statement st = c.cn().createStatement();
+                            String querydeldetail = "DELETE FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER = '" + value + "'";
+                            st.addBatch(querydeldetail);
+                            String querydelmaster = "DELETE FROM TB_BP_MASTER WHERE BPM_DOC_NO = '" + value + "'";
+                            st.addBatch(querydelmaster);
+                            String queryupopbal = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(allamount) + " "
+                                 + "WHERE ACC_CODE='" + acc_code + "' ";
+                            st.addBatch(queryupopbal);
+                            st.executeBatch();
+                            st.close();
                             c.dc();
                             loaddata();
                         }

@@ -38,10 +38,12 @@
 		<parameter name="ACC_CODE" class="java.lang.String"/>
 		<parameter name="DT_FROM" class="java.util.Date"/>
 		<parameter name="DT_TO" class="java.util.Date"/>
-		<queryString language="SQL">
+		<queryString>
 			<![CDATA[SELECT * FROM ledgerview WHERE ACC_CODE=$P{ACC_CODE} 
-AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY DATE_TRANS]]>
+AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY DATE_CREATED ASC]]>
 		</queryString>
+		<field name="ID" class="java.lang.String"/>
+		<field name="DATE_CREATED" class="java.sql.Timestamp"/>
 		<field name="DOC_TYPE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="DOC_TYPE"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>

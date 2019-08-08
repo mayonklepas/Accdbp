@@ -85,13 +85,13 @@ public final class AccountOpCn {
                         pane.cmbaccount_group.setSelectedIndex(0);
                         break;
                     case 1:
-                        pane.cmbaccount_type.setSelectedIndex(1);
+                        pane.cmbaccount_group.setSelectedIndex(1);
                         break;
                     case 2:
-                        pane.cmbaccount_type.setSelectedIndex(2);
+                        pane.cmbaccount_group.setSelectedIndex(2);
                         break;
                     default:
-                        pane.cmbaccount_type.setSelectedIndex(3);
+                        pane.cmbaccount_group.setSelectedIndex(3);
                         break;
                 }
 
