@@ -283,22 +283,27 @@ public final class CashReceiptOpCn {
                                 st.addBatch(query);
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
-                                    double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                    opbal = opbal + amount;
-                                    String queryin = "INSERT INTO TB_CR_DETAIL (CRD_ID, CRD_CRM_MASTER, "
-                                         + "CRD_ACC, CRD_AMOUNT, CRD_DESC,CRD_SALDO) "
-                                         + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                         + "'" + pane.eddoc_no.getText() + "',"
-                                         + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                         + "" + String.valueOf(amount) + ","
-                                         + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
-                                         + "" + String.valueOf(opbal) + ");";
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
-                                    String queryup = "UPDATE TB_ACC SET "
-                                         + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(amount) + " "
-                                         + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
-                                    st.addBatch(queryin);
-                                    st.addBatch(queryup);
+                                    } else {
+                                        double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        opbal = opbal + amount;
+                                        String queryin = "INSERT INTO TB_CR_DETAIL (CRD_ID, CRD_CRM_MASTER, "
+                                             + "CRD_ACC, CRD_AMOUNT, CRD_DESC,CRD_SALDO) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                             + "" + String.valueOf(amount) + ","
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
+                                             + "" + String.valueOf(opbal) + ");";
+
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                        st.addBatch(queryin);
+                                        st.addBatch(queryup);
+                                    }
                                 }
                                 st.executeBatch();
                                 st.close();
@@ -352,21 +357,26 @@ public final class CashReceiptOpCn {
 
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
-                                    double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                    opbal = opbal + amount;
-                                    String queryin = "INSERT INTO TB_CR_DETAIL (CRD_ID, CRD_CRM_MASTER, "
-                                         + "CRD_ACC, CRD_AMOUNT, CRD_DESC,CRD_SALDO) "
-                                         + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                         + "'" + pane.eddoc_no.getText() + "',"
-                                         + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                         + "" + String.valueOf(amount) + ","
-                                         + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
-                                         + "" + String.valueOf(opbal) + ");";
-                                    st.addBatch(queryin);
-                                    String queryup = "UPDATE TB_ACC SET "
-                                         + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(amount) + " "
-                                         + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
-                                    st.addBatch(queryup);
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+
+                                    } else {
+                                        double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        opbal = opbal + amount;
+                                        String queryin = "INSERT INTO TB_CR_DETAIL (CRD_ID, CRD_CRM_MASTER, "
+                                             + "CRD_ACC, CRD_AMOUNT, CRD_DESC,CRD_SALDO) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                             + "" + String.valueOf(amount) + ","
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
+                                             + "" + String.valueOf(opbal) + ");";
+                                        st.addBatch(queryin);
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                        st.addBatch(queryup);
+                                    }
                                 }
                                 st.executeBatch();
                                 st.close();
@@ -380,6 +390,8 @@ public final class CashReceiptOpCn {
                         } catch (SQLException ex) {
                             OneforAllfunc.info("Error", ex.getMessage());
                             Logger.getLogger(CashReceiptOpCn.class.getName()).log(Level.SEVERE, null, ex);
+                        } finally {
+                            c.dc();
                         }
                     }
                 }

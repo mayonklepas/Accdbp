@@ -64,10 +64,10 @@ public class Home extends javax.swing.JFrame {
         pcashrec = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        pjournalpay = new javax.swing.JPanel();
+        pjournalsale = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
-        pjournalrec = new javax.swing.JPanel();
+        pjournalpurchase = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         pjournalgen = new javax.swing.JPanel();
@@ -260,31 +260,31 @@ public class Home extends javax.swing.JFrame {
         jLabel29.setText("Cash Receipts");
         pcashrec.add(jLabel29);
 
-        pjournalpay.setBackground(new java.awt.Color(51, 51, 51));
+        pjournalsale.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
         jLabel30.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalpay.add(jLabel30);
+        pjournalsale.add(jLabel30);
 
         jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel31.setText("Payment");
-        pjournalpay.add(jLabel31);
+        jLabel31.setText("Sale");
+        pjournalsale.add(jLabel31);
 
-        pjournalrec.setBackground(new java.awt.Color(51, 51, 51));
+        pjournalpurchase.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel32.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
         jLabel32.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalrec.add(jLabel32);
+        pjournalpurchase.add(jLabel32);
 
         jLabel33.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setText("Receipt");
-        pjournalrec.add(jLabel33);
+        jLabel33.setText("Purchase");
+        pjournalpurchase.add(jLabel33);
 
         pjournalgen.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -313,12 +313,12 @@ public class Home extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(pbankrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(pjournalpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pjournalsale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(pjournalrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pjournalpurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(pjournalgen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
         subpaneLayout.setVerticalGroup(
             subpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,8 +326,8 @@ public class Home extends javax.swing.JFrame {
             .addComponent(pbankpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pcashrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pbankrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pjournalpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pjournalrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pjournalsale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pjournalpurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pjournalgen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
@@ -339,7 +339,7 @@ public class Home extends javax.swing.JFrame {
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1024, Short.MAX_VALUE)
+            .addGap(0, 1291, Short.MAX_VALUE)
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,8 +468,8 @@ public class Home extends javax.swing.JFrame {
     public javax.swing.JPanel pcashrec;
     public javax.swing.JPanel phome;
     public javax.swing.JPanel pjournalgen;
-    public javax.swing.JPanel pjournalpay;
-    public javax.swing.JPanel pjournalrec;
+    public javax.swing.JPanel pjournalpurchase;
+    public javax.swing.JPanel pjournalsale;
     public javax.swing.JPanel pjournalsmain;
     public javax.swing.JPanel ppaymain;
     public javax.swing.JPanel precmain;

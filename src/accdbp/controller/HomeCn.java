@@ -36,10 +36,10 @@ import javax.swing.WindowConstants;
  * @author Minami
  */
 public class HomeCn {
-    
+
     Home hm = new Home();
     JDialog jdmenupay = new JDialog(new Home());
-    
+
     public HomeCn() {
         hm.setTitle("Accounting PT David Bumi Perkasa");
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -49,7 +49,9 @@ public class HomeCn {
         cashrecview();
         bankpayview();
         bankrecview();
-        journalsview();
+        journalsgeneralview();
+        journalspurchaseview();
+        journalssaleview();
         reportview();
         skinning();
         hm.subpane.setVisible(false);
@@ -61,9 +63,9 @@ public class HomeCn {
         Insets is = hm.getInsets();
         jdmenupay.setLocation(hm.ppaymain.getLocation().x, (hm.ppaymain.getHeight() + is.top) - 3);
         viewlogin();
-        
+
     }
-    
+
     private void viewlogin() {
         JDialog jd = new JDialog(new Home());
         jd.setResizable(false);
@@ -77,7 +79,7 @@ public class HomeCn {
         jd.toFront();
         hm.lacc_periode.setText("Accounting Periode : " + Staticvar.month_periode + "/" + Staticvar.year_periode);
     }
-    
+
     private void skinning() {
         MouseAdapter mapay = new MouseAdapter() {
             @Override
@@ -88,19 +90,19 @@ public class HomeCn {
                 hm.pbankpay.setVisible(true);
                 hm.pcashrec.setVisible(false);
                 hm.pbankrec.setVisible(false);
-                hm.pjournalpay.setVisible(false);
-                hm.pjournalrec.setVisible(false);
+                hm.pjournalsale.setVisible(false);
+                hm.pjournalpurchase.setVisible(false);
                 hm.pjournalgen.setVisible(false);
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.ppaymain.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.ppaymain.addMouseListener(mapay);
-        
+
         MouseAdapter marec = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -110,19 +112,19 @@ public class HomeCn {
                 hm.pbankpay.setVisible(false);
                 hm.pcashrec.setVisible(true);
                 hm.pbankrec.setVisible(true);
-                hm.pjournalpay.setVisible(false);
-                hm.pjournalrec.setVisible(false);
+                hm.pjournalsale.setVisible(false);
+                hm.pjournalpurchase.setVisible(false);
                 hm.pjournalgen.setVisible(false);
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.precmain.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.precmain.addMouseListener(marec);
-        
+
         MouseAdapter majournal = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -132,65 +134,65 @@ public class HomeCn {
                 hm.pbankpay.setVisible(false);
                 hm.pcashrec.setVisible(false);
                 hm.pbankrec.setVisible(false);
-                hm.pjournalpay.setVisible(false);
-                hm.pjournalrec.setVisible(false);
+                hm.pjournalsale.setVisible(true);
+                hm.pjournalpurchase.setVisible(true);
                 hm.pjournalgen.setVisible(true);
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.pjournalsmain.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.pjournalsmain.addMouseListener(majournal);
-        
+
         MouseAdapter mareport = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(false);
                 hm.preports.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.preports.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.preports.addMouseListener(mareport);
-        
+
         MouseAdapter mahome = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(false);
                 hm.phome.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.phome.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.phome.addMouseListener(mahome);
-        
+
         MouseAdapter masubpane = new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false);
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true);
             }
-            
+
         };
         hm.subpane.addMouseListener(masubpane);
-        
+
     }
-    
+
     private void accountsview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
@@ -202,26 +204,26 @@ public class HomeCn {
                 hm.container.add(akunpane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(false);
                 hm.paccounts.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.paccounts.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.paccounts.addMouseListener(ma);
     }
-    
+
     private void cashpayview() {
-        
+
         MouseAdapter ma = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -232,26 +234,26 @@ public class HomeCn {
                 hm.container.add(cashpaypane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pcashpay.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
                 hm.pcashpay.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.pcashpay.addMouseListener(ma);
-        
+
     }
-    
+
     private void cashrecview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
@@ -263,15 +265,15 @@ public class HomeCn {
                 hm.container.add(cashrecpane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pcashrec.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
@@ -280,7 +282,7 @@ public class HomeCn {
         };
         hm.pcashrec.addMouseListener(ma);
     }
-    
+
     private void bankpayview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
@@ -292,15 +294,15 @@ public class HomeCn {
                 hm.container.add(bankpaypane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pbankpay.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
@@ -309,7 +311,7 @@ public class HomeCn {
         };
         hm.pbankpay.addMouseListener(ma);
     }
-    
+
     private void bankrecview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
@@ -321,15 +323,15 @@ public class HomeCn {
                 hm.container.add(bankrecpane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pbankrec.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
@@ -338,11 +340,12 @@ public class HomeCn {
         };
         hm.pbankrec.addMouseListener(ma);
     }
-    
-    private void journalsview() {
+
+    private void journalsgeneralview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                Staticvar.journaltype = 0;
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
                 JournalView journalpane = new JournalView();
                 hm.container.removeAll();
@@ -350,15 +353,15 @@ public class HomeCn {
                 hm.container.add(journalpane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pjournalgen.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
@@ -367,7 +370,67 @@ public class HomeCn {
         };
         hm.pjournalgen.addMouseListener(ma);
     }
-    
+
+    private void journalssaleview() {
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Staticvar.journaltype = 2;
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                JournalView journalpane = new JournalView();
+                hm.container.removeAll();
+                hm.container.setLayout(new BorderLayout());
+                hm.container.add(journalpane, BorderLayout.CENTER);
+                hm.container.revalidate();
+                hm.container.repaint();
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+                hm.pjournalsale.setBackground(Color.decode("#000000"));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+                hm.pjournalsale.setBackground(Color.decode("#333333"));
+            }
+        };
+        hm.pjournalsale.addMouseListener(ma);
+    }
+
+    private void journalspurchaseview() {
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Staticvar.journaltype = 1;
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                JournalView journalpane = new JournalView();
+                hm.container.removeAll();
+                hm.container.setLayout(new BorderLayout());
+                hm.container.add(journalpane, BorderLayout.CENTER);
+                hm.container.revalidate();
+                hm.container.repaint();
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+                hm.pjournalpurchase.setBackground(Color.decode("#000000"));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+                hm.pjournalpurchase.setBackground(Color.decode("#333333"));
+            }
+        };
+        hm.pjournalpurchase.addMouseListener(ma);
+    }
+
     private void reportview() {
         MouseAdapter ma = new MouseAdapter() {
             @Override
@@ -379,21 +442,21 @@ public class HomeCn {
                 hm.container.add(reportpane, BorderLayout.CENTER);
                 hm.container.revalidate();
                 hm.container.repaint();
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
                 hm.preports.setBackground(Color.decode("#000000"));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
                 hm.preports.setBackground(Color.decode("#333333"));
             }
-            
+
         };
         hm.preports.addMouseListener(ma);
     }

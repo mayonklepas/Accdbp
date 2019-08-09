@@ -51,6 +51,13 @@ public class JournalCn {
 
     public JournalCn(JournalView pane) {
         this.pane = pane;
+        if (Staticvar.journaltype == 0) {
+            pane.ljurnaltipe.setText("General Journal");
+        } else if (Staticvar.journaltype == 1) {
+            pane.ljurnaltipe.setText("Purchase Journal");
+        } else {
+            pane.ljurnaltipe.setText("Sale Journal");
+        }
         setkeydis();
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(Staticvar.keydis);
         loadheader();
@@ -93,8 +100,9 @@ public class JournalCn {
                     String query = "SELECT  a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                          + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                          + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
-                         + " FROM TB_JOURNAL_MASTER a ORDER BY a.JM_DATE_CREATED DESC;";
+                         + " FROM TB_JOURNAL_MASTER a WHERE a.JM_TYPE=? ORDER BY a.JM_DATE_CREATED DESC;";
                     PreparedStatement pres = c.cn().prepareStatement(query);
+                    pres.setInt(1, Staticvar.journaltype);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {
                         Object o[] = new Object[7];
@@ -210,19 +218,13 @@ public class JournalCn {
                                 }
                                 stdelup.addBatch(queryup);
                             }
-
+                            String querydelmaster = "DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO='" + value + "'";
+                            stdelup.addBatch(querydelmaster);
                             stdelup.executeBatch();
                             stdelup.close();
-
-                            String querydelmaster = "DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO=?";
-                            PreparedStatement predelmaster = c.cn().prepareStatement(querydelmaster);
-                            predelmaster.setString(1, value);
-                            predelmaster.executeUpdate();
-                            predelmaster.close();
                             c.dc();
                             loaddata();
                         }
-
                     } catch (SQLException ex) {
                         OneforAllfunc.info("Error", ex.getMessage());
                         Logger.getLogger(JournalCn.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,15 +265,16 @@ public class JournalCn {
                              + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                              + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT,"
                              + " FROM TB_JOURNAL_MASTER a "
-                             + "WHERE lower(a.JM_DOC_NO) LIKE ? "
+                             + "WHERE (lower(a.JM_DOC_NO) LIKE ? "
                              + "OR lower(a.JM_REF_NO) LIKE ? "
                              + "OR lower(b.ACC_NAME) LIKE ? "
-                             + "OR a.JM_DATE_TRANS LIKE ?  ORDER BY a.JM_DATE_CREATED DESC;";
+                             + "OR a.JM_DATE_TRANS LIKE ?) AND a.JM_TYPE=?   ORDER BY a.JM_DATE_CREATED DESC;";
                         PreparedStatement pres = c.cn().prepareStatement(query);
                         pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                         pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
                         pres.setString(3, "%" + pane.edfind.getText().toLowerCase() + "%");
                         pres.setString(4, "%" + pane.edfind.getText() + "%");
+                        pres.setInt(5, Staticvar.journaltype);
                         ResultSet res = pres.executeQuery();
                         while (res.next()) {
                             Object o[] = new Object[6];

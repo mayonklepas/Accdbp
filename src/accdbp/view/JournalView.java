@@ -42,7 +42,7 @@ public class JournalView extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabledata = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        ljurnaltipe = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         ltotaldebit = new javax.swing.JLabel();
         lcountdata = new javax.swing.JLabel();
@@ -117,10 +117,10 @@ public class JournalView extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
-        jLabel1.setText("Journals");
+        ljurnaltipe.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        ljurnaltipe.setForeground(new java.awt.Color(255, 255, 255));
+        ljurnaltipe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
+        ljurnaltipe.setText("Journals");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -128,14 +128,14 @@ public class JournalView extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(ljurnaltipe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(ljurnaltipe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -208,12 +208,12 @@ public class JournalView extends javax.swing.JPanel {
     public javax.swing.JButton bedit;
     public javax.swing.JButton brefresh;
     public javax.swing.JTextField edfind;
-    public javax.swing.JLabel jLabel1;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
     public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lcountdata;
+    public javax.swing.JLabel ljurnaltipe;
     public javax.swing.JLabel ltotaldebit;
     public javax.swing.JLabel ltotalkredit;
     public javax.swing.JTable tabledata;

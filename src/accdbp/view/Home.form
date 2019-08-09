@@ -349,12 +349,12 @@
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="pbankrec" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="pjournalpay" min="-2" max="-2" attributes="0"/>
+                  <Component id="pjournalsale" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="pjournalrec" min="-2" max="-2" attributes="0"/>
+                  <Component id="pjournalpurchase" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="pjournalgen" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="61" max="32767" attributes="0"/>
+                  <EmptySpace pref="339" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -364,8 +364,8 @@
               <Component id="pbankpay" min="-2" max="-2" attributes="0"/>
               <Component id="pcashrec" alignment="0" min="-2" max="-2" attributes="0"/>
               <Component id="pbankrec" alignment="0" min="-2" max="-2" attributes="0"/>
-              <Component id="pjournalpay" alignment="0" min="-2" max="-2" attributes="0"/>
-              <Component id="pjournalrec" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Component id="pjournalsale" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Component id="pjournalpurchase" alignment="0" min="-2" max="-2" attributes="0"/>
               <Component id="pjournalgen" alignment="0" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
@@ -507,7 +507,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="pjournalpay">
+        <Container class="javax.swing.JPanel" name="pjournalsale">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -536,12 +536,12 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Payment"/>
+                <Property name="text" type="java.lang.String" value="Sale"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="pjournalrec">
+        <Container class="javax.swing.JPanel" name="pjournalpurchase">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -570,7 +570,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Receipt"/>
+                <Property name="text" type="java.lang.String" value="Purchase"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -656,7 +656,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1024" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="1291" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

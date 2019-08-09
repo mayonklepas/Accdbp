@@ -35,7 +35,7 @@ public class JournalOpView extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        ljurnaltipe = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         eddoc_no = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -64,9 +64,9 @@ public class JournalOpView extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Journal Operation");
+        ljurnaltipe.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        ljurnaltipe.setForeground(new java.awt.Color(255, 255, 255));
+        ljurnaltipe.setText("Journal Operation");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -74,14 +74,14 @@ public class JournalOpView extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(ljurnaltipe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(ljurnaltipe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -285,7 +285,6 @@ public class JournalOpView extends javax.swing.JPanel {
     public javax.swing.JTextField eddoc_no;
     public com.toedter.calendar.JDateChooser edref_date;
     public javax.swing.JTextField edref_no;
-    public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel12;
     public javax.swing.JLabel jLabel13;
@@ -301,6 +300,7 @@ public class JournalOpView extends javax.swing.JPanel {
     public javax.swing.JPanel jPanel2;
     public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JLabel ldebittotal;
+    public javax.swing.JLabel ljurnaltipe;
     public javax.swing.JLabel lkredit_total;
     public javax.swing.JTable tabledata;
     // End of variables declaration//GEN-END:variables

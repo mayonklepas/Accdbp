@@ -6,6 +6,7 @@
 package accdbp.helper;
 
 import java.awt.KeyEventDispatcher;
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -32,6 +33,11 @@ public class Staticvar {
     public static String code_to = "2001";
     public static boolean isprint = false;
     public static int journaltype = 0;
+    public static String filecon = new File("ACCDB.FDB").getAbsolutePath();
+    public static String dbfilecon = new File("ACCDB.FDB").getAbsolutePath();
+    public static String dbhost = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
+    public static String dbuser = "SYSDBA";
+    public static String dbpass = "masterkey";
     public static String keyholdnumeric[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
         "0", "NUMPAD1", "NUMPAD2", "NUMPAD3", "NUMPAD4", "NUMPAD5", "NUMPAD6", "NUMPAD7", "NUMPAD8", "NUMPAD9",
         "NUMPAD0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
