@@ -20,6 +20,9 @@ public class Staticvar {
     public static String global_val = "";
     public static String global_name = "";
     public static KeyEventDispatcher keydis = null;
+    public static String company_name = "";
+    public static String company_address = "";
+    public static String company_telp = "";
     public static String username = "";
     public static String password = "";
     public static int type = 0;

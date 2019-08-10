@@ -68,6 +68,13 @@ public class LoginCn {
                         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(Staticvar.keydis);
                     } else {
                         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                        String queryinfo = "SELECT COMPANY_NAME,COMPANY_ADDRESS,COMPANY_TELEPHONE FROM TB_INFO WHERE ID=1";
+                        PreparedStatement preinfo = c.cn().prepareStatement(queryinfo);
+                        ResultSet resinfo = preinfo.executeQuery();
+                        resinfo.first();
+                        Staticvar.company_name = resinfo.getString("COMPANY_NAME");
+                        Staticvar.company_address = resinfo.getString("COMPANY_ADDRESS");
+                        Staticvar.company_telp = resinfo.getString("COMPANY_TELEPHONE");
                         Staticvar.username = username;
                         Staticvar.password = pane.edpassword.getText();
                         Staticvar.type = type;

@@ -6,6 +6,11 @@
 package accdbp.view;
 
 import accdbp.controller.HomeCn;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 /**
  *
@@ -18,6 +23,7 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+
     }
 
     /**
@@ -343,11 +349,12 @@ public class Home extends javax.swing.JFrame {
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
+            .addGap(0, 327, Short.MAX_VALUE)
         );
 
         lacc_periode.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         lacc_periode.setForeground(new java.awt.Color(255, 255, 255));
+        lacc_periode.setText("Acounting Periode");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

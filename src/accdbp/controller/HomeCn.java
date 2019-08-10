@@ -13,16 +13,20 @@ import accdbp.view.BankReceiptView;
 import accdbp.view.CashPaymentView;
 import accdbp.view.CashReceiptView;
 import accdbp.view.Home;
+import accdbp.view.Homedef;
 import accdbp.view.JournalView;
 import accdbp.view.LoginView;
 import accdbp.view.PaymentpaneView;
 import accdbp.view.ReportView;
+import accdbp.view.SettingView;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -44,6 +48,8 @@ public class HomeCn {
         hm.setTitle("Accounting PT David Bumi Perkasa");
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
         hm.setVisible(true);
+        defview();
+        homeview();
         accountsview();
         cashpayview();
         cashrecview();
@@ -53,6 +59,7 @@ public class HomeCn {
         journalspurchaseview();
         journalssaleview();
         reportview();
+        settingview();
         skinning();
         hm.subpane.setVisible(false);
         jdmenupay.setResizable(false);
@@ -64,6 +71,15 @@ public class HomeCn {
         jdmenupay.setLocation(hm.ppaymain.getLocation().x, (hm.ppaymain.getHeight() + is.top) - 3);
         viewlogin();
 
+    }
+
+    private void defview() {
+        Homedef homepane = new Homedef();
+        hm.container.removeAll();
+        hm.container.setLayout(new BorderLayout());
+        hm.container.add(homepane, BorderLayout.CENTER);
+        hm.container.revalidate();
+        hm.container.repaint();
     }
 
     private void viewlogin() {
@@ -191,6 +207,36 @@ public class HomeCn {
         };
         hm.subpane.addMouseListener(masubpane);
 
+    }
+
+    private void homeview() {
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                Homedef homepane = new Homedef();
+                hm.container.removeAll();
+                hm.container.setLayout(new BorderLayout());
+                hm.container.add(homepane, BorderLayout.CENTER);
+                hm.container.revalidate();
+                hm.container.repaint();
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hm.subpane.setVisible(false);
+                hm.phome.setBackground(Color.decode("#000000"));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hm.subpane.setVisible(false);
+                hm.phome.setBackground(Color.decode("#333333"));
+            }
+
+        };
+        hm.phome.addMouseListener(ma);
     }
 
     private void accountsview() {
@@ -459,5 +505,39 @@ public class HomeCn {
 
         };
         hm.preports.addMouseListener(ma);
+    }
+
+    private void settingview() {
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                JDialog jd = new JDialog(new Home());
+                jd.setResizable(false);
+                jd.setTitle("Setting");
+                jd.add(new SettingView());
+                jd.pack();
+                jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                jd.setLocationRelativeTo(null);
+                jd.setVisible(true);
+                jd.toFront();
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+                hm.psetting.setBackground(Color.decode("#000000"));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+                hm.psetting.setBackground(Color.decode("#333333"));
+            }
+
+        };
+        hm.psetting.addMouseListener(ma);
+
     }
 }

@@ -53,7 +53,10 @@ public class ReportCn {
             public void mouseClicked(MouseEvent e) {
                 try {
                     String path = "report/Masterlist.jasper";
-                    HashMap hm = new HashMap(0);
+                    HashMap hm = new HashMap(3);
+                    hm.put("COMPANY_NAME", Staticvar.company_name);
+                    hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                    hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                     JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                     JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                     pane.preportview.removeAll();
@@ -88,9 +91,12 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         String path = "report/Ledger.jasper";
-                        HashMap hm = new HashMap(2);
+                        HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
@@ -127,9 +133,12 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         String path = "report/Onlinertrialbalance.jasper";
-                        HashMap hm = new HashMap(2);
+                        HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
@@ -165,11 +174,14 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         String path = "report/Onlineraccountbalance.jasper";
-                        HashMap hm = new HashMap(4);
+                        HashMap hm = new HashMap(7);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
                         hm.put("ACC_FROM", Staticvar.code_from);
                         hm.put("ACC_TO", Staticvar.code_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
@@ -205,9 +217,12 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         String path = "report/Plbalansheet.jasper";
-                        HashMap hm = new HashMap(2);
+                        HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
@@ -243,9 +258,12 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         String path = "report/Cashbookprint.jasper";
-                        HashMap hm = new HashMap(2);
+                        HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
