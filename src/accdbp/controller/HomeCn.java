@@ -61,14 +61,11 @@ public class HomeCn {
         reportview();
         settingview();
         skinning();
-        hm.subpane.setVisible(false);
         jdmenupay.setResizable(false);
         jdmenupay.setUndecorated(true);
         jdmenupay.add(new PaymentpaneView());
         jdmenupay.pack();
         jdmenupay.setModalityType(Dialog.ModalityType.MODELESS);
-        Insets is = hm.getInsets();
-        jdmenupay.setLocation(hm.ppaymain.getLocation().x, (hm.ppaymain.getHeight() + is.top) - 3);
         viewlogin();
 
     }
@@ -97,76 +94,10 @@ public class HomeCn {
     }
 
     private void skinning() {
-        MouseAdapter mapay = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                hm.ppaymain.setBackground(Color.decode("#000000"));
-                hm.subpane.setVisible(true);
-                hm.pcashpay.setVisible(true);
-                hm.pbankpay.setVisible(true);
-                hm.pcashrec.setVisible(false);
-                hm.pbankrec.setVisible(false);
-                hm.pjournalsale.setVisible(false);
-                hm.pjournalpurchase.setVisible(false);
-                hm.pjournalgen.setVisible(false);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                hm.ppaymain.setBackground(Color.decode("#333333"));
-            }
-
-        };
-        hm.ppaymain.addMouseListener(mapay);
-
-        MouseAdapter marec = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                hm.precmain.setBackground(Color.decode("#000000"));
-                hm.subpane.setVisible(true);
-                hm.pcashpay.setVisible(false);
-                hm.pbankpay.setVisible(false);
-                hm.pcashrec.setVisible(true);
-                hm.pbankrec.setVisible(true);
-                hm.pjournalsale.setVisible(false);
-                hm.pjournalpurchase.setVisible(false);
-                hm.pjournalgen.setVisible(false);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                hm.precmain.setBackground(Color.decode("#333333"));
-            }
-
-        };
-        hm.precmain.addMouseListener(marec);
-
-        MouseAdapter majournal = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                hm.pjournalsmain.setBackground(Color.decode("#000000"));
-                hm.subpane.setVisible(true);
-                hm.pcashpay.setVisible(false);
-                hm.pbankpay.setVisible(false);
-                hm.pcashrec.setVisible(false);
-                hm.pbankrec.setVisible(false);
-                hm.pjournalsale.setVisible(true);
-                hm.pjournalpurchase.setVisible(true);
-                hm.pjournalgen.setVisible(true);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                hm.pjournalsmain.setBackground(Color.decode("#333333"));
-            }
-
-        };
-        hm.pjournalsmain.addMouseListener(majournal);
 
         MouseAdapter mareport = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false);
                 hm.preports.setBackground(Color.decode("#000000"));
             }
 
@@ -181,7 +112,6 @@ public class HomeCn {
         MouseAdapter mahome = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false);
                 hm.phome.setBackground(Color.decode("#000000"));
             }
 
@@ -192,20 +122,6 @@ public class HomeCn {
 
         };
         hm.phome.addMouseListener(mahome);
-
-        MouseAdapter masubpane = new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true);
-            }
-
-        };
-        hm.subpane.addMouseListener(masubpane);
 
     }
 
@@ -225,13 +141,11 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false);
                 hm.phome.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false);
                 hm.phome.setBackground(Color.decode("#333333"));
             }
 
@@ -255,7 +169,6 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false);
                 hm.paccounts.setBackground(Color.decode("#000000"));
             }
 
@@ -285,13 +198,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pcashpay.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pcashpay.setBackground(Color.decode("#333333"));
             }
 
@@ -316,13 +229,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pcashrec.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pcashrec.setBackground(Color.decode("#333333"));
             }
         };
@@ -345,13 +258,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pbankpay.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pbankpay.setBackground(Color.decode("#333333"));
             }
         };
@@ -374,13 +287,12 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
                 hm.pbankrec.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pbankrec.setBackground(Color.decode("#333333"));
             }
         };
@@ -404,13 +316,12 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pjournalgen.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
                 hm.pjournalgen.setBackground(Color.decode("#333333"));
             }
         };
@@ -434,13 +345,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pjournalsale.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pjournalsale.setBackground(Color.decode("#333333"));
             }
         };
@@ -464,13 +375,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(true); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pjournalpurchase.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.pjournalpurchase.setBackground(Color.decode("#333333"));
             }
         };
@@ -493,13 +404,13 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.preports.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.preports.setBackground(Color.decode("#333333"));
             }
 
@@ -526,13 +437,12 @@ public class HomeCn {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
                 hm.psetting.setBackground(Color.decode("#000000"));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hm.subpane.setVisible(false); //To change body of generated methods, choose Tools | Templates.
+
                 hm.psetting.setBackground(Color.decode("#333333"));
             }
 

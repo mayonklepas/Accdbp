@@ -82,7 +82,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview());
+                    jd.add(new Popreportview(false));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -124,7 +124,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview());
+                    jd.add(new Popreportview(false));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -165,7 +165,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview());
+                    jd.add(new Popreportview(true));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -208,7 +208,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview());
+                    jd.add(new Popreportview(false));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -249,7 +249,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview());
+                    jd.add(new Popreportview(false));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);

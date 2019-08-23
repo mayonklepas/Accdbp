@@ -312,10 +312,10 @@ public final class JournalOpCn {
                                                  + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
                                                  + "'" + pane.eddoc_no.getText() + "',"
                                                  + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                                 + "" + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2))) + ","
-                                                 + "" + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3))) + ","
+                                                 + "" + debit + ","
+                                                 + "" + kredit + ","
                                                  + "'" + String.valueOf(pane.tabledata.getValueAt(i, 4)) + "',"
-                                                 + "" + String.valueOf(opbal) + ");";
+                                                 + "" + opbal + ");";
                                             stindetail.executeUpdate(queryin);
                                             String queryup = "";
                                             queryup = "UPDATE TB_ACC SET "
@@ -448,11 +448,6 @@ public final class JournalOpCn {
                                     JDialog jd = (JDialog) pane.getRootPane().getParent();
                                     jd.dispose();
                                 } catch (Exception ein) {
-                                    Statement st = c.cn().createStatement();
-                                    st.addBatch("DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO='" + pane.eddoc_no.getText() + "'");
-                                    st.addBatch("DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER='" + pane.eddoc_no.getText() + "'");
-                                    st.executeBatch();
-                                    st.close();
                                     ein.printStackTrace();
                                 }
                             }

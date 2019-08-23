@@ -42,34 +42,24 @@ public class Home extends javax.swing.JFrame {
         paccounts = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        ppaymain = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        precmain = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         psetting = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        pjournalsmain = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         preports = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        subpane = new javax.swing.JPanel();
         pcashpay = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         pbankpay = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        pbankrec = new javax.swing.JPanel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
         pcashrec = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
+        pbankrec = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
         pjournalsale = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
@@ -93,11 +83,11 @@ public class Home extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_home_white_24dp.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_home_white_18dp.png"))); // NOI18N
         jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         phome.add(jLabel2);
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Home");
         phome.add(jLabel3);
@@ -106,79 +96,131 @@ public class Home extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_description_white_24dp.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_description_white_18dp.png"))); // NOI18N
         jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         paccounts.add(jLabel6);
 
-        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Accounts");
         paccounts.add(jLabel7);
-
-        ppaymain.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_monetization_on_white_24dp.png"))); // NOI18N
-        jLabel8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ppaymain.add(jLabel8);
-
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Payments");
-        ppaymain.add(jLabel9);
-
-        precmain.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_assignment_turned_in_white_24dp.png"))); // NOI18N
-        jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        precmain.add(jLabel10);
-
-        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Receipts");
-        precmain.add(jLabel11);
 
         psetting.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_settings_applications_white_24dp.png"))); // NOI18N
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_settings_applications_white_18dp.png"))); // NOI18N
         jLabel16.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         psetting.add(jLabel16);
 
-        jLabel17.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Setting");
         psetting.add(jLabel17);
-
-        pjournalsmain.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
-        jLabel18.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalsmain.add(jLabel18);
-
-        jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Journals");
-        pjournalsmain.add(jLabel19);
 
         preports.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_print_white_24dp.png"))); // NOI18N
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_print_white_18dp.png"))); // NOI18N
         jLabel20.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         preports.add(jLabel20);
 
-        jLabel21.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Reports");
         preports.add(jLabel21);
+
+        pcashpay.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_monetization_on_white_18dp.png"))); // NOI18N
+        jLabel22.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pcashpay.add(jLabel22);
+
+        jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setText("Cash Payments");
+        pcashpay.add(jLabel23);
+
+        pbankpay.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_credit_card_white_18dp.png"))); // NOI18N
+        jLabel24.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pbankpay.add(jLabel24);
+
+        jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel25.setText("Bank Payments");
+        pbankpay.add(jLabel25);
+
+        pcashrec.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_assignment_turned_in_white_18dp.png"))); // NOI18N
+        jLabel28.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pcashrec.add(jLabel28);
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel29.setText("Cash Receipts");
+        pcashrec.add(jLabel29);
+
+        pbankrec.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_receipt_white_18dp.png"))); // NOI18N
+        jLabel26.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pbankrec.add(jLabel26);
+
+        jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setText("Bank Receipts");
+        pbankrec.add(jLabel27);
+
+        pjournalsale.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        jLabel30.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pjournalsale.add(jLabel30);
+
+        jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setText("Sale");
+        pjournalsale.add(jLabel31);
+
+        pjournalpurchase.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel32.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        jLabel32.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pjournalpurchase.add(jLabel32);
+
+        jLabel33.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel33.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel33.setText("Purchase");
+        pjournalpurchase.add(jLabel33);
+
+        pjournalgen.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        jLabel34.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pjournalgen.add(jLabel34);
+
+        jLabel35.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+        jLabel35.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel35.setText("General");
+        pjournalgen.add(jLabel35);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,128 +231,7 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(phome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(paccounts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(ppaymain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(precmain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pjournalsmain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(preports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(psetting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(phome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(paccounts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(ppaymain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(precmain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(psetting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pjournalsmain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(preports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-        subpane.setBackground(new java.awt.Color(51, 51, 51));
-
-        pcashpay.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_monetization_on_white_24dp.png"))); // NOI18N
-        jLabel22.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pcashpay.add(jLabel22);
-
-        jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel23.setText("Cash Payments");
-        pcashpay.add(jLabel23);
-
-        pbankpay.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_credit_card_white_24dp.png"))); // NOI18N
-        jLabel24.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pbankpay.add(jLabel24);
-
-        jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel25.setText("Bank Payments");
-        pbankpay.add(jLabel25);
-
-        pbankrec.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_insert_drive_file_white_24dp.png"))); // NOI18N
-        jLabel26.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pbankrec.add(jLabel26);
-
-        jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("Bank Receipts");
-        pbankrec.add(jLabel27);
-
-        pcashrec.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_assignment_turned_in_white_24dp.png"))); // NOI18N
-        jLabel28.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pcashrec.add(jLabel28);
-
-        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel29.setText("Cash Receipts");
-        pcashrec.add(jLabel29);
-
-        pjournalsale.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
-        jLabel30.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalsale.add(jLabel30);
-
-        jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel31.setText("Sale");
-        pjournalsale.add(jLabel31);
-
-        pjournalpurchase.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel32.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
-        jLabel32.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalpurchase.add(jLabel32);
-
-        jLabel33.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setText("Purchase");
-        pjournalpurchase.add(jLabel33);
-
-        pjournalgen.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabel34.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_24dp.png"))); // NOI18N
-        jLabel34.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pjournalgen.add(jLabel34);
-
-        jLabel35.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        jLabel35.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel35.setText("General");
-        pjournalgen.add(jLabel35);
-
-        javax.swing.GroupLayout subpaneLayout = new javax.swing.GroupLayout(subpane);
-        subpane.setLayout(subpaneLayout);
-        subpaneLayout.setHorizontalGroup(
-            subpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(subpaneLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addGap(1, 1, 1)
                 .addComponent(pcashpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(pbankpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,11 +245,19 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(pjournalpurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(pjournalgen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(339, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(preports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(psetting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
-        subpaneLayout.setVerticalGroup(
-            subpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pcashpay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(phome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(paccounts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(psetting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(preports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pcashpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pbankpay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pcashrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pbankrec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -345,11 +274,11 @@ public class Home extends javax.swing.JFrame {
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1291, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 327, Short.MAX_VALUE)
+            .addGap(0, 336, Short.MAX_VALUE)
         );
 
         lacc_periode.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
@@ -384,15 +313,12 @@ public class Home extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(subpane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(subpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -437,12 +363,8 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel container;
-    public javax.swing.JLabel jLabel10;
-    public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel16;
     public javax.swing.JLabel jLabel17;
-    public javax.swing.JLabel jLabel18;
-    public javax.swing.JLabel jLabel19;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel20;
     public javax.swing.JLabel jLabel21;
@@ -463,8 +385,6 @@ public class Home extends javax.swing.JFrame {
     public javax.swing.JLabel jLabel35;
     public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
-    public javax.swing.JLabel jLabel8;
-    public javax.swing.JLabel jLabel9;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JLabel lacc_periode;
@@ -477,11 +397,7 @@ public class Home extends javax.swing.JFrame {
     public javax.swing.JPanel pjournalgen;
     public javax.swing.JPanel pjournalpurchase;
     public javax.swing.JPanel pjournalsale;
-    public javax.swing.JPanel pjournalsmain;
-    public javax.swing.JPanel ppaymain;
-    public javax.swing.JPanel precmain;
     public javax.swing.JPanel preports;
     public javax.swing.JPanel psetting;
-    public javax.swing.JPanel subpane;
     // End of variables declaration//GEN-END:variables
 }

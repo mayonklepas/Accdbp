@@ -19,13 +19,18 @@ public class Popreportview extends javax.swing.JPanel {
     /**
      * Creates new form Popreportview
      */
-    public Popreportview() {
+    public Popreportview(boolean isuseaccountrange) {
         initComponents();
-        String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
+        //String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
         dtfrom.setDateFormatString("dd/MM/yyyy");
-        dtfrom.setDate(OneforAllfunc.datefromdb(dateyearfirstperiode));
+        dtfrom.setDate(new Date());
         dtto.setDateFormatString("dd/MM/yyyy");
         dtto.setDate(new Date());
+        if (isuseaccountrange == true) {
+            paccountcode.setVisible(true);
+        } else {
+            paccountcode.setVisible(false);
+        }
     }
 
     /**
@@ -45,10 +50,10 @@ public class Popreportview extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         dtto = new com.toedter.calendar.JDateChooser();
         ckperiode = new javax.swing.JCheckBox();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        paccountcode = new javax.swing.JPanel();
+        laccountfrom = new javax.swing.JLabel();
         edfromaccount = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        laccountto = new javax.swing.JLabel();
         edtoaccount = new javax.swing.JTextField();
         bprint = new javax.swing.JButton();
         bcancel = new javax.swing.JButton();
@@ -132,44 +137,44 @@ public class Popreportview extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Date From and To", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
+        paccountcode.setBackground(new java.awt.Color(255, 255, 255));
+        paccountcode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account From and To", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jLabel3.setText("From Account");
+        laccountfrom.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        laccountfrom.setText("From Account");
 
         edfromaccount.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jLabel4.setText("To Account");
+        laccountto.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        laccountto.setText("To Account");
 
         edtoaccount.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout paccountcodeLayout = new javax.swing.GroupLayout(paccountcode);
+        paccountcode.setLayout(paccountcodeLayout);
+        paccountcodeLayout.setHorizontalGroup(
+            paccountcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paccountcodeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(paccountcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(edfromaccount)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                    .addGroup(paccountcodeLayout.createSequentialGroup()
+                        .addGroup(paccountcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(laccountfrom)
+                            .addComponent(laccountto))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(edtoaccount))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        paccountcodeLayout.setVerticalGroup(
+            paccountcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paccountcodeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(laccountfrom)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edfromaccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(laccountto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edtoaccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -198,7 +203,7 @@ public class Popreportview extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paccountcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bprint)
@@ -213,7 +218,7 @@ public class Popreportview extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paccountcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bcancel)
@@ -269,10 +274,10 @@ public class Popreportview extends javax.swing.JPanel {
     public javax.swing.JTextField edtoaccount;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
-    public javax.swing.JLabel jLabel3;
-    public javax.swing.JLabel jLabel4;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
-    public javax.swing.JPanel jPanel3;
+    public javax.swing.JLabel laccountfrom;
+    public javax.swing.JLabel laccountto;
+    public javax.swing.JPanel paccountcode;
     // End of variables declaration//GEN-END:variables
 }

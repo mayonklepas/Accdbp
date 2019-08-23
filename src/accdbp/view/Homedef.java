@@ -49,7 +49,7 @@ public class Homedef extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Image img = new ImageIcon("bg.jpg").getImage();
-        Dimension size = new Dimension(this.getRootPane().getParent().getWidth() - 28, this.getRootPane().getParent().getHeight() - 125);
+        Dimension size = new Dimension(this.getRootPane().getParent().getWidth() - 28, this.getRootPane().getParent().getHeight() - 115);
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
