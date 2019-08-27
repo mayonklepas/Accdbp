@@ -49,6 +49,7 @@ public class AccountsOpView extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         cmbaccount_type = new javax.swing.JComboBox<>();
         cmbaccount_group = new javax.swing.JComboBox<>();
+        ckbookprint = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -112,7 +113,7 @@ public class AccountsOpView extends javax.swing.JPanel {
         jLabel7.setText("Account Type");
 
         cmbaccount_type.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
-        cmbaccount_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash", "Bank" }));
+        cmbaccount_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash", "Bank", "Other" }));
 
         cmbaccount_group.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
         cmbaccount_group.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assets", "Income", "Liability", "Expenditure" }));
@@ -121,6 +122,10 @@ public class AccountsOpView extends javax.swing.JPanel {
                 cmbaccount_groupActionPerformed(evt);
             }
         });
+
+        ckbookprint.setBackground(new java.awt.Color(255, 255, 255));
+        ckbookprint.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        ckbookprint.setText("Book Print");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -138,18 +143,19 @@ public class AccountsOpView extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bcancel))
                     .addComponent(edopening_balance)
-                    .addComponent(jScrollPane1)
                     .addComponent(cmbaccount_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbaccount_group, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ckbookprint)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel5)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(cmbaccount_group, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel5))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -176,11 +182,13 @@ public class AccountsOpView extends javax.swing.JPanel {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbaccount_group, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ckbookprint)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bsave)
                     .addComponent(bcancel))
@@ -195,6 +203,7 @@ public class AccountsOpView extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton bcancel;
     public javax.swing.JButton bsave;
+    public javax.swing.JCheckBox ckbookprint;
     public javax.swing.JComboBox<String> cmbaccount_group;
     public javax.swing.JComboBox<String> cmbaccount_type;
     public javax.swing.JTextField edaccount_master_code;

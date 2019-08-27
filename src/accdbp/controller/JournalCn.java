@@ -100,7 +100,7 @@ public class JournalCn {
                     String query = "SELECT  a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                          + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                          + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
-                         + " FROM TB_JOURNAL_MASTER a WHERE a.JM_TYPE=? ORDER BY a.JM_DATE_CREATED DESC;";
+                         + " FROM TB_JOURNAL_MASTER a WHERE a.JM_TYPE=? ORDER BY a.JM_DOC_NO DESC;";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     pres.setInt(1, Staticvar.journaltype);
                     ResultSet res = pres.executeQuery();
@@ -202,21 +202,26 @@ public class JournalCn {
                             Staticvar.isyes = false;
                             int row = pane.tabledata.getSelectedRow();
                             String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
-                            String queryseldel = "SELECT JD_ID,JD_AMOUNT_KREDIT,JD_AMOUNT_DEBIT FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?";
+                            String queryseldel = "SELECT JD_ID,JD_ACC,JD_AMOUNT_KREDIT,JD_AMOUNT_DEBIT FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?";
                             PreparedStatement preseldel = c.cn().prepareStatement(queryseldel);
                             preseldel.setString(1, value);
                             ResultSet reseldel = preseldel.executeQuery();
                             Statement stdelup = c.cn().createStatement();
                             while (reseldel.next()) {
-                                String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_ID='" + reseldel.getString("JD_ID") + "'";
-                                stdelup.addBatch(querydel);
                                 String queryup = "";
                                 if (reseldel.getDouble("JD_AMOUNT_DEBIT") == 0) {
-                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + reseldel.getDouble("JD_AMOUNT_KREDIT") + "";
+                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "')+" + reseldel.getDouble("JD_AMOUNT_KREDIT") + " "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "'";
                                 } else {
-                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + reseldel.getDouble("JD_AMOUNT_DEBIT") + "";
+                                    queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "')-" + reseldel.getDouble("JD_AMOUNT_DEBIT") + " "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "'";
                                 }
                                 stdelup.addBatch(queryup);
+
+                                String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_ID='" + reseldel.getString("JD_ID") + "'";
+                                stdelup.addBatch(querydel);
                             }
                             String querydelmaster = "DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO='" + value + "'";
                             stdelup.addBatch(querydelmaster);
@@ -268,7 +273,7 @@ public class JournalCn {
                              + "WHERE (lower(a.JM_DOC_NO) LIKE ? "
                              + "OR lower(a.JM_REF_NO) LIKE ? "
                              + "OR lower(b.ACC_NAME) LIKE ? "
-                             + "OR a.JM_DATE_TRANS LIKE ?) AND a.JM_TYPE=?   ORDER BY a.JM_DATE_CREATED DESC;";
+                             + "OR a.JM_DATE_TRANS LIKE ?) AND a.JM_TYPE=?   ORDER BY a.JM_DOC_NO DESC;";
                         PreparedStatement pres = c.cn().prepareStatement(query);
                         pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                         pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

@@ -36,6 +36,7 @@ public class Staticvar {
     public static String code_to = "2001";
     public static boolean isprint = false;
     public static int journaltype = 0;
+    public static int acc_type = 0;
     public static String filecon = new File("ACCDB.FDB").getAbsolutePath();
     public static String dbfilecon = new File("ACCDB.FDB").getAbsolutePath();
     public static String dbhost = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";

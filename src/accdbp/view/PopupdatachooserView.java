@@ -16,9 +16,9 @@ public class PopupdatachooserView extends javax.swing.JPanel {
     /**
      * Creates new form Popupdatachooser
      */
-    public PopupdatachooserView() {
+    public PopupdatachooserView(int acc_type) {
         initComponents();
-        new PopupdatachooserControl(this);
+        new PopupdatachooserControl(this, acc_type);
     }
 
     /**

@@ -111,8 +111,9 @@ public final class BankPaymentOpCn {
                 pane.eddate_trans.setDate(dt);
                 pane.edref_date.setDate(dt);
             }
-            String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
-            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix, "TB_BP_MASTER", "BPM_DOC_NO"));
+            //String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
+            String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix));
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -263,16 +264,6 @@ public final class BankPaymentOpCn {
                             if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
                                 OneforAllfunc.info("Operation Failed", "Account Code not found");
                             } else {
-                                double opbal = 0.0;
-                                String querysel = "SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                     + "WHERE ACC_CODE=?";
-                                PreparedStatement presel = c.cn().prepareStatement(querysel);
-                                presel.setString(1, pane.edaccount.getText());
-                                ResultSet res = presel.executeQuery();
-                                while (res.next()) {
-                                    opbal = res.getDouble("ACC_OPENING_BALANCE");
-                                }
-
                                 String query = "INSERT INTO TB_BP_MASTER (BPM_DOC_NO, BPM_DATE_TRANS, "
                                      + "BPM_REF_NO, BPM_DATE_REF,BPM_ACC) "
                                      + "VALUES ('" + pane.eddoc_no.getText() + "',"
@@ -289,22 +280,30 @@ public final class BankPaymentOpCn {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                        opbal = opbal - amount;
+
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                        st.addBatch(queryup);
+                                        String queryup2 = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
+                                        st.addBatch(queryup2);
                                         String queryin = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO) "
+                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
                                              + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
                                              + "'" + pane.eddoc_no.getText() + "',"
                                              + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                              + "" + String.valueOf(amount) + ","
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
-                                             + "" + String.valueOf(opbal) + ");";
-
-                                        String queryup = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
+                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
+                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'))";
                                         st.addBatch(queryin);
-                                        st.addBatch(queryup);
+
                                     }
+
                                 }
                                 st.executeBatch();
                                 st.close();
@@ -327,17 +326,6 @@ public final class BankPaymentOpCn {
                             if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
                                 OneforAllfunc.info("Operation Failed", "Account Code not found");
                             } else {
-                                double opbal = 0.0;
-                                String querysel = "SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                     + "WHERE ACC_CODE=?";
-                                PreparedStatement presel = c.cn().prepareStatement(querysel);
-                                presel.setString(1, pane.edaccount.getText());
-                                ResultSet res = presel.executeQuery();
-                                while (res.next()) {
-                                    opbal = res.getDouble("ACC_OPENING_BALANCE");
-                                }
-
-                                opbal = opbal + total_amount;
 
                                 Statement st = c.cn().createStatement();
 
@@ -350,13 +338,23 @@ public final class BankPaymentOpCn {
                                      + "WHERE BPM_DOC_NO='" + id + "'";
                                 st.addBatch(query);
 
-                                String querydel = "DELETE FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER='" + id + "'";
-                                st.addBatch(querydel);
-
                                 String queryupbalance = "UPDATE TB_ACC SET "
-                                     + "ACC_OPENING_BALANCE=" + String.valueOf(opbal) + " "
+                                     + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER='" + id + "')"
                                      + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
                                 st.addBatch(queryupbalance);
+
+                                String queryseldel = "SELECT BPD_ID,BPD_AMOUNT,BPD_ACC FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=?";
+                                PreparedStatement preseldel = c.cn().prepareStatement(queryseldel);
+                                preseldel.setString(1, id);
+                                ResultSet reseldel = preseldel.executeQuery();
+                                while (reseldel.next()) {
+                                    String queryupdetail = "UPDATE TB_ACC SET ACC_OPENING_BALANCE =(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "')-" + reseldel.getDouble("BPD_AMOUNT") + " "
+                                         + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "'";
+                                    st.addBatch(queryupdetail);
+                                    String querydeldetail = "DELETE FROM TB_BP_DETAIL WHERE BPD_ID = '" + reseldel.getString("BPD_ID") + "'";
+                                    st.addBatch(querydeldetail);
+                                }
 
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
@@ -365,20 +363,28 @@ public final class BankPaymentOpCn {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                        opbal = opbal - amount;
+
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                        st.addBatch(queryup);
+                                        String queryup2 = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
+                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
+                                        st.addBatch(queryup2);
                                         String queryin = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO) "
+                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
                                              + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
                                              + "'" + pane.eddoc_no.getText() + "',"
                                              + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                              + "" + String.valueOf(amount) + ","
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 3)) + "',"
-                                             + "" + String.valueOf(opbal) + ");";
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
+                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
+                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'));";
                                         st.addBatch(queryin);
-                                        String queryup = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
-                                        st.addBatch(queryup);
+
                                     }
                                 }
                                 st.executeBatch();
@@ -470,7 +476,7 @@ public final class BankPaymentOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView());
+                                jd.add(new PopupdatachooserView(3));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);
@@ -662,7 +668,7 @@ public final class BankPaymentOpCn {
                         JDialog jd = new JDialog(new Home());
                         jd.setResizable(false);
                         jd.setTitle("Select Account");
-                        jd.add(new PopupdatachooserView());
+                        jd.add(new PopupdatachooserView(1));
                         jd.pack();
                         jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         jd.setLocationRelativeTo(null);

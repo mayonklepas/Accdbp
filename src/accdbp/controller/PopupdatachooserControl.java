@@ -43,6 +43,7 @@ public class PopupdatachooserControl {
     Dbconnection c = new Dbconnection();
     PopupdatachooserView pane;
     DefaultTableModel dtm = new DefaultTableModel();
+    int acc_type = 0;
 
     KeyEventDispatcher keydis = new KeyEventDispatcher() {
         @Override
@@ -64,8 +65,9 @@ public class PopupdatachooserControl {
         }
     };
 
-    public PopupdatachooserControl(PopupdatachooserView pane) {
+    public PopupdatachooserControl(PopupdatachooserView pane, int acc_type) {
         this.pane = pane;
+        this.acc_type = acc_type;
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keydis);
         loadheader();
         loaddata();
@@ -90,8 +92,20 @@ public class PopupdatachooserControl {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
-            PreparedStatement pres = c.cn().prepareStatement(query);
+            String query = "";
+            PreparedStatement pres = null;
+            if (acc_type == 3) {
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
+                pres = c.cn().prepareStatement(query);
+            } else if (acc_type == 4) {
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT=0 ORDER BY ACC_CODE ASC";
+                pres = c.cn().prepareStatement(query);
+            } else {
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? ORDER BY ACC_CODE ASC";
+                pres = c.cn().prepareStatement(query);
+                pres.setInt(1, acc_type);
+            }
+
             ResultSet res = pres.executeQuery();
             while (res.next()) {
                 Object o[] = new Object[2];
@@ -134,9 +148,19 @@ public class PopupdatachooserControl {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE lower(ACC_NAME) LIKE ? ORDER BY ACC_CODE ASC";
-                        PreparedStatement pres = c.cn().prepareStatement(query);
-                        pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
+                        String query = "";
+                        PreparedStatement pres = null;
+                        if (acc_type == 3) {
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE lower(ACC_NAME) LIKE ? ORDER BY ACC_CODE ASC";
+                            pres = c.cn().prepareStatement(query);
+                            pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
+                        } else {
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? lower(ACC_NAME) LIKE ? ORDER BY ACC_CODE ASC";
+                            pres = c.cn().prepareStatement(query);
+                            pres.setInt(1, acc_type);
+                            pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
+                        }
+
                         ResultSet res = pres.executeQuery();
                         while (res.next()) {
                             Object o[] = new Object[2];

@@ -45,7 +45,7 @@ public class HomeCn {
     JDialog jdmenupay = new JDialog(new Home());
 
     public HomeCn() {
-        hm.setTitle("Accounting PT David Bumi Perkasa");
+        hm.setTitle("Accounting Softwares");
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
         hm.setVisible(true);
         defview();

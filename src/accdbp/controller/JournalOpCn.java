@@ -118,8 +118,9 @@ public final class JournalOpCn {
                 pane.eddate_trans.setDate(dt);
                 pane.edref_date.setDate(dt);
             }
-            String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
-            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix, "TB_JOURNAL_MASTER", "JM_DOC_NO"));
+            //String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
+            String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix));
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -263,12 +264,11 @@ public final class JournalOpCn {
                     OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
                 } else {
                     if (id.equals("")) {
-                        Savepoint sp = null;
                         try {
                             if (total_debit != total_kredit) {
                                 OneforAllfunc.info("Operation Failed", "Amount not balance");
                             } else {
-                                Statement stinmaster = c.cn().createStatement();
+                                Statement st = c.cn().createStatement();
                                 String queryinmaster = "INSERT INTO TB_JOURNAL_MASTER (JM_DOC_NO, JM_DATE_TRANS, "
                                      + "JM_REF_NO, JM_DATE_REF,JM_TYPE) "
                                      + "VALUES ('" + pane.eddoc_no.getText() + "',"
@@ -276,80 +276,54 @@ public final class JournalOpCn {
                                      + "'" + pane.edref_no.getText() + "',"
                                      + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
                                      + "" + Staticvar.journaltype + ");";
-                                stinmaster.executeUpdate(queryinmaster);
-                                stinmaster.close();
-                                c.dc();
+                                st.addBatch(queryinmaster);
+                                int rowcount = pane.tabledata.getRowCount();
+                                for (int i = 0; i < rowcount; i++) {
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
-                                try {
-                                    int rowcount = pane.tabledata.getRowCount();
-                                    for (int i = 0; i < rowcount; i++) {
-                                        if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                             || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                    } else {
+                                        double debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        double kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
+                                        String accountcode = String.valueOf(pane.tabledata.getValueAt(i, 0));
 
+                                        String queryopbal = "";
+                                        if (debit == 0) {
+                                            queryopbal = "(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                 + "WHERE ACC_CODE='" + accountcode + "')-" + kredit;
                                         } else {
-                                            double opbal = 0.0;
-                                            String querysel = "SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                                 + "WHERE ACC_CODE=?";
-                                            PreparedStatement presel = c.cn().prepareStatement(querysel);
-                                            presel.setString(1, String.valueOf(pane.tabledata.getValueAt(i, 0)));
-                                            ResultSet res = presel.executeQuery();
-                                            while (res.next()) {
-                                                opbal = res.getDouble("ACC_OPENING_BALANCE");
-                                            }
-                                            double debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                            double kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
-                                            String accountcode = String.valueOf(pane.tabledata.getValueAt(i, 0));
-
-                                            if (debit == 0) {
-                                                opbal = opbal - kredit;
-                                            } else {
-                                                opbal = opbal + debit;
-                                            }
-
-                                            Statement stindetail = c.cn().createStatement();
-                                            String queryin = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
-                                                 + "JD_ACC, JD_AMOUNT_DEBIT, JD_AMOUNT_KREDIT,JD_DESC,JD_SALDO) "
-                                                 + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                                 + "'" + pane.eddoc_no.getText() + "',"
-                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                                 + "" + debit + ","
-                                                 + "" + kredit + ","
-                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 4)) + "',"
-                                                 + "" + opbal + ");";
-                                            stindetail.executeUpdate(queryin);
-                                            String queryup = "";
-                                            queryup = "UPDATE TB_ACC SET "
-                                                 + "ACC_OPENING_BALANCE=" + opbal + " "
-                                                 + "WHERE ACC_CODE='" + accountcode + "'";
-                                            stindetail.addBatch(queryup);
-                                            stindetail.executeBatch();
-                                            stindetail.close();
-                                            c.dc();
+                                            queryopbal = "(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                 + "WHERE ACC_CODE='" + accountcode + "')+" + debit;
                                         }
+
+                                        String queryin = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
+                                             + "JD_ACC, JD_AMOUNT_DEBIT, JD_AMOUNT_KREDIT,JD_DESC,JD_SALDO) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + accountcode + "',"
+                                             + "" + debit + ","
+                                             + "" + kredit + ","
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 4)) + "',"
+                                             + "" + queryopbal + ");";
+                                        st.addBatch(queryin);
+
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=" + queryopbal + " "
+                                             + "WHERE ACC_CODE='" + accountcode + "'";
+                                        st.addBatch(queryup);
+
                                     }
-
-                                    OneforAllfunc.info("Operation Success", "Data has been added");
-                                    KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                                    Staticvar.isupdate = true;
-                                    JDialog jd = (JDialog) pane.getRootPane().getParent();
-                                    jd.dispose();
-                                } catch (Exception ein) {
-                                    Statement st = c.cn().createStatement();
-                                    st.addBatch("DELETE FROM TB_JOURNAL_MASTER WHERE JM_DOC_NO='" + pane.eddoc_no.getText() + "'");
-                                    st.addBatch("DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER='" + pane.eddoc_no.getText() + "'");
-                                    st.executeBatch();
-                                    st.close();
-                                    ein.printStackTrace();
                                 }
+                                st.executeBatch();
+                                st.close();
+                                OneforAllfunc.info("Operation Success", "Data has been added");
+                                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                                Staticvar.isupdate = true;
+                                JDialog jd = (JDialog) pane.getRootPane().getParent();
+                                jd.dispose();
+                            }
 
-                            }
                         } catch (SQLException ex) {
-                            try {
-                                c.cn().rollback(sp);
-                            } catch (SQLException ex1) {
-                                OneforAllfunc.info("Error", ex.getMessage());
-                                Logger.getLogger(JournalOpCn.class.getName()).log(Level.SEVERE, null, ex1);
-                            }
                             OneforAllfunc.info("Error", ex.getMessage());
                             Logger.getLogger(JournalOpCn.class.getName()).log(Level.SEVERE, null, ex);
                         } finally {
@@ -361,95 +335,82 @@ public final class JournalOpCn {
                             if (total_debit != total_kredit) {
                                 OneforAllfunc.info("Operation Failed", "Amount not balance");
                             } else {
-                                String query = "UPDATE TB_JOURNAL_MASTER SET JM_DOC_NO=?, JM_DATE_TRANS=?, "
-                                     + "JM_REF_NO=?, JM_DATE_REF=? WHERE JM_DOC_NO=?;";
-                                PreparedStatement pres = c.cn().prepareStatement(query);
-                                pres.setString(1, pane.eddoc_no.getText());
-                                pres.setString(2, OneforAllfunc.datetodb(pane.eddate_trans.getDate()));
-                                pres.setString(3, pane.edref_no.getText());
-                                pres.setString(4, OneforAllfunc.datetodb(pane.edref_date.getDate()));
-                                pres.setString(5, id);
-                                pres.executeUpdate();
-                                pres.close();
-                                c.dc();
+                                Statement st = c.cn().createStatement();
+                                String queryupmaster = "UPDATE TB_JOURNAL_MASTER SET "
+                                     + "JM_DOC_NO='" + pane.eddoc_no.getText() + "', "
+                                     + "JM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
+                                     + "JM_REF_NO='" + pane.edref_no.getText() + "', "
+                                     + "JM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "' "
+                                     + "WHERE JM_DOC_NO='" + id + "';";
+                                st.addBatch(queryupmaster);
 
-                                String queryseldel = "SELECT JD_ID,JD_AMOUNT_KREDIT,JD_AMOUNT_DEBIT FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?";
+                                int row = pane.tabledata.getSelectedRow();
+                                String queryseldel = "SELECT JD_ID,JD_ACC,JD_AMOUNT_KREDIT,JD_AMOUNT_DEBIT FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=?";
                                 PreparedStatement preseldel = c.cn().prepareStatement(queryseldel);
                                 preseldel.setString(1, id);
                                 ResultSet reseldel = preseldel.executeQuery();
-                                Statement stdelup = c.cn().createStatement();
                                 while (reseldel.next()) {
-                                    String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_ID='" + reseldel.getString("JD_ID") + "'";
-                                    stdelup.addBatch(querydel);
                                     String queryup = "";
                                     if (reseldel.getDouble("JD_AMOUNT_DEBIT") == 0) {
-                                        queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+" + reseldel.getDouble("JD_AMOUNT_KREDIT") + "";
+                                        queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "')+" + reseldel.getDouble("JD_AMOUNT_KREDIT") + " "
+                                             + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "'";
                                     } else {
-                                        queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + reseldel.getDouble("JD_AMOUNT_DEBIT") + "";
+                                        queryup = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                             + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "')-" + reseldel.getDouble("JD_AMOUNT_DEBIT") + " "
+                                             + "WHERE ACC_CODE='" + reseldel.getString("JD_ACC") + "'";
                                     }
-                                    stdelup.addBatch(queryup);
+                                    st.addBatch(queryup);
+
+                                    String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_ID='" + reseldel.getString("JD_ID") + "'";
+                                    st.addBatch(querydel);
                                 }
 
-                                stdelup.executeBatch();
-                                stdelup.close();
-                                c.dc();
+                                int rowcount = pane.tabledata.getRowCount();
+                                for (int i = 0; i < rowcount; i++) {
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
-                                try {
-                                    int rowcount = pane.tabledata.getRowCount();
-                                    for (int i = 0; i < rowcount; i++) {
-                                        if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                             || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                    } else {
+                                        double debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        double kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
+                                        String accountcode = String.valueOf(pane.tabledata.getValueAt(i, 0));
 
+                                        String queryopbal = "";
+                                        if (debit == 0) {
+                                            queryopbal = "(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                 + "WHERE ACC_CODE='" + accountcode + "')-" + kredit;
                                         } else {
-                                            double opbal = 0.0;
-                                            String querysel = "SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                                 + "WHERE ACC_CODE=?";
-                                            PreparedStatement presel = c.cn().prepareStatement(querysel);
-                                            presel.setString(1, String.valueOf(pane.tabledata.getValueAt(i, 0)));
-                                            ResultSet res = presel.executeQuery();
-                                            while (res.next()) {
-                                                opbal = res.getDouble("ACC_OPENING_BALANCE");
-                                            }
-                                            double debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                            double kredit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
-                                            String accountcode = String.valueOf(pane.tabledata.getValueAt(i, 0));
-
-                                            if (debit == 0) {
-                                                opbal = opbal - kredit;
-                                            } else {
-                                                opbal = opbal + debit;
-                                            }
-
-                                            Statement stindetail = c.cn().createStatement();
-                                            String queryin = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
-                                                 + "JD_ACC, JD_AMOUNT_DEBIT, JD_AMOUNT_KREDIT,JD_DESC,JD_SALDO) "
-                                                 + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                                 + "'" + pane.eddoc_no.getText() + "',"
-                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                                 + "" + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2))) + ","
-                                                 + "" + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3))) + ","
-                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 4)) + "',"
-                                                 + "" + String.valueOf(opbal) + ");";
-                                            stindetail.executeUpdate(queryin);
-                                            String queryup = "";
-                                            queryup = "UPDATE TB_ACC SET "
-                                                 + "ACC_OPENING_BALANCE=" + opbal + " "
-                                                 + "WHERE ACC_CODE='" + accountcode + "'";
-                                            stindetail.addBatch(queryup);
-                                            stindetail.executeBatch();
-                                            stindetail.close();
-                                            c.dc();
+                                            queryopbal = "(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                 + "WHERE ACC_CODE='" + accountcode + "')+" + debit;
                                         }
-                                    }
 
-                                    OneforAllfunc.info("Operation Success", "Data has been added");
-                                    KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                                    Staticvar.isupdate = true;
-                                    JDialog jd = (JDialog) pane.getRootPane().getParent();
-                                    jd.dispose();
-                                } catch (Exception ein) {
-                                    ein.printStackTrace();
+                                        String queryin = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
+                                             + "JD_ACC, JD_AMOUNT_DEBIT, JD_AMOUNT_KREDIT,JD_DESC,JD_SALDO) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + accountcode + "',"
+                                             + "" + debit + ","
+                                             + "" + kredit + ","
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 4)) + "',"
+                                             + "" + queryopbal + ");";
+                                        st.addBatch(queryin);
+
+                                        String queryup = "UPDATE TB_ACC SET "
+                                             + "ACC_OPENING_BALANCE=" + queryopbal + " "
+                                             + "WHERE ACC_CODE='" + accountcode + "'";
+                                        st.addBatch(queryup);
+
+                                    }
                                 }
+                                st.executeBatch();
+                                st.close();
+                                OneforAllfunc.info("Operation Success", "Data has been Updated");
+                                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                                Staticvar.isupdate = true;
+                                JDialog jd = (JDialog) pane.getRootPane().getParent();
+                                jd.dispose();
+
                             }
                         } catch (SQLException ex) {
                             OneforAllfunc.info("Error", ex.getMessage());
@@ -521,7 +482,7 @@ public final class JournalOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView());
+                                jd.add(new PopupdatachooserView(3));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);

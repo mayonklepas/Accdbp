@@ -92,8 +92,10 @@ public class AccountCn {
                 o[2] = OneforAllfunc.nf(res.getDouble("ACC_OPENING_BALANCE"));
                 if (res.getInt("ACC_TYPE") == 0) {
                     o[3] = "Cash";
-                } else {
+                } else if (res.getInt("ACC_TYPE") == 1) {
                     o[3] = "Bank";
+                } else {
+                    o[3] = "Other";
                 }
                 if (res.getInt("ACC_GROUP") == 0) {
                     o[4] = "Assets";
@@ -253,8 +255,10 @@ public class AccountCn {
                             o[2] = OneforAllfunc.nf(res.getDouble("ACC_OPENING_BALANCE"));
                             if (res.getInt("ACC_TYPE") == 0) {
                                 o[3] = "Cash";
-                            } else {
+                            } else if (res.getInt("ACC_TYPE") == 1) {
                                 o[3] = "Bank";
+                            } else {
+                                o[3] = "Other";
                             }
                             if (res.getInt("ACC_GROUP") == 0) {
                                 o[4] = "Assets";

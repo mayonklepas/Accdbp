@@ -92,7 +92,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/accdbp/icon/ic_print_white_24dp.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Report"/>
+            <Property name="text" type="java.lang.String" value="Reports"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -122,8 +122,9 @@
                       <Component id="ljournal" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lontrialbalance" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lonaccountbalance" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbalancesheet" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lprofitloss" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lcashbookprint" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbalancesheet" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="36" max="32767" attributes="0"/>
               </Group>
@@ -143,10 +144,12 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lonaccountbalance" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="lprofitloss" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lbalancesheet" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lcashbookprint" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="185" max="32767" attributes="0"/>
+                  <EmptySpace pref="157" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -207,12 +210,12 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbalancesheet">
+        <Component class="javax.swing.JLabel" name="lprofitloss">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="13" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="P&amp;L, Balance Sheet"/>
+            <Property name="text" type="java.lang.String" value="Profit Loss"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
             </Property>
@@ -223,7 +226,18 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="13" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cash Book Print"/>
+            <Property name="text" type="java.lang.String" value="Book Print"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbalancesheet">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Century Gothic" size="13" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Balance Sheet"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
             </Property>

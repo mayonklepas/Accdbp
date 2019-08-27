@@ -38,8 +38,9 @@ public class ReportView extends javax.swing.JPanel {
         ljournal = new javax.swing.JLabel();
         lonaccountbalance = new javax.swing.JLabel();
         lontrialbalance = new javax.swing.JLabel();
-        lbalancesheet = new javax.swing.JLabel();
+        lprofitloss = new javax.swing.JLabel();
         lcashbookprint = new javax.swing.JLabel();
+        lbalancesheet = new javax.swing.JLabel();
         preportview = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -50,7 +51,7 @@ public class ReportView extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_print_white_24dp.png"))); // NOI18N
-        jLabel1.setText("Report");
+        jLabel1.setText("Reports");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -92,13 +93,17 @@ public class ReportView extends javax.swing.JPanel {
         lontrialbalance.setText("On-Line Trial Balance");
         lontrialbalance.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        lbalancesheet.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
-        lbalancesheet.setText("P&L, Balance Sheet");
-        lbalancesheet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lprofitloss.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        lprofitloss.setText("Profit Loss");
+        lprofitloss.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         lcashbookprint.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
-        lcashbookprint.setText("Cash Book Print");
+        lcashbookprint.setText("Book Print");
         lcashbookprint.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        lbalancesheet.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        lbalancesheet.setText("Balance Sheet");
+        lbalancesheet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -112,8 +117,9 @@ public class ReportView extends javax.swing.JPanel {
                     .addComponent(ljournal)
                     .addComponent(lontrialbalance)
                     .addComponent(lonaccountbalance)
-                    .addComponent(lbalancesheet)
-                    .addComponent(lcashbookprint))
+                    .addComponent(lprofitloss)
+                    .addComponent(lcashbookprint)
+                    .addComponent(lbalancesheet))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,10 +136,12 @@ public class ReportView extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lonaccountbalance)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lprofitloss)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbalancesheet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lcashbookprint)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         preportview.setBackground(new java.awt.Color(255, 255, 255));
@@ -185,6 +193,7 @@ public class ReportView extends javax.swing.JPanel {
     public javax.swing.JLabel lmasterlist;
     public javax.swing.JLabel lonaccountbalance;
     public javax.swing.JLabel lontrialbalance;
+    public javax.swing.JLabel lprofitloss;
     public javax.swing.JPanel preportview;
     // End of variables declaration//GEN-END:variables
 }

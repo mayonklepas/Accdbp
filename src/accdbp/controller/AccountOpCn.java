@@ -65,7 +65,7 @@ public final class AccountOpCn {
     private void loaddata() {
         try {
             String query = "SELECT a.ACC_CODE, a.ACC_NAME, a.ACC_OPENING_BALANCE, a.ACC_TYPE, "
-                 + "a.ACC_GROUP,a.ACC_DESC, a.DATE_CREATED FROM TB_ACC a WHERE a.ACC_CODE=?";
+                 + "a.ACC_GROUP,a.ACC_DESC, a.DATE_CREATED,a.ISBOOKPRINT FROM TB_ACC a WHERE a.ACC_CODE=?";
             PreparedStatement pres = c.cn().prepareStatement(query);
             pres.setString(1, id);
             ResultSet res = pres.executeQuery();
@@ -76,8 +76,16 @@ public final class AccountOpCn {
                 pane.tadesc.setText(res.getString("ACC_DESC"));
                 if (res.getInt("ACC_TYPE") == 0) {
                     pane.cmbaccount_type.setSelectedIndex(0);
-                } else {
+                } else if (res.getInt("ACC_TYPE") == 1) {
                     pane.cmbaccount_type.setSelectedIndex(1);
+                } else {
+                    pane.cmbaccount_type.setSelectedIndex(2);
+                }
+
+                if (res.getInt("ISBOOKPRINT") == 0) {
+                    pane.ckbookprint.setSelected(false);
+                } else {
+                    pane.ckbookprint.setSelected(true);
                 }
 
                 switch (res.getInt("ACC_GROUP")) {
@@ -114,7 +122,7 @@ public final class AccountOpCn {
                     if (id.equals("")) {
                         try {
                             String query = "INSERT INTO TB_ACC (ACC_CODE, ACC_NAME, ACC_OPENING_BALANCE, "
-                                 + "ACC_TYPE, ACC_GROUP, ACC_DESC) VALUES (?,?,?,?,?,?);";
+                                 + "ACC_TYPE, ACC_GROUP, ACC_DESC,ISBOOKPRINT) VALUES (?,?,?,?,?,?,?);";
                             PreparedStatement pres = c.cn().prepareStatement(query);
                             pres.setString(1, pane.edaccount_master_code.getText());
                             pres.setString(2, pane.edaccount_master_name.getText());
@@ -122,8 +130,10 @@ public final class AccountOpCn {
                             int acctype = 0;
                             if (pane.cmbaccount_type.getSelectedIndex() == 0) {
                                 acctype = 0;
-                            } else {
+                            } else if (pane.cmbaccount_type.getSelectedIndex() == 1) {
                                 acctype = 1;
+                            } else {
+                                acctype = 2;
                             }
                             pres.setInt(4, acctype);
 
@@ -144,6 +154,13 @@ public final class AccountOpCn {
                             }
                             pres.setInt(5, accgroup);
                             pres.setString(6, pane.tadesc.getText());
+                            int isbookprint = 0;
+                            if (pane.ckbookprint.isSelected()) {
+                                isbookprint = 1;
+                            } else {
+                                isbookprint = 0;
+                            }
+                            pres.setInt(7, isbookprint);
                             pres.executeUpdate();
                             c.dc();
                             OneforAllfunc.info("Operation Success", "Data has been added");
@@ -159,7 +176,7 @@ public final class AccountOpCn {
                     } else {
                         try {
                             String query = "UPDATE TB_ACC SET ACC_CODE=?, ACC_NAME=?, ACC_OPENING_BALANCE=?, "
-                                 + "ACC_TYPE=?, ACC_GROUP=?, ACC_DESC=? WHERE ACC_CODE=?";
+                                 + "ACC_TYPE=?, ACC_GROUP=?, ACC_DESC=?,ISBOOKPRINT=? WHERE ACC_CODE=?";
                             PreparedStatement pres = c.cn().prepareStatement(query);
                             pres.setString(1, pane.edaccount_master_code.getText());
                             pres.setString(2, pane.edaccount_master_name.getText());
@@ -167,8 +184,10 @@ public final class AccountOpCn {
                             int acctype = 0;
                             if (pane.cmbaccount_type.getSelectedIndex() == 0) {
                                 acctype = 0;
-                            } else {
+                            } else if (pane.cmbaccount_type.getSelectedIndex() == 1) {
                                 acctype = 1;
+                            } else {
+                                acctype = 2;
                             }
                             pres.setInt(4, acctype);
 
@@ -189,7 +208,14 @@ public final class AccountOpCn {
                             }
                             pres.setInt(5, accgroup);
                             pres.setString(6, pane.tadesc.getText());
-                            pres.setString(7, id);
+                            int isbookprint = 0;
+                            if (pane.ckbookprint.isSelected()) {
+                                isbookprint = 1;
+                            } else {
+                                isbookprint = 0;
+                            }
+                            pres.setInt(7, isbookprint);
+                            pres.setString(8, id);
                             pres.executeUpdate();
                             c.dc();
                             OneforAllfunc.info("Operation Success", "Data has been update");

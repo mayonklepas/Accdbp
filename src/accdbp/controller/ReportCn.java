@@ -6,12 +6,16 @@
 package accdbp.controller;
 
 import accdbp.helper.Dbconnection;
+import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import accdbp.view.Home;
 import accdbp.view.Popreportview;
+import accdbp.view.PopupdatachooserView;
 import accdbp.view.ReportView;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -42,7 +46,8 @@ public class ReportCn {
         printledger();
         printonlinetrialbalance();
         printonlineaccountbalance();
-        printplbalancesheet();
+        printprofitloss();
+        printbalancesheet();
         printcasbookprint();
     }
 
@@ -52,7 +57,7 @@ public class ReportCn {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    String path = "report/Masterlist.jasper";
+                    String path = "report/MasterAccountlist.jasper";
                     HashMap hm = new HashMap(3);
                     hm.put("COMPANY_NAME", Staticvar.company_name);
                     hm.put("COMPANY_ADDRESS", Staticvar.company_address);
@@ -65,6 +70,7 @@ public class ReportCn {
                     pane.preportview.repaint();
                     pane.preportview.revalidate();
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -82,7 +88,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(false));
+                    jd.add(new Popreportview(1));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -94,6 +100,7 @@ public class ReportCn {
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("PACC_CODE", Staticvar.code_from);
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
@@ -107,6 +114,7 @@ public class ReportCn {
                     }
 
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -124,7 +132,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(false));
+                    jd.add(new Popreportview(2));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -148,6 +156,7 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -165,7 +174,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(true));
+                    jd.add(new Popreportview(0));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -173,7 +182,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        String path = "report/Onlineraccountbalance.jasper";
+                        String path = "report/Onlineraccbalance.jasper";
                         HashMap hm = new HashMap(7);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
@@ -191,6 +200,7 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -200,15 +210,15 @@ public class ReportCn {
         });
     }
 
-    private void printplbalancesheet() {
-        pane.lbalancesheet.addMouseListener(new MouseAdapter() {
+    private void printprofitloss() {
+        pane.lprofitloss.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(false));
+                    jd.add(new Popreportview(2));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -216,7 +226,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        String path = "report/Plbalansheet.jasper";
+                        String path = "report/Profitloss.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
@@ -232,6 +242,49 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
+                    Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    c.dc();
+                }
+
+            }
+        });
+    }
+
+    private void printbalancesheet() {
+        pane.lbalancesheet.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    JDialog jd = new JDialog(new Home());
+                    jd.setResizable(false);
+                    jd.setTitle("Report Parameter");
+                    jd.add(new Popreportview(2));
+                    jd.pack();
+                    jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    jd.setLocationRelativeTo(null);
+                    jd.setVisible(true);
+                    jd.toFront();
+                    if (Staticvar.isprint == true) {
+                        Staticvar.isprint = false;
+                        String path = "report/Balancesheet.jasper";
+                        HashMap hm = new HashMap(5);
+                        hm.put("DT_FROM", Staticvar.date_print_from);
+                        hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
+                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
+                        pane.preportview.removeAll();
+                        pane.preportview.setLayout(new BorderLayout());
+                        pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
+                        pane.preportview.repaint();
+                        pane.preportview.revalidate();
+                    }
+                } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -249,7 +302,7 @@ public class ReportCn {
                     JDialog jd = new JDialog(new Home());
                     jd.setResizable(false);
                     jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(false));
+                    jd.add(new Popreportview(3));
                     jd.pack();
                     jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     jd.setLocationRelativeTo(null);
@@ -257,13 +310,14 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        String path = "report/Cashbookprint.jasper";
+                        String path = "report/Bookprint.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
+                        hm.put("ACC_TYPE", Staticvar.acc_type);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
@@ -273,6 +327,7 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
                 } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();

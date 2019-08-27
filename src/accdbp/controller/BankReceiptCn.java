@@ -91,7 +91,7 @@ public class BankReceiptCn {
                 try {
                     String query = "SELECT  a.BRM_DOC_NO, a.BRM_DATE_TRANS, a.BRM_REF_NO, a.BRM_DATE_REF, "
                          + "a.BRM_ACC,b.ACC_NAME,a.BRM_DATE_CREATED,(SELECT SUM(BRD_AMOUNT) FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER=a.BRM_DOC_NO) AS TOTAL"
-                         + " FROM TB_BR_MASTER a INNER JOIN TB_ACC b ON a.BRM_ACC=b.ACC_CODE ORDER BY a.BRM_DATE_CREATED DESC;";
+                         + " FROM TB_BR_MASTER a INNER JOIN TB_ACC b ON a.BRM_ACC=b.ACC_CODE ORDER BY a.BRM_DOC_NO DESC;";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {
@@ -188,38 +188,40 @@ public class BankReceiptCn {
                         OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
                         if (Staticvar.isyes == true) {
                             Staticvar.isyes = false;
-                            double allamount = 0.0;
                             int row = pane.tabledata.getSelectedRow();
                             String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
-                            String querysel = "SELECT SUM(BRD_AMOUNT) AS TOTAL FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER=?";
-                            PreparedStatement pres = c.cn().prepareStatement(querysel);
-                            pres.setString(1, value);
-                            ResultSet res = pres.executeQuery();
-                            while (res.next()) {
-                                allamount = res.getDouble("TOTAL");
-                            }
-                            pres.close();
-                            res.close();
 
                             String acc_code = "";
-                            String querysel2 = "SELECT BRM_ACC AS COD FROM TB_BR_MASTER WHERE BRM_DOC_NO=?";
-                            PreparedStatement pres2 = c.cn().prepareStatement(querysel2);
-                            pres2.setString(1, value);
-                            ResultSet res2 = pres2.executeQuery();
-                            while (res2.next()) {
-                                acc_code = res2.getString("COD");
-                            }
-                            pres2.close();
-                            res2.close();
+                            String querygetacchead = "SELECT BRM_ACC AS COD FROM TB_BR_MASTER WHERE BRM_DOC_NO=?";
+                            PreparedStatement presacchead = c.cn().prepareStatement(querygetacchead);
+                            presacchead.setString(1, value);
+                            ResultSet resacchead = presacchead.executeQuery();
+                            resacchead.first();
+                            acc_code = resacchead.getString("COD");
+                            presacchead.close();
+                            resacchead.close();
 
                             Statement st = c.cn().createStatement();
-                            String querydeldetail = "DELETE FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER = '" + value + "'";
-                            st.addBatch(querydeldetail);
-                            String querydelmaster = "DELETE FROM TB_BR_MASTER WHERE BRM_DOC_NO = '" + value + "'";
-                            st.addBatch(querydelmaster);
-                            String queryupopbal = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-" + String.valueOf(allamount) + " "
+
+                            String queryupopbal = "UPDATE TB_ACC SET ACC_OPENING_BALANCE=ACC_OPENING_BALANCE-"
+                                 + "(SELECT SUM(BRD_AMOUNT) FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER='" + value + "') "
                                  + "WHERE ACC_CODE='" + acc_code + "' ";
                             st.addBatch(queryupopbal);
+
+                            String queryseldel = "SELECT BRD_ID,BRD_AMOUNT,BRD_ACC FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER=?";
+                            PreparedStatement preseldel = c.cn().prepareStatement(queryseldel);
+                            preseldel.setString(1, value);
+                            ResultSet reseldel = preseldel.executeQuery();
+                            while (reseldel.next()) {
+                                String queryupdetail = "UPDATE TB_ACC SET ACC_OPENING_BALANCE =(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                     + "WHERE ACC_CODE='" + reseldel.getString("BRD_ACC") + "')+" + reseldel.getDouble("BRD_AMOUNT") + " "
+                                     + "WHERE ACC_CODE='" + reseldel.getString("BRD_ACC") + "'";
+                                st.addBatch(queryupdetail);
+                                String querydeldetail = "DELETE FROM TB_BR_DETAIL WHERE BRD_ID = '" + reseldel.getString("BRD_ID") + "'";
+                                st.addBatch(querydeldetail);
+                            }
+                            String querydelmaster = "DELETE FROM TB_BR_MASTER WHERE BRM_DOC_NO = '" + value + "'";
+                            st.addBatch(querydelmaster);
                             st.executeBatch();
                             st.close();
                             c.dc();
@@ -228,7 +230,7 @@ public class BankReceiptCn {
 
                     } catch (SQLException ex) {
                         OneforAllfunc.info("Error", ex.getMessage());
-                        Logger.getLogger(BankPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(BankReceiptCn.class.getName()).log(Level.SEVERE, null, ex);
 
                     }
                 }
@@ -273,7 +275,7 @@ public class BankReceiptCn {
                                      + "WHERE lower(a.BRM_DOC_NO) LIKE ? "
                                      + "OR lower(a.BRM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.BRM_DATE_TRANS LIKE ?  ORDER BY a.BRM_DATE_CREATED DESC;";
+                                     + "OR a.BRM_DATE_TRANS LIKE ?  ORDER BY a.BRM_DOC_NO DESC;";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

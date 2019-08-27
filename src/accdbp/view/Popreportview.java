@@ -7,6 +7,9 @@ package accdbp.view;
 
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
+import java.awt.Dialog;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.swing.JDialog;
 
@@ -19,17 +22,30 @@ public class Popreportview extends javax.swing.JPanel {
     /**
      * Creates new form Popreportview
      */
-    public Popreportview(boolean isuseaccountrange) {
+    public Popreportview(int type) {
         initComponents();
         //String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
         dtfrom.setDateFormatString("dd/MM/yyyy");
         dtfrom.setDate(new Date());
         dtto.setDateFormatString("dd/MM/yyyy");
         dtto.setDate(new Date());
-        if (isuseaccountrange == true) {
+        if (type == 0) {
             paccountcode.setVisible(true);
-        } else {
+            pbookprinttype.setVisible(false);
+        } else if (type == 1) {
+            edfromaccount.setVisible(true);
+            laccountfrom.setVisible(true);
+            laccountfrom.setText("Account");
+            laccountto.setVisible(false);
+            edtoaccount.setVisible(false);
+            pbookprinttype.setVisible(false);
+        } else if (type == 2) {
+            pbookprinttype.setVisible(false);
             paccountcode.setVisible(false);
+        } else {
+            pbookprinttype.setVisible(true);
+            paccountcode.setVisible(false);
+
         }
     }
 
@@ -57,6 +73,8 @@ public class Popreportview extends javax.swing.JPanel {
         edtoaccount = new javax.swing.JTextField();
         bprint = new javax.swing.JButton();
         bcancel = new javax.swing.JButton();
+        pbookprinttype = new javax.swing.JPanel();
+        cmbbookprinttype = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -85,13 +103,13 @@ public class Popreportview extends javax.swing.JPanel {
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Date From and To", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Date Select", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jLabel1.setText("From ");
+        jLabel1.setText("From Date ");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jLabel2.setText("To");
+        jLabel2.setText("To Date");
 
         ckperiode.setBackground(new java.awt.Color(255, 255, 255));
         ckperiode.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
@@ -138,17 +156,32 @@ public class Popreportview extends javax.swing.JPanel {
         );
 
         paccountcode.setBackground(new java.awt.Color(255, 255, 255));
-        paccountcode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account From and To", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
+        paccountcode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Select", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
 
         laccountfrom.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         laccountfrom.setText("From Account");
 
         edfromaccount.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        edfromaccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edfromaccountActionPerformed(evt);
+            }
+        });
+        edfromaccount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edfromaccountKeyPressed(evt);
+            }
+        });
 
         laccountto.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         laccountto.setText("To Account");
 
         edtoaccount.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        edtoaccount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtoaccountKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout paccountcodeLayout = new javax.swing.GroupLayout(paccountcode);
         paccountcode.setLayout(paccountcodeLayout);
@@ -194,6 +227,33 @@ public class Popreportview extends javax.swing.JPanel {
             }
         });
 
+        pbookprinttype.setBackground(new java.awt.Color(255, 255, 255));
+        pbookprinttype.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Book Print Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
+
+        cmbbookprinttype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CASH", "BANK" }));
+        cmbbookprinttype.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbbookprinttypeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pbookprinttypeLayout = new javax.swing.GroupLayout(pbookprinttype);
+        pbookprinttype.setLayout(pbookprinttypeLayout);
+        pbookprinttypeLayout.setHorizontalGroup(
+            pbookprinttypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pbookprinttypeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmbbookprinttype, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pbookprinttypeLayout.setVerticalGroup(
+            pbookprinttypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pbookprinttypeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmbbookprinttype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,7 +264,8 @@ public class Popreportview extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paccountcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(pbookprinttype, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bprint)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -219,7 +280,9 @@ public class Popreportview extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paccountcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pbookprinttype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bcancel)
                     .addComponent(bprint))
@@ -234,6 +297,7 @@ public class Popreportview extends javax.swing.JPanel {
         Staticvar.date_print_to = dtto.getDate();
         Staticvar.code_from = edfromaccount.getText();
         Staticvar.code_to = edtoaccount.getText();
+        Staticvar.acc_type = cmbbookprinttype.getSelectedIndex() == 0 ? 0 : 1;
         JDialog jd = (JDialog) this.getRootPane().getParent();
         jd.dispose();
 
@@ -263,11 +327,65 @@ public class Popreportview extends javax.swing.JPanel {
 
     }//GEN-LAST:event_ckperiodeActionPerformed
 
+    private void edfromaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edfromaccountActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_edfromaccountActionPerformed
+
+    private void edfromaccountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edfromaccountKeyPressed
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String oldaccountval = edfromaccount.getText();
+            JDialog jd = new JDialog(new Home());
+            jd.setResizable(false);
+            jd.setTitle("Select Account");
+            jd.add(new PopupdatachooserView(3));
+            jd.pack();
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            jd.setLocationRelativeTo(null);
+            jd.setVisible(true);
+            jd.toFront();
+            if (Staticvar.isupdate == true) {
+                Staticvar.isupdate = false;
+                edfromaccount.setText(Staticvar.global_val);
+            } else {
+                edfromaccount.setText(oldaccountval);
+            }
+        }
+
+    }//GEN-LAST:event_edfromaccountKeyPressed
+
+    private void edtoaccountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtoaccountKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String oldaccountval = edtoaccount.getText();
+            JDialog jd = new JDialog(new Home());
+            jd.setResizable(false);
+            jd.setTitle("Select Account");
+            jd.add(new PopupdatachooserView(3));
+            jd.pack();
+            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            jd.setLocationRelativeTo(null);
+            jd.setVisible(true);
+            jd.toFront();
+            if (Staticvar.isupdate == true) {
+                Staticvar.isupdate = false;
+                edtoaccount.setText(Staticvar.global_val);
+            } else {
+                edtoaccount.setText(oldaccountval);
+            }
+        }
+    }//GEN-LAST:event_edtoaccountKeyPressed
+
+    private void cmbbookprinttypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbbookprinttypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbbookprinttypeActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Llabel;
     public javax.swing.JButton bcancel;
     public javax.swing.JButton bprint;
     public javax.swing.JCheckBox ckperiode;
+    public javax.swing.JComboBox<String> cmbbookprinttype;
     public com.toedter.calendar.JDateChooser dtfrom;
     public com.toedter.calendar.JDateChooser dtto;
     public javax.swing.JTextField edfromaccount;
@@ -279,5 +397,6 @@ public class Popreportview extends javax.swing.JPanel {
     public javax.swing.JLabel laccountfrom;
     public javax.swing.JLabel laccountto;
     public javax.swing.JPanel paccountcode;
+    public javax.swing.JPanel pbookprinttype;
     // End of variables declaration//GEN-END:variables
 }

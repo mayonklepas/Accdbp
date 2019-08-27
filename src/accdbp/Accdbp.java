@@ -27,10 +27,10 @@ public class Accdbp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         try {
             //
             // TODO code application logic here
-            BasicConfigurator.configure();
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Accdbp.class.getName()).log(Level.SEVERE, null, ex);

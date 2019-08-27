@@ -67,6 +67,11 @@ public class OneforAllfunc {
         return year;
     }
 
+    public static String getyear2digit(Date Ref) {
+        String year = new SimpleDateFormat("yy").format(Ref);
+        return year;
+    }
+
     public static double doubleformat(String ref) {
         double res = 0;
         try {
@@ -217,6 +222,38 @@ public class OneforAllfunc {
         return result;
     }
 
+    public static String getautodocno(String prefix) {
+        String result = "";
+        Dbconnection cn = new Dbconnection();
+        try {
+            String query = "SELECT FIRST 1 DOC_NO FROM ALLTRANS ORDER BY CAST( DOC_NO AS integer) DESC";
+            PreparedStatement pres = cn.cn().prepareStatement(query);
+            ResultSet res = pres.executeQuery();
+            String rawresult = "";
+            while (res.next()) {
+                rawresult = res.getString("DOC_NO");
+            }
+            if (!rawresult.equals("")) {
+                int panjangprefix = rawresult.length() - 5;
+                if (rawresult.substring(0, panjangprefix).equals(prefix)) {
+                    int intresult = Integer.parseInt(rawresult) + 1;
+                    result = String.valueOf(intresult);
+                } else {
+                    result = prefix + "00001";
+                }
+            } else {
+                result = prefix + "00001";
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            cn.dc();
+        }
+
+        return result;
+    }
+
     public static HashMap getrecandsum(String table, String column) {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
@@ -261,5 +298,16 @@ public class OneforAllfunc {
             Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
         }
         return hm;
+    }
+
+    public static String sof(Object ref) {
+        String resform = String.valueOf(ref);
+        String res = "";
+        if (resform.equals("null") || resform.equals("NULL")) {
+            res = "";
+        } else {
+            res = resform;
+        }
+        return res;
     }
 }
