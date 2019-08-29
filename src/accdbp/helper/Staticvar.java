@@ -42,7 +42,7 @@ public class Staticvar {
     public static String dbhost = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
     public static String dbuser = "SYSDBA";
     public static String dbpass = "masterkey";
-    public static String keyholdnumeric[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
+    /*public static String keyholdnumeric[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
         "0", "NUMPAD1", "NUMPAD2", "NUMPAD3", "NUMPAD4", "NUMPAD5", "NUMPAD6", "NUMPAD7", "NUMPAD8", "NUMPAD9",
         "NUMPAD0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
         "q", "r", "s", "t", "u", "p", "w", "x", "y", "z", "A", "B", "C", "D",
@@ -50,6 +50,7 @@ public class Staticvar {
         "S", "T", "U", "P", "W", "X", "Y", "Z", "BACK_SPACE", "SLASH", "BACK_SLASH", "ADD", "MULTIPLY", "EQUALS",
         "COMMA", "ASTERISK", "SUBTRACT", "UNDERSCORE", "SEPARATOR", "SEMICOLON", "COLON", "RIGHT_PARENTHESIS",
         "LEFT_PARENTHESIS", "QUOTEDBL", "QUOTE", "BACK_QUOTE", "OPEN_BRACKET", "CLOSE_BRACKET", "PLUS", "MINUS",
-        "PERIOD", "NUMBER_SIGN", "GREATER", "BRACELEFT", "BRACERIGHT"};
+        "PERIOD", "NUMBER_SIGN", "GREATER", "BRACELEFT", "BRACERIGHT"};*/
+    public static String keyholdnumeric[] = {"ENTER"};
 
 }

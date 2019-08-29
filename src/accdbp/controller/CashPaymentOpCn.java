@@ -162,7 +162,7 @@ public final class CashPaymentOpCn {
 
         pane.addMouseListener(ma);
 
-        TableCellEditor tce = new DefaultCellEditor(new JTextField()) {
+        /*TableCellEditor tce = new DefaultCellEditor(new JTextField()) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 delegate.setValue((editorComponent instanceof JTextField) ? null : value);
@@ -170,12 +170,10 @@ public final class CashPaymentOpCn {
             }
 
         };
-
-        pane.tabledata.setDefaultEditor(Object.class, tce);
-
-        for (int i = 0; i < Staticvar.keyholdnumeric.length; i++) {
+        pane.tabledata.setDefaultEditor(Object.class, tce);*/
+ /*for (int i = 0; i < Staticvar.keyholdnumeric.length; i++) {
             pane.tabledata.getInputMap().put(KeyStroke.getKeyStroke(Staticvar.keyholdnumeric[i]), "startEditing");
-        }
+        }*/
     }
 
     private void loadheader() {
