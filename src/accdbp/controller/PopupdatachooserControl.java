@@ -95,13 +95,13 @@ public class PopupdatachooserControl {
             String query = "";
             PreparedStatement pres = null;
             if (acc_type == 3) {
-                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT = 0 ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
             } else if (acc_type == 4) {
-                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT=0 ORDER BY ACC_CODE ASC";
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
             } else {
-                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? ORDER BY ACC_CODE ASC";
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? AND ISBOOKPRINT=1 ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
                 pres.setInt(1, acc_type);
             }

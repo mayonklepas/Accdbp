@@ -5,6 +5,7 @@
  */
 package accdbp.controller;
 
+import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import accdbp.view.AccountsOpView;
 import accdbp.view.AccountsView;
@@ -392,13 +393,19 @@ public class HomeCn {
         MouseAdapter ma = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                ReportView reportpane = new ReportView();
-                hm.container.removeAll();
-                hm.container.setLayout(new BorderLayout());
-                hm.container.add(reportpane, BorderLayout.CENTER);
-                hm.container.revalidate();
-                hm.container.repaint();
+                try {
+                    OneforAllfunc.generatesaldo();
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                    ReportView reportpane = new ReportView();
+                    hm.container.removeAll();
+                    hm.container.setLayout(new BorderLayout());
+                    hm.container.add(reportpane, BorderLayout.CENTER);
+                    hm.container.revalidate();
+                    hm.container.repaint();
+                } catch (Exception ex) {
+                    OneforAllfunc.info("Error", ex.getMessage());
+                    ex.printStackTrace();
+                }
 
             }
 

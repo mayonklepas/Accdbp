@@ -67,6 +67,7 @@ public class AccountCn {
         dtm.addColumn("Account Code");
         dtm.addColumn("Account Name");
         dtm.addColumn("Opening Balance");
+        dtm.addColumn("Current Balance");
         dtm.addColumn("Account Type");
         dtm.addColumn("Account Group");
         dtm.addColumn("Description");
@@ -74,6 +75,7 @@ public class AccountCn {
         DefaultTableCellRenderer rightrender = new DefaultTableCellRenderer();
         rightrender.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
         pane.tabledata.getColumn("Opening Balance").setCellRenderer(rightrender);
+        pane.tabledata.getColumn("Current Balance").setCellRenderer(rightrender);
     }
 
     private void loaddata() {
@@ -81,32 +83,33 @@ public class AccountCn {
         dtm.getDataVector().removeAllElements();
         dtm.fireTableDataChanged();
         try {
-            String query = "SELECT a.ACC_CODE, a.ACC_NAME, a.ACC_OPENING_BALANCE, a.ACC_TYPE, "
+            String query = "SELECT a.ACC_CODE, a.ACC_NAME, a.ACC_OPENING_BALANCE,a.ACC_CURRENT_BALANCE, a.ACC_TYPE, "
                  + "a.ACC_GROUP,a.ACC_DESC, a.DATE_CREATED FROM TB_ACC a ORDER BY a.ACC_CODE ASC";
             PreparedStatement pres = c.cn().prepareStatement(query);
             ResultSet res = pres.executeQuery();
             while (res.next()) {
-                Object o[] = new Object[6];
+                Object o[] = new Object[7];
                 o[0] = res.getString("ACC_CODE");
                 o[1] = res.getString("ACC_NAME");
                 o[2] = OneforAllfunc.nf(res.getDouble("ACC_OPENING_BALANCE"));
+                o[3] = OneforAllfunc.nf(res.getDouble("ACC_CURRENT_BALANCE"));
                 if (res.getInt("ACC_TYPE") == 0) {
-                    o[3] = "Cash";
+                    o[4] = "Cash";
                 } else if (res.getInt("ACC_TYPE") == 1) {
-                    o[3] = "Bank";
+                    o[4] = "Bank";
                 } else {
-                    o[3] = "Other";
+                    o[4] = "Other";
                 }
                 if (res.getInt("ACC_GROUP") == 0) {
-                    o[4] = "Assets";
+                    o[5] = "Assets";
                 } else if (res.getInt("ACC_GROUP") == 1) {
-                    o[4] = "Income";
+                    o[5] = "Income";
                 } else if (res.getInt("ACC_GROUP") == 2) {
-                    o[4] = "Liability";
+                    o[5] = "Liability";
                 } else if (res.getInt("ACC_GROUP") == 3) {
-                    o[4] = "Expenditure";
+                    o[5] = "Expenditure";
                 }
-                o[5] = res.getString("ACC_DESC");
+                o[6] = res.getString("ACC_DESC");
                 dtm.addRow(o);
             }
             pane.tabledata.setModel(dtm);
@@ -239,7 +242,7 @@ public class AccountCn {
                     dtm.getDataVector().removeAllElements();
                     dtm.fireTableDataChanged();
                     try {
-                        String query = "SELECT a.ACC_CODE, a.ACC_NAME, a.ACC_OPENING_BALANCE, a.ACC_TYPE, "
+                        String query = "SELECT a.ACC_CODE, a.ACC_NAME, a.ACC_OPENING_BALANCE,a.ACC_CURRENT_BALANCE, a.ACC_TYPE, "
                              + "a.ACC_GROUP,a.ACC_DESC, a.DATE_CREATED FROM TB_ACC a "
                              + " WHERE a.ACC_CODE LIKE ? "
                              + "OR lower(ACC_NAME) LIKE ? "
@@ -249,27 +252,28 @@ public class AccountCn {
                         pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
                         ResultSet res = pres.executeQuery();
                         while (res.next()) {
-                            Object o[] = new Object[6];
+                            Object o[] = new Object[7];
                             o[0] = res.getString("ACC_CODE");
                             o[1] = res.getString("ACC_NAME");
                             o[2] = OneforAllfunc.nf(res.getDouble("ACC_OPENING_BALANCE"));
+                            o[3] = OneforAllfunc.nf(res.getDouble("ACC_CURRENT_BALANCE"));
                             if (res.getInt("ACC_TYPE") == 0) {
-                                o[3] = "Cash";
+                                o[4] = "Cash";
                             } else if (res.getInt("ACC_TYPE") == 1) {
-                                o[3] = "Bank";
+                                o[4] = "Bank";
                             } else {
-                                o[3] = "Other";
+                                o[4] = "Other";
                             }
                             if (res.getInt("ACC_GROUP") == 0) {
-                                o[4] = "Assets";
+                                o[5] = "Assets";
                             } else if (res.getInt("ACC_GROUP") == 1) {
-                                o[4] = "Income";
+                                o[5] = "Income";
                             } else if (res.getInt("ACC_GROUP") == 2) {
-                                o[4] = "Liability";
+                                o[5] = "Liability";
                             } else if (res.getInt("ACC_GROUP") == 3) {
-                                o[4] = "Expenditure";
+                                o[5] = "Expenditure";
                             }
-                            o[5] = res.getString("ACC_DESC");
+                            o[6] = res.getString("ACC_DESC");
                             dtm.addRow(o);
                         }
                         pane.tabledata.setModel(dtm);

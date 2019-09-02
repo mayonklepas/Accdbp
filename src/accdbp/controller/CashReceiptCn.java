@@ -239,6 +239,41 @@ public class CashReceiptCn {
 
     }
 
+    private void deletedatanew() {
+        pane.bdelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pane.tabledata.getSelectedRow() < 0) {
+                    OneforAllfunc.info("Operation Failed", "Please Select Data");
+                } else {
+                    try {
+                        OneforAllfunc.confirmwitpass("Are you sure to delete this data?", "Deleted data cannot be recover");
+                        if (Staticvar.isyes == true) {
+                            Staticvar.isyes = false;
+                            int row = pane.tabledata.getSelectedRow();
+                            String value = String.valueOf(pane.tabledata.getValueAt(row, 0));
+                            Statement st = c.cn().createStatement();
+                            String querydeldetail = "DELETE FROM TB_CR_DETAIL WHERE CRD_CRM_MASTER = '" + value + "'";
+                            st.addBatch(querydeldetail);
+                            String querydelmaster = "DELETE FROM TB_CR_MASTER WHERE CRM_DOC_NO = '" + value + "'";
+                            st.addBatch(querydelmaster);
+                            st.executeBatch();
+                            st.close();
+                            c.dc();
+                            loaddata();
+                        }
+
+                    } catch (SQLException ex) {
+                        OneforAllfunc.info("Error", ex.getMessage());
+                        Logger.getLogger(BankPaymentCn.class.getName()).log(Level.SEVERE, null, ex);
+
+                    }
+                }
+            }
+        });
+
+    }
+
     private void finddata() {
 
         FocusAdapter fodap = new FocusAdapter() {

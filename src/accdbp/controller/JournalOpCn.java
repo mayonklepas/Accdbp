@@ -119,8 +119,8 @@ public final class JournalOpCn {
                 pane.edref_date.setDate(dt);
             }
             //String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
-            String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
-            pane.eddoc_no.setText(OneforAllfunc.getautodocno(prefix));
+            //String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -131,7 +131,7 @@ public final class JournalOpCn {
             loaddata();
         }
         tableoperation();
-        savedata();
+        savedatanew();
         cancel();
         checkperiode();
     }
@@ -411,6 +411,125 @@ public final class JournalOpCn {
 
     }
 
+    private void savedatanew() {
+        pane.bsave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pane.eddoc_no.getText().equals("")) {
+                    OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
+                } else {
+                    if (id.equals("")) {
+                        try {
+                            if (total_debit != total_kredit) {
+                                OneforAllfunc.info("Operation Failed", "Amount not balance");
+                            } else {
+                                String queryin = "INSERT INTO TB_JOURNAL_MASTER (JM_DOC_NO, JM_DATE_TRANS, "
+                                     + "JM_REF_NO, JM_DATE_REF,JM_TYPE) "
+                                     + "VALUES ('" + pane.eddoc_no.getText() + "',"
+                                     + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
+                                     + "'" + pane.edref_no.getText() + "',"
+                                     + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
+                                     + "'" + Staticvar.journaltype + "');";
+                                Statement st = c.cn().createStatement();
+                                st.addBatch(queryin);
+                                int rowcount = pane.tabledata.getRowCount();
+                                for (int i = 0; i < rowcount; i++) {
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+
+                                    } else {
+                                        double amount_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        double amount_credit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
+                                        String queryindetail = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
+                                             + "JD_ACC, JD_AMOUNT_DEBIT,JD_AMOUNT_KREDIT,JD_DESC) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                             + "" + String.valueOf(amount_debit) + ","
+                                             + "" + String.valueOf(amount_credit) + ","
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 4)) + "')";
+                                        st.addBatch(queryindetail);
+
+                                    }
+
+                                }
+                                st.executeBatch();
+                                st.close();
+                                c.dc();
+                                OneforAllfunc.info("Operation Success", "Data has been added");
+                                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                                Staticvar.isupdate = true;
+                                JDialog jd = (JDialog) pane.getRootPane().getParent();
+                                jd.dispose();
+                            }
+
+                        } catch (SQLException ex) {
+                            OneforAllfunc.info("Error", ex.getMessage());
+                            Logger.getLogger(BankPaymentOpCn.class.getName()).log(Level.SEVERE, null, ex);
+                        } finally {
+                            c.dc();
+                        }
+
+                    } else {
+                        try {
+                            if (total_debit != total_kredit) {
+                                OneforAllfunc.info("Operation Failed", "Amount not balance");
+                            } else {
+                                Statement st = c.cn().createStatement();
+                                String queryup = "UPDATE TB_JOURNAL_MASTER SET "
+                                     + "JM_DOC_NO='" + pane.eddoc_no.getText() + "', "
+                                     + "JM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
+                                     + "JM_REF_NO='" + pane.edref_no.getText() + "', "
+                                     + "JM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "'  "
+                                     + "WHERE JM_DOC_NO='" + id + "'";
+                                st.addBatch(queryup);
+
+                                String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER = '" + id + "'";
+                                st.addBatch(querydel);
+
+                                int rowcount = pane.tabledata.getRowCount();
+                                for (int i = 0; i < rowcount; i++) {
+                                    if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+
+                                    } else {
+                                        double amount_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                                        double amount_credit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
+                                        String queryindetail = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
+                                             + "JD_ACC, JD_AMOUNT_DEBIT,JD_AMOUNT_KREDIT, JD_DESC) "
+                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                             + "'" + pane.eddoc_no.getText() + "',"
+                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                             + "" + String.valueOf(amount_debit) + ","
+                                             + "" + String.valueOf(amount_credit) + ","
+                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 4)) + "');";
+                                        st.addBatch(queryindetail);
+
+                                    }
+                                }
+                                st.executeBatch();
+                                st.close();
+                                c.dc();
+                                OneforAllfunc.info("Operation Success", "Data has been update");
+                                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                                Staticvar.isupdate = true;
+                                JDialog jd = (JDialog) pane.getRootPane().getParent();
+                                jd.dispose();
+                            }
+
+                        } catch (SQLException ex) {
+                            OneforAllfunc.info("Error", ex.getMessage());
+                            Logger.getLogger(JournalOpCn.class.getName()).log(Level.SEVERE, null, ex);
+                        } finally {
+                            c.dc();
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
     private void cancel() {
         pane.bcancel.addActionListener(new ActionListener() {
             @Override
@@ -468,7 +587,7 @@ public final class JournalOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView(3));
+                                jd.add(new PopupdatachooserView(4));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);
@@ -683,6 +802,7 @@ public final class JournalOpCn {
                         OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
                         pane.eddate_trans.setDate(zaman_old);
                     }
+                    pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
                 }
             }
         });

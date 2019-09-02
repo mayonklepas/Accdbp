@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,7 +59,7 @@ public class OneforAllfunc {
     }
 
     public static String getmonth(Date Ref) {
-        String month = new SimpleDateFormat("M").format(Ref);
+        String month = new SimpleDateFormat("MM").format(Ref);
         return month;
     }
 
@@ -222,27 +223,29 @@ public class OneforAllfunc {
         return result;
     }
 
-    public static String getautodocno(String prefix) {
+    public static String getautodocno(Date date_trans) {
         String result = "";
         Dbconnection cn = new Dbconnection();
         try {
-            String query = "SELECT FIRST 1 DOC_NO FROM ALLTRANS ORDER BY CAST( DOC_NO AS integer) DESC";
+            String query = "SELECT FIRST 1 DOC_NO FROM ALLTRANS WHERE DATE_TRANS=? ORDER BY CAST( DOC_NO AS integer) DESC";
             PreparedStatement pres = cn.cn().prepareStatement(query);
+            pres.setString(1, datetodb(date_trans));
             ResultSet res = pres.executeQuery();
             String rawresult = "";
             while (res.next()) {
                 rawresult = res.getString("DOC_NO");
             }
+            String prefix = getyear2digit(date_trans) + getmonth(date_trans) + getdate(date_trans);
             if (!rawresult.equals("")) {
-                int panjangprefix = rawresult.length() - 5;
+                int panjangprefix = rawresult.length() - 2;
                 if (rawresult.substring(0, panjangprefix).equals(prefix)) {
                     int intresult = Integer.parseInt(rawresult) + 1;
                     result = String.valueOf(intresult);
                 } else {
-                    result = prefix + "00001";
+                    result = prefix + "01";
                 }
             } else {
-                result = prefix + "00001";
+                result = prefix + "01";
             }
 
         } catch (SQLException ex) {
@@ -309,5 +312,100 @@ public class OneforAllfunc {
             res = resform;
         }
         return res;
+    }
+
+    public static void generatesaldo() {
+        try {
+            Dbconnection dbcon = new Dbconnection();
+            Statement stgetcurbal = dbcon.cn().createStatement();
+            ResultSet resgetcurbal = stgetcurbal.executeQuery("SELECT ACC_CODE FROM TB_ACC");
+            Statement stsetcurbal = dbcon.cn().createStatement();
+            while (resgetcurbal.next()) {
+                String query = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=ACC_OPENING_BALANCE WHERE ACC_CODE='" + resgetcurbal.getString("ACC_CODE") + "'";
+                stsetcurbal.addBatch(query);
+            }
+            stsetcurbal.executeBatch();
+            dbcon.dc();
+            Statement stselectview = dbcon.cn().createStatement();
+            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS ORDER BY ID ASC";
+            ResultSet res = stselectview.executeQuery(queryselectview);
+            Statement stupgenerate = dbcon.cn().createStatement();
+            while (res.next()) {
+                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.getString("ACC_CODE_MASTER") + "')";
+                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.getString("ACC_CODE") + "')";
+                String queryupgen = "";
+                String queryupmaster = "";
+                String queryupdetail = "";
+                switch (res.getString("DOC_TYPE")) {
+                    case "CP":
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.getDouble("CREDIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE_MASTER") + "' ";
+                        stupgenerate.addBatch(queryupmaster);
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.getString("DEBIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "' ";
+                        stupgenerate.addBatch(queryupdetail);
+                        queryupgen = "UPDATE TB_CP_DETAIL SET "
+                             + "CPD_SALDO_MASTER=" + opbalmaster + " ,"
+                             + "CPD_SALDO=" + opbaldetail + " "
+                             + "WHERE CPD_ID='" + res.getString("ID") + "' ";
+                        stupgenerate.addBatch(queryupgen);
+                        break;
+                    case "BP":
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.getDouble("CREDIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE_MASTER") + "' ";
+                        stupgenerate.addBatch(queryupmaster);
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.getDouble("DEBIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "' ";
+                        stupgenerate.addBatch(queryupdetail);
+                        queryupgen = "UPDATE TB_BP_DETAIL SET "
+                             + "BPD_SALDO_MASTER=" + opbalmaster + " ,"
+                             + "BPD_SALDO=" + opbaldetail + " "
+                             + "WHERE BPD_ID='" + res.getString("ID") + "' ";
+                        stupgenerate.addBatch(queryupgen);
+                        break;
+                    case "CR":
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.getDouble("DEBIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE_MASTER") + "'";
+                        stupgenerate.addBatch(queryupmaster);
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.getDouble("CREDIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "'";
+                        stupgenerate.addBatch(queryupdetail);
+                        queryupgen = "UPDATE TB_CR_DETAIL SET "
+                             + "CRD_SALDO_MASTER=" + opbalmaster + " ,"
+                             + "CRD_SALDO=" + opbaldetail + " "
+                             + "WHERE CRD_ID='" + res.getString("ID") + "' ";
+                        stupgenerate.addBatch(queryupgen);
+                        break;
+                    case "BR":
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.getDouble("DEBIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE_MASTER") + "' ";
+                        stupgenerate.addBatch(queryupmaster);
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.getDouble("CREDIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "' ";
+                        stupgenerate.addBatch(queryupdetail);
+                        queryupgen = "UPDATE TB_BR_DETAIL SET "
+                             + "BRD_SALDO_MASTER=" + opbalmaster + " ,"
+                             + "BRD_SALDO=" + opbaldetail + " "
+                             + "WHERE BRD_ID='" + res.getString("ID") + "' ";
+                        stupgenerate.addBatch(queryupgen);
+                        break;
+                    default:
+                        if (res.getDouble("DEBIT") == 0) {
+                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.getDouble("CREDIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "'";
+                            stupgenerate.addBatch(queryupmaster);
+                            queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
+                                 + "JD_SALDO=" + opbaldetail + " "
+                                 + "WHERE JD_ID='" + res.getString("ID") + "' ";
+                            stupgenerate.addBatch(queryupgen);
+                        } else {
+                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.getDouble("DEBIT") + " WHERE ACC_CODE='" + res.getString("ACC_CODE") + "'";
+                            stupgenerate.addBatch(queryupmaster);
+                            queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
+                                 + "JD_SALDO=" + opbaldetail + " "
+                                 + "WHERE JD_ID='" + res.getString("ID") + "' ";
+                            stupgenerate.addBatch(queryupgen);
+                        }
+
+                        break;
+                }
+
+                stupgenerate.executeBatch();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
