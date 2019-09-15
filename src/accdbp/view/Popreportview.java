@@ -24,11 +24,13 @@ public class Popreportview extends javax.swing.JPanel {
      */
     public Popreportview(int type) {
         initComponents();
-        //String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
+        String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
         dtfrom.setDateFormatString("dd/MM/yyyy");
-        dtfrom.setDate(new Date());
+        dtfrom.setDate(OneforAllfunc.datefromdb(dateyearfirstperiode));
         dtto.setDateFormatString("dd/MM/yyyy");
         dtto.setDate(new Date());
+        ckperiode.setSelected(true);
+        dtfrom.setEnabled(false);
         if (type == 0) {
             paccountcode.setVisible(true);
             pbookprinttype.setVisible(false);

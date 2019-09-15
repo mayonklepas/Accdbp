@@ -151,14 +151,23 @@ public class PopupdatachooserControl {
                         String query = "";
                         PreparedStatement pres = null;
                         if (acc_type == 3) {
-                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE lower(ACC_NAME) LIKE ? ORDER BY ACC_CODE ASC";
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT=0 AND lower(ACC_NAME) LIKE ? "
+                                 + "OR ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
                             pres = c.cn().prepareStatement(query);
                             pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
+                            pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
+                        } else if (acc_type == 4) {
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE lower(ACC_NAME) LIKE ? OR ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
+                            pres = c.cn().prepareStatement(query);
+                            pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
+                            pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
                         } else {
-                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? lower(ACC_NAME) LIKE ? ORDER BY ACC_CODE ASC";
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? AND lower(ACC_NAME) LIKE ? "
+                                 + "ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
                             pres = c.cn().prepareStatement(query);
                             pres.setInt(1, acc_type);
                             pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
+                            pres.setString(3, "%" + pane.edfind.getText().toLowerCase() + "%");
                         }
 
                         ResultSet res = pres.executeQuery();
@@ -182,6 +191,7 @@ public class PopupdatachooserControl {
         };
 
         pane.edfind.addKeyListener(keyadap);
+
         pane.edfind.addFocusListener(fodap);
 
     }

@@ -60,6 +60,18 @@ public final class AccountOpCn {
         savedata();
         cancel();
         autoformatnumber();
+        pane.cmbaccount_type.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pane.cmbaccount_type.getSelectedIndex() == 0 || pane.cmbaccount_type.getSelectedIndex() == 1) {
+                    pane.ckbookprint.setSelected(true);
+                    pane.ckbookprint.setEnabled(true);
+                } else {
+                    pane.ckbookprint.setSelected(false);
+                    pane.ckbookprint.setEnabled(false);
+                }
+            }
+        });
     }
 
     private void loaddata() {
