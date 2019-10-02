@@ -276,7 +276,9 @@ public final class AccountOpCn {
         KeyAdapter adap = new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                pane.edopening_balance.setText(OneforAllfunc.nf(OneforAllfunc.doubleformat(pane.edopening_balance.getText())));
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    pane.edopening_balance.setText(OneforAllfunc.nf(OneforAllfunc.doubleformat(pane.edopening_balance.getText())));
+                }
             }
         };
         pane.edopening_balance.addKeyListener(adap);

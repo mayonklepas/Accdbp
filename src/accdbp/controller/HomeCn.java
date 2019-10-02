@@ -158,13 +158,19 @@ public class HomeCn {
         MouseAdapter ma = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                AccountsView akunpane = new AccountsView();
-                hm.container.removeAll();
-                hm.container.setLayout(new BorderLayout());
-                hm.container.add(akunpane, BorderLayout.CENTER);
-                hm.container.revalidate();
-                hm.container.repaint();
+                try {
+                    OneforAllfunc.generatesaldo();
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                    AccountsView akunpane = new AccountsView();
+                    hm.container.removeAll();
+                    hm.container.setLayout(new BorderLayout());
+                    hm.container.add(akunpane, BorderLayout.CENTER);
+                    hm.container.revalidate();
+                    hm.container.repaint();
+                } catch (Exception ex) {
+                    OneforAllfunc.info("Terjadi Kesalahan Sistem", ex.getMessage());
+                    ex.printStackTrace();
+                }
 
             }
 
