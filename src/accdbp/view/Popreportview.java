@@ -22,7 +22,10 @@ public class Popreportview extends javax.swing.JPanel {
     /**
      * Creates new form Popreportview
      */
+    int intype = 0;
+
     public Popreportview(int type) {
+        intype = type;
         initComponents();
         String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
         dtfrom.setDateFormatString("dd/MM/yyyy");
@@ -41,12 +44,18 @@ public class Popreportview extends javax.swing.JPanel {
             laccountto.setVisible(false);
             edtoaccount.setVisible(false);
             pbookprinttype.setVisible(false);
+            paccountcode.setVisible(true);
         } else if (type == 2) {
             pbookprinttype.setVisible(false);
             paccountcode.setVisible(false);
-        } else {
+        } else if (type == 3) {
+            edfromaccount.setVisible(true);
+            laccountfrom.setVisible(true);
+            laccountfrom.setText("Account");
+            laccountto.setVisible(false);
             pbookprinttype.setVisible(true);
-            paccountcode.setVisible(false);
+            edtoaccount.setVisible(false);
+            paccountcode.setVisible(true);
 
         }
     }
@@ -280,11 +289,11 @@ public class Popreportview extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pbookprinttype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paccountcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pbookprinttype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bcancel)
                     .addComponent(bprint))
@@ -337,21 +346,47 @@ public class Popreportview extends javax.swing.JPanel {
     private void edfromaccountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edfromaccountKeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String oldaccountval = edfromaccount.getText();
-            JDialog jd = new JDialog(new Home());
-            jd.setResizable(false);
-            jd.setTitle("Select Account");
-            jd.add(new PopupdatachooserView(3));
-            jd.pack();
-            jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            jd.setLocationRelativeTo(null);
-            jd.setVisible(true);
-            jd.toFront();
-            if (Staticvar.isupdate == true) {
-                Staticvar.isupdate = false;
-                edfromaccount.setText(Staticvar.global_val);
+
+            if (intype == 3) {
+                String oldaccountval = edfromaccount.getText();
+                JDialog jd = new JDialog(new Home());
+                jd.setResizable(false);
+                jd.setTitle("Select Account");
+                if (cmbbookprinttype.getSelectedIndex() == 0) {
+                    jd.add(new PopupdatachooserView(0));
+                    jd.pack();
+                } else {
+                    jd.add(new PopupdatachooserView(1));
+                    jd.pack();
+                }
+                jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                jd.setLocationRelativeTo(null);
+                jd.setVisible(true);
+                jd.toFront();
+                if (Staticvar.isupdate == true) {
+                    Staticvar.isupdate = false;
+                    edfromaccount.setText(Staticvar.global_val);
+                } else {
+                    edfromaccount.setText(oldaccountval);
+                }
+
             } else {
-                edfromaccount.setText(oldaccountval);
+                String oldaccountval = edfromaccount.getText();
+                JDialog jd = new JDialog(new Home());
+                jd.setResizable(false);
+                jd.setTitle("Select Account");
+                jd.add(new PopupdatachooserView(3));
+                jd.pack();
+                jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                jd.setLocationRelativeTo(null);
+                jd.setVisible(true);
+                jd.toFront();
+                if (Staticvar.isupdate == true) {
+                    Staticvar.isupdate = false;
+                    edfromaccount.setText(Staticvar.global_val);
+                } else {
+                    edfromaccount.setText(oldaccountval);
+                }
             }
         }
 

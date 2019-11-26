@@ -99,7 +99,7 @@ public class BankReceiptView extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        tabledata.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        tabledata.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         tabledata.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

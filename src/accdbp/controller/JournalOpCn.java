@@ -190,10 +190,12 @@ public final class JournalOpCn {
         TableColumnModel tcm = pane.tabledata.getColumnModel();
         tcm.getColumn(0).setMinWidth(80);
         tcm.getColumn(0).setMaxWidth(80);
-        tcm.getColumn(2).setMinWidth(110);
-        tcm.getColumn(2).setMaxWidth(110);
-        tcm.getColumn(3).setMinWidth(110);
-        tcm.getColumn(3).setMaxWidth(110);
+        tcm.getColumn(1).setMinWidth(250);
+        tcm.getColumn(1).setMaxWidth(250);
+        tcm.getColumn(2).setMinWidth(200);
+        tcm.getColumn(2).setMaxWidth(200);
+        tcm.getColumn(3).setMinWidth(200);
+        tcm.getColumn(3).setMaxWidth(200);
     }
 
     private void loaddata() {
@@ -665,7 +667,7 @@ public final class JournalOpCn {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = pane.tabledata.getSelectedRow();
-                if (row > 0) {
+                if (row >= 0) {
                     OneforAllfunc.confirm("Want to remove Row?", "Removed Data cannot be recover ");
                     if (Staticvar.isyes == true) {
                         Staticvar.isyes = false;

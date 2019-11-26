@@ -28,18 +28,22 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -47,12 +51,19 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -131,6 +142,7 @@ public final class CashReceiptOpCn {
         cancel();
         checkaccount();
         checkperiode();
+        importfromexcel();
     }
 
     private void skinning() {
@@ -185,8 +197,10 @@ public final class CashReceiptOpCn {
         TableColumnModel tcm = pane.tabledata.getColumnModel();
         tcm.getColumn(0).setMinWidth(80);
         tcm.getColumn(0).setMaxWidth(80);
-        tcm.getColumn(2).setMinWidth(110);
-        tcm.getColumn(2).setMaxWidth(110);
+        tcm.getColumn(1).setMinWidth(350);
+        tcm.getColumn(1).setMaxWidth(350);
+        tcm.getColumn(2).setMinWidth(200);
+        tcm.getColumn(2).setMaxWidth(200);
     }
 
     private void loaddata() {
@@ -644,7 +658,7 @@ public final class CashReceiptOpCn {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = pane.tabledata.getSelectedRow();
-                if (row > 0) {
+                if (row >= 0) {
                     OneforAllfunc.confirm("Want to remove Row?", "Removed Data cannot be recover ");
                     if (Staticvar.isyes == true) {
                         Staticvar.isyes = false;
@@ -860,4 +874,79 @@ public final class CashReceiptOpCn {
             }
         });
     }
+
+    private void importfromexcel() {
+        pane.bimport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jfc = new JFileChooser("user.home");
+                jfc.setFileFilter(new FileNameExtensionFilter("Office Excel Format", "xlsx"));
+                if (jfc.showOpenDialog(pane) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        pane.tabledata.clearSelection();
+                        dtm.getDataVector().removeAllElements();
+                        dtm.fireTableDataChanged();
+                        File selectfile = jfc.getSelectedFile();
+                        Workbook wb = new XSSFWorkbook(new FileInputStream(selectfile));
+                        Sheet sht = wb.getSheetAt(0);
+                        Iterator<Row> itrrow = sht.iterator();
+                        int rowcounter = 0;
+                        while (itrrow.hasNext()) {
+                            Row next = itrrow.next();
+                            if (rowcounter > 0) {
+                                Iterator<Cell> itrcell = next.iterator();
+                                for (int i = 0; i < 3; i++) {
+                                    String isi = "";
+                                    try {
+                                        Cell next1 = itrcell.next();
+                                        if (next1.getCellType() == CellType.BLANK) {
+                                            isi = "";
+                                        } else if (next1.getCellType() == CellType.NUMERIC) {
+                                            isi = String.valueOf(next1.getNumericCellValue());
+                                        } else if (next1.getCellType() == CellType.STRING) {
+                                            isi = next1.getStringCellValue();
+                                        }
+                                    } catch (Exception ex) {
+                                        isi = "";
+                                    }
+
+                                    if (i == 0) {
+                                        o[0] = isi.replace(".0", "");
+                                        Statement st = c.cn().createStatement();
+                                        ResultSet res = st.executeQuery("SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE='" + isi.replace(".0", "") + "'");
+                                        if (res.first()) {
+                                            o[1] = res.getString("ACC_NAME");
+                                        } else {
+                                            o[1] = isi;
+                                        }
+
+                                    } else if (i == 1) {
+                                        o[3] = isi;
+                                    } else if (i == 2) {
+                                        o[2] = OneforAllfunc.nf(OneforAllfunc.doubleformat(isi));
+                                    }
+                                }
+                                while (itrcell.hasNext()) {
+
+                                }
+
+                                dtm.addRow(o);
+                            }
+
+                            rowcounter++;
+                        }
+
+                        calctotal();
+
+                    } catch (Exception ex) {
+                        OneforAllfunc.info("Error file corrupt", ex.getMessage());
+                        Logger.getLogger(CashReceiptOpCn.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+        );
+
+    }
+
 }

@@ -113,7 +113,7 @@ public class JournalOpView extends javax.swing.JPanel {
         edref_date.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
         edref_date.setPreferredSize(new java.awt.Dimension(95, 23));
 
-        tabledata.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        tabledata.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         tabledata.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

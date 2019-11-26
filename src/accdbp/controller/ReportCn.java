@@ -96,6 +96,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Ledger.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -140,6 +141,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Onlinertrialbalance.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -182,6 +184,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Onlineraccbalance.jasper";
                         HashMap hm = new HashMap(7);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -200,7 +203,7 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
                 } catch (Exception ex) {
-                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
+                    //OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     c.dc();
@@ -226,6 +229,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Profitloss.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -268,6 +272,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Balancesheet.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -310,6 +315,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
+                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
                         String path = "report/Bookprint.jasper";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
@@ -318,6 +324,7 @@ public class ReportCn {
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
                         hm.put("ACC_TYPE", Staticvar.acc_type);
+                        hm.put("ACC_CODE", Staticvar.code_from);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();

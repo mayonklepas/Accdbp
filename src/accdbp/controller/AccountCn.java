@@ -123,9 +123,9 @@ public class AccountCn {
         pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
         double total_amount = 0;
         for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-            total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+            total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
         }
-        pane.ltotalamount.setText("Total Opening Balance : " + OneforAllfunc.nfcurrency(total_amount));
+        pane.ltotalamount.setText("Total Current Balance : " + OneforAllfunc.nfcurrency(total_amount));
     }
 
     private void insertdata() {
@@ -287,9 +287,9 @@ public class AccountCn {
                     pane.lcountdata.setText("Record Count : " + pane.tabledata.getRowCount());
                     double total_amount = 0;
                     for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
-                        total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
+                        total_amount = total_amount + OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
                     }
-                    pane.ltotalamount.setText("Total Opening Balance : " + OneforAllfunc.nfcurrency(total_amount));
+                    pane.ltotalamount.setText("Total Current Balance : " + OneforAllfunc.nfcurrency(total_amount));
 
                 }
             }

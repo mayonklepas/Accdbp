@@ -78,7 +78,11 @@ public class LoginCn {
                         Staticvar.username = username;
                         Staticvar.password = pane.edpassword.getText();
                         Staticvar.type = type;
-                        Staticvar.month_periode = pane.edmonth.getText();
+                        if (pane.edmonth.getText().length() == 1) {
+                            Staticvar.month_periode = "0" + pane.edmonth.getText();
+                        } else {
+                            Staticvar.month_periode = pane.edmonth.getText();
+                        }
                         Staticvar.year_periode = pane.edyear.getText();
                         JDialog jd = (JDialog) pane.getRootPane().getParent();
                         jd.dispose();
