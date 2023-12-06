@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5e889f7-78dc-47ca-884d-92e8bcb6ba33">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="accdb"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<subDataset name="ledgerdetail" uuid="9ba32f03-b055-477f-a806-689becf3831a">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="accdb"/>
+		<parameter name="ACC_CODE" class="java.lang.String"/>
+		<parameter name="DT_FROM" class="java.util.Date"/>
+		<parameter name="DT_TO" class="java.util.Date"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT FIRST 100 * FROM ledgerview WHERE ACC_CODE=$P{ACC_CODE} 
+AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY DATE_TRANS]]>
+		</queryString>
+		<field name="DOC_TYPE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DOC_TYPE"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="DATE_TRANS" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="DATE_TRANS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="DOC_NO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DOC_NO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="REF_NO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="REF_NO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="DOC_NO_2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DOC_NO_2"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="CREDIT" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.label" value="CREDIT"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="DEBIT" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.label" value="DEBIT"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="DESCRIPTION" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DESCRIPTION"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+		<field name="ACC_CODE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ACC_CODE"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="LEDGERVIEW"/>
+		</field>
+	</subDataset>
+	<parameter name="DT_FROM" class="java.util.Date"/>
+	<parameter name="DT_TO" class="java.util.Date"/>
+	<parameter name="COMPANY_NAME" class="java.lang.String"/>
+	<parameter name="COMPANY_ADDRESS" class="java.lang.String"/>
+	<parameter name="COMPANY_TELEPHONE" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT ACC_CODE,ACC_NAME,ISBOOKPRINT,
+CASE WHEN 
+(CASE WHEN ISBOOKPRINT=0 THEN
+(SELECT SALDO
+	FROM ALLTRANS
+	WHERE ACC_CODE=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} LIMIT 1 )
+	ELSE (SELECT SALDO_MASTER
+	FROM ALLTRANS
+	WHERE ACC_CODE=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO}  LIMIT 1) END)>0 
+	THEN 0 ELSE 
+
+(CASE WHEN ISBOOKPRINT = 0
+THEN
+COALESCE((SELECT FIRST 1 SALDO
+	FROM ALLTRANS
+	WHERE ACC_CODE=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
+	AND SALDO > 0 ORDER BY ID DESC
+),0)  ELSE COALESCE((SELECT FIRST 1 SALDO_MASTER
+	FROM ALLTRANS
+	WHERE ACC_CODE_MASTER=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
+	AND SALDO_MASTER > 0 ORDER BY ID DESC
+),0) END) END AS DEBIT,
+CASE WHEN ISBOOKPRINT = 0
+THEN
+COALESCE((SELECT SALDO
+	FROM ALLTRANS
+	WHERE ACC_CODE=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
+	AND SALDO < 0 ORDER BY ID DESC
+ LIMIT 1),0)  ELSE COALESCE((SELECT SALDO_MASTER
+	FROM ALLTRANS
+	WHERE ACC_CODE_MASTER=ta.ACC_CODE 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
+	AND SALDO_MASTER < 0 ORDER BY ID DESC
+ LIMIT 1 ),0) END AS CREDIT
+FROM TB_ACC ta WHERE ACC_GROUP=1 OR ACC_GROUP=3]]>
+	</queryString>
+	<field name="ACC_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ACC_CODE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_ACC"/>
+	</field>
+	<field name="ACC_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ACC_NAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_ACC"/>
+	</field>
+	<field name="ISBOOKPRINT" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ISBOOKPRINT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="TB_ACC"/>
+	</field>
+	<field name="DEBIT" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="DEBIT"/>
+	</field>
+	<field name="CREDIT" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="CREDIT"/>
+	</field>
+	<variable name="CREDIT1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{CREDIT}]]></variableExpression>
+	</variable>
+	<variable name="DEBIT1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEBIT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField pattern="M/d/yy h:mm a">
+				<reportElement x="454" y="1" width="100" height="20" uuid="2a26be3b-85cc-4db7-a202-9938a7421921"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="41" width="209" height="20" uuid="05120614-c7b6-40b1-91fd-801691422bc3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{COMPANY_TELEPHONE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="21" width="209" height="20" uuid="ab27e780-c7e4-4bff-bb21-31e098985d1d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{COMPANY_ADDRESS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="1" width="160" height="20" uuid="09ae9049-4301-4d32-a4d4-6253b99620d9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMPANY_NAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="5" width="198" height="20" uuid="0e93f733-a175-48ba-be3a-a65eb28afc7e"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[JOURNAL REGISTER]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="388" y="5" width="70" height="20" uuid="c653b37c-3200-4b7a-9030-4057a28b602c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DT_FROM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="478" y="5" width="70" height="20" uuid="b97e8305-9d16-4060-a3f7-9de12bfcc14f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DT_TO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="458" y="5" width="20" height="20" uuid="1d3b4a8e-3ffc-4e11-a6a3-1e6a6dcc8aac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="27" width="555" height="1" uuid="fbdb0e60-5c48-4fad-b57e-cf1ba2f70598"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="ae0ce63f-2bb0-479f-8c4f-dd6fecab30a9"/>
+			</line>
+			<staticText>
+				<reportElement x="323" y="5" width="65" height="20" uuid="f5e2d150-e952-47a4-ac48-9e148a708d49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PER DATE :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30">
+			<staticText>
+				<reportElement x="4" y="4" width="60" height="20" uuid="e8f87a59-210c-43e0-a2ae-0e35bbfbfb1a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80ac2cc7-6b41-4770-a218-ab9cf0f5fa1c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ACC CODE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="4" width="210" height="20" uuid="baaf2274-cde6-4201-a5a5-33e90a61015c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b993d0ac-b957-4233-81de-6c39e2b3442c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ACC NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="4" width="123" height="20" uuid="fcda770a-8faf-465b-b4c0-e419c714d910">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="834eae66-4d84-4d51-bdd7-fcc0ba36aa9c"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[DEBIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="4" width="132" height="20" uuid="ef2a818f-ab92-4b3d-b48b-d863a85474db">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="09c7c811-03d5-48d9-b52e-52e2ed7e9fef"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[CREDIT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="28" width="555" height="1" uuid="fac520d2-27ef-477d-b8d1-63f7a2c703cf"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="-2" width="1" height="31" uuid="f40c612e-813b-462d-953e-f7fac9e063f8"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="67" y="-2" width="1" height="31" uuid="9aa3abf8-a670-40e7-a9f1-a34b6af3ac58"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="285" y="-2" width="1" height="31" uuid="23c173a2-b4a1-4874-b5cc-855685efd59e"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="417" y="-2" width="1" height="31" uuid="7b53ce44-ffce-4988-8640-f222c51e842d"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="554" y="-3" width="1" height="31" uuid="eb44d9a1-7e59-4671-84ec-a95dbbfe04df"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="0" width="60" height="20" uuid="1f15676f-7e21-4440-9bf0-c99ca3c3a0ee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80ac2cc7-6b41-4770-a218-ab9cf0f5fa1c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ACC_CODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="210" height="20" uuid="c92195b4-587b-40e3-b028-94a667cb6298">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b993d0ac-b957-4233-81de-6c39e2b3442c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ACC_NAME}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###">
+				<reportElement x="290" y="0" width="123" height="20" uuid="4deb6e88-92aa-4479-89de-1048618a0849">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="834eae66-4d84-4d51-bdd7-fcc0ba36aa9c"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DEBIT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###">
+				<reportElement x="420" y="0" width="132" height="20" uuid="2c5708a2-1ef7-41e8-a651-ca53c76c40e3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="09c7c811-03d5-48d9-b52e-52e2ed7e9fef"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CREDIT}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="22" width="555" height="1" uuid="fed9c529-d90f-46d3-9bae-8451aebdb48f"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="-2" width="1" height="25" uuid="139b75f0-1391-4878-85e4-c70738a5f8bb"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="67" y="-2" width="1" height="25" uuid="3c909155-26fc-4ba4-957b-d08690e23176"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="285" y="-2" width="1" height="25" uuid="863bed77-254a-498c-9e24-cf3590f0e8b9"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="417" y="-2" width="1" height="25" uuid="a8b16a8f-7fe0-4497-a8b5-2227184dc651"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="554" y="-2" width="1" height="25" uuid="e041e2f0-0e69-4b66-9560-d7dc877d6b0a"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="167" y="1" width="100" height="20" uuid="b31c924d-9ba4-4811-a43c-0913c06bf029"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="267" y="1" width="100" height="20" uuid="5a9cbb9b-14b3-4e99-aa67-69eac2ba95d1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="31" splitType="Stretch">
+			<textField pattern="#,##0.###">
+				<reportElement x="290" y="0" width="123" height="20" uuid="7ddd4829-1695-4123-b1a8-c5b7702bee07"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{DEBIT1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###">
+				<reportElement x="420" y="0" width="134" height="20" uuid="77de9194-e238-4c56-8651-29b52524f8a0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{CREDIT1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="1" width="276" height="20" uuid="73544655-5704-44b9-ae26-b276b5c88ea1"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="24" width="555" height="1" uuid="4d5f3c3a-b55f-45e9-80df-4452a9b8c5f1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -72,6 +72,22 @@ public class Home extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         container = new javax.swing.JPanel();
         lacc_periode = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        bJournalGeneral = new javax.swing.JButton();
+        bReport = new javax.swing.JButton();
+        bSetting = new javax.swing.JButton();
+        bBankPayments = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        bJournalSale = new javax.swing.JButton();
+        bHome = new javax.swing.JButton();
+        bAccount = new javax.swing.JButton();
+        bCashReceipts = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        bBankReceipts = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        bCashPayment = new javax.swing.JButton();
+        bJournalPurchase = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -278,31 +294,198 @@ public class Home extends javax.swing.JFrame {
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 336, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         lacc_periode.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         lacc_periode.setForeground(new java.awt.Color(255, 255, 255));
         lacc_periode.setText("Acounting Periode");
 
+        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
+
+        bJournalGeneral.setBackground(new java.awt.Color(51, 51, 51));
+        bJournalGeneral.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bJournalGeneral.setForeground(new java.awt.Color(255, 255, 255));
+        bJournalGeneral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        bJournalGeneral.setText("General");
+        bJournalGeneral.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bReport.setBackground(new java.awt.Color(51, 51, 51));
+        bReport.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bReport.setForeground(new java.awt.Color(255, 255, 255));
+        bReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_print_white_18dp.png"))); // NOI18N
+        bReport.setText("Report");
+        bReport.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bSetting.setBackground(new java.awt.Color(51, 51, 51));
+        bSetting.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bSetting.setForeground(new java.awt.Color(255, 255, 255));
+        bSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_settings_applications_white_18dp.png"))); // NOI18N
+        bSetting.setText("Setting");
+        bSetting.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bBankPayments.setBackground(new java.awt.Color(51, 51, 51));
+        bBankPayments.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bBankPayments.setForeground(new java.awt.Color(255, 255, 255));
+        bBankPayments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_payment_white_18dp.png"))); // NOI18N
+        bBankPayments.setText("Bank Payments");
+        bBankPayments.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        jLabel1.setFont(new java.awt.Font("AppleGothic", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Journals");
+
+        bJournalSale.setBackground(new java.awt.Color(51, 51, 51));
+        bJournalSale.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bJournalSale.setForeground(new java.awt.Color(255, 255, 255));
+        bJournalSale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        bJournalSale.setText("Sale");
+        bJournalSale.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bHome.setBackground(new java.awt.Color(51, 51, 51));
+        bHome.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bHome.setForeground(new java.awt.Color(255, 255, 255));
+        bHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_home_white_18dp.png"))); // NOI18N
+        bHome.setText("Home");
+        bHome.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bAccount.setBackground(new java.awt.Color(51, 51, 51));
+        bAccount.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bAccount.setForeground(new java.awt.Color(255, 255, 255));
+        bAccount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_account_balance_wallet_white_18dp.png"))); // NOI18N
+        bAccount.setText("Accounts");
+        bAccount.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        bAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAccountActionPerformed(evt);
+            }
+        });
+
+        bCashReceipts.setBackground(new java.awt.Color(51, 51, 51));
+        bCashReceipts.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bCashReceipts.setForeground(new java.awt.Color(255, 255, 255));
+        bCashReceipts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_receipt_white_18dp.png"))); // NOI18N
+        bCashReceipts.setText("Cash Receipts");
+        bCashReceipts.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        jLabel5.setFont(new java.awt.Font("AppleGothic", 1, 15)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Payments");
+
+        bBankReceipts.setBackground(new java.awt.Color(51, 51, 51));
+        bBankReceipts.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bBankReceipts.setForeground(new java.awt.Color(255, 255, 255));
+        bBankReceipts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_credit_card_white_18dp.png"))); // NOI18N
+        bBankReceipts.setText("Bank Receipts");
+        bBankReceipts.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        jLabel4.setFont(new java.awt.Font("AppleGothic", 1, 15)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Receipts");
+
+        bCashPayment.setBackground(new java.awt.Color(51, 51, 51));
+        bCashPayment.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bCashPayment.setForeground(new java.awt.Color(255, 255, 255));
+        bCashPayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_monetization_on_white_18dp.png"))); // NOI18N
+        bCashPayment.setText("Cash Payments");
+        bCashPayment.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        bJournalPurchase.setBackground(new java.awt.Color(51, 51, 51));
+        bJournalPurchase.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        bJournalPurchase.setForeground(new java.awt.Color(255, 255, 255));
+        bJournalPurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/accdbp/icon/ic_today_white_18dp.png"))); // NOI18N
+        bJournalPurchase.setText("Purchase");
+        bJournalPurchase.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+
+        jLabel8.setFont(new java.awt.Font("AppleGothic", 1, 15)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Other");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bBankPayments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bCashReceipts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bBankReceipts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bJournalSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bJournalPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bCashPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bJournalGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bSetting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel8))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(bHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bCashPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bBankPayments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bCashReceipts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bBankReceipts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bJournalSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bJournalPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bJournalGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addGap(7, 7, 7)
+                .addComponent(bReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bSetting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lacc_periode)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lacc_periode)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lacc_periode)
                 .addContainerGap())
@@ -325,6 +508,10 @@ public class Home extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAccountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bAccountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,7 +549,19 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton bAccount;
+    public javax.swing.JButton bBankPayments;
+    public javax.swing.JButton bBankReceipts;
+    public javax.swing.JButton bCashPayment;
+    public javax.swing.JButton bCashReceipts;
+    public javax.swing.JButton bHome;
+    public javax.swing.JButton bJournalGeneral;
+    public javax.swing.JButton bJournalPurchase;
+    public javax.swing.JButton bJournalSale;
+    public javax.swing.JButton bReport;
+    public javax.swing.JButton bSetting;
     public javax.swing.JPanel container;
+    public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel16;
     public javax.swing.JLabel jLabel17;
     public javax.swing.JLabel jLabel2;
@@ -383,10 +582,14 @@ public class Home extends javax.swing.JFrame {
     public javax.swing.JLabel jLabel33;
     public javax.swing.JLabel jLabel34;
     public javax.swing.JLabel jLabel35;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
     public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
+    public javax.swing.JLabel jLabel8;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
+    public javax.swing.JPanel jPanel3;
     public javax.swing.JLabel lacc_periode;
     public javax.swing.JPanel paccounts;
     public javax.swing.JPanel pbankpay;

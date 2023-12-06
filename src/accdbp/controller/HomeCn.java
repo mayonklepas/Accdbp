@@ -32,6 +32,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
@@ -62,13 +63,20 @@ public class HomeCn {
         reportview();
         settingview();
         skinning();
+        loadTheme();
         jdmenupay.setResizable(false);
         jdmenupay.setUndecorated(true);
         jdmenupay.add(new PaymentpaneView());
         jdmenupay.pack();
         jdmenupay.setModalityType(Dialog.ModalityType.MODELESS);
         viewlogin();
+        
 
+    }
+    
+    private void loadTheme(){
+        hm.bHome.setBackground(Color.red);
+        hm.bHome.setOpaque(true);
     }
 
     private void defview() {
@@ -159,7 +167,6 @@ public class HomeCn {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    OneforAllfunc.generatesaldo();
                     KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
                     AccountsView akunpane = new AccountsView();
                     hm.container.removeAll();
@@ -400,7 +407,6 @@ public class HomeCn {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    OneforAllfunc.generatesaldo();
                     KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
                     ReportView reportpane = new ReportView();
                     hm.container.removeAll();

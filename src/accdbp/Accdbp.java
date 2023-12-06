@@ -6,15 +6,6 @@
 package accdbp;
 
 import accdbp.controller.HomeCn;
-import accdbp.view.Home;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.basic.BasicLookAndFeel;
-import javax.swing.plaf.multi.MultiLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 import org.apache.log4j.BasicConfigurator;
 
 /**
@@ -28,13 +19,6 @@ public class Accdbp {
      */
     public static void main(String[] args) {
         BasicConfigurator.configure();
-        try {
-            //
-            // TODO code application logic here
-            UIManager.setLookAndFeel(new WindowsLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Accdbp.class.getName()).log(Level.SEVERE, null, ex);
-        }
         new HomeCn();
     }
 

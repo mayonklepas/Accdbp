@@ -18,24 +18,13 @@ import java.util.logging.Logger;
  */
 public class Dbconnection {
 
-    String filecon = new File("ACCDB.FDB").getAbsolutePath();
-    String host = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
+    //String filecon = new File("ACCDB.FDB").getAbsolutePath();
+    //String host = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
+    //String host = "";
+    String host = "jdbc:h2:./accdb";
     String username = "SYSDBA";
     String passsword = "masterkey";
     Connection con;
-
-    public Dbconnection() {
-        //System.out.println(host);
-        try {
-            Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public Connection cn() {
         try {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl">
+  <name>h2 data adapter</name>
+  <classpath>/Users/mulyadi/Documents/uncategory/h2-2.2.224.jar</classpath>
+  <driver>org.h2.Driver</driver>
+  <username>sysdba</username>
+  <password>masterkey</password>
+  <url>jdbc:h2:./Users/mulyadi/Documents/Netbeans project/Accdbp/accdb</url>
+  <database></database>
+  <savePassword>true</savePassword>
+  <serverAddress></serverAddress>
+</jdbcDataAdapter>

@@ -48,13 +48,7 @@ public class Homedef extends javax.swing.JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        Image img = new ImageIcon("bg.jpg").getImage();
-        Dimension size = new Dimension(this.getRootPane().getParent().getWidth() - 28, this.getRootPane().getParent().getHeight() - 115);
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setSize(size);
-        g.drawImage(img, 0, 0, null);
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
