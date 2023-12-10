@@ -17,6 +17,7 @@ public class Staticvar {
 
     public static boolean isyes = true;
     public static boolean isupdate = true;
+    public static boolean isProcess = false;
     public static String global_val = "";
     public static String global_name = "";
     public static KeyEventDispatcher keydis = null;
