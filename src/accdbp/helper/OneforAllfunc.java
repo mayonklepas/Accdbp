@@ -29,11 +29,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -211,8 +213,8 @@ public class OneforAllfunc {
         String result = "";
         Dbconnection cn = new Dbconnection();
         try {
-            String query = "SELECT FIRST 1 " + column + " FROM " + table + " "
-                    + "WHERE " + column + " LIKE ?  ORDER BY CAST(" + column + " AS integer) DESC";
+            String query = "SELECT " + column + " FROM " + table + " "
+                    + "WHERE " + column + " LIKE ?  ORDER BY CAST(" + column + " AS integer) DESC LIMIT 1";
             PreparedStatement pres = cn.cn().prepareStatement(query);
             pres.setString(1, "%" + prefix + "%");
             ResultSet res = pres.executeQuery();
@@ -242,37 +244,31 @@ public class OneforAllfunc {
     }
 
     public static String getautodocno(Date date_trans) {
-        String result = "";
-        Dbconnection cn = new Dbconnection();
-        try {
-            String query = "SELECT DOC_NO FROM ALLTRANS WHERE DATE_TRANS=? ORDER BY CAST( DOC_NO AS integer) DESC LIMIT 1";
-            PreparedStatement pres = cn.cn().prepareStatement(query);
-            pres.setString(1, datetodb(date_trans));
-            ResultSet res = pres.executeQuery();
-            String rawresult = "";
-            while (res.next()) {
-                rawresult = res.getString("DOC_NO");
-            }
-            String prefix = getyear2digit(date_trans) + getmonth(date_trans) + getdate(date_trans);
-            if (!rawresult.equals("")) {
-                int panjangprefix = rawresult.length() - 2;
-                if (rawresult.substring(0, panjangprefix).equals(prefix)) {
-                    int intresult = Integer.parseInt(rawresult) + 1;
-                    result = String.valueOf(intresult);
-                } else {
-                    result = prefix + "01";
-                }
+        String prefix = getyear2digit(date_trans) + getmonth(date_trans) + getdate(date_trans);
+        int tahun = LocalDate.now().getYear();
+        Optional<Map<String, Object>> optResult = new DatabaseViews().getAllTransByYear(tahun).stream().filter(d -> {
+            java.sql.Date sqldt = (java.sql.Date) d.get("DATE_TRANS");
+            Date dt = new Date(sqldt.getTime());
+            if (dt.getTime() == date_trans.getTime()) {
+                return true;
             } else {
-                result = prefix + "01";
+                return false;
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            cn.dc();
+        }).sorted((o1, o2) -> o1.get("DOC_NO").toString().compareTo(o2.get("DOC_NO").toString()))
+                .findFirst();
+        if (optResult.isPresent()) {
+            String rawresult = optResult.get().get("DOC_NO").toString();
+            int panjangprefix = rawresult.length() - 2;
+            if (rawresult.substring(0, panjangprefix).equals(prefix)) {
+                int intresult = Integer.parseInt(rawresult) + 1;
+                return String.valueOf(intresult);
+            } else {
+                return prefix + "01";
+            }
+        } else {
+            return prefix + "01";
         }
-
-        return result;
     }
 
     public static HashMap getrecandsum(String table, String column) {
@@ -349,7 +345,6 @@ public class OneforAllfunc {
             /*Statement stselectview = dbcon.cn().createStatement();
             String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS ORDER BY ID ASC";
             ResultSet res = stselectview.executeQuery(queryselectview);*/
-            
             List<Map<String, Object>> lsAllTrans = new DatabaseViews().getAllTransByYear(year);
 
             Statement stupgenerate = dbcon.cn().createStatement();

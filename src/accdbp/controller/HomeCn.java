@@ -12,7 +12,6 @@ import accdbp.view.AccountsView;
 import accdbp.view.BankPaymentView;
 import accdbp.view.BankReceiptView;
 import accdbp.view.CConfirmDialog;
-import accdbp.view.CProgressDialog;
 import accdbp.view.CashPaymentView;
 import accdbp.view.CashReceiptView;
 import accdbp.view.Home;
@@ -66,6 +65,7 @@ public class HomeCn {
         defview();
         hm.progressMain.setIndeterminate(true);
         hm.progressMain.setVisible(false);
+        hm.lProgress.setVisible(false);
         jdmenupay.setResizable(false);
         jdmenupay.setUndecorated(true);
         jdmenupay.add(new PaymentpaneView());
@@ -136,22 +136,19 @@ public class HomeCn {
                 jd.setVisible(true);
                 jd.toFront();
                 if (Staticvar.isyes) {
-                    hm.progressMain.setVisible(true);
-                   /* Future<Boolean> call = Executors.newSingleThreadExecutor().submit(() -> {
+                    System.out.println("test");
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        hm.lProgress.setVisible(true);
+                        hm.progressMain.setVisible(true);
                         OneforAllfunc.generatesaldo(Integer.parseInt(Staticvar.year_periode));
-                        Thread.sleep(2000);
-                        return true;
-                    });
-
-                    try {
-                        if (call.get().booleanValue()) {
-                            hm.progressMain.setVisible(false);
-                        } else {
-                            hm.progressMain.setVisible(false);
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(HomeCn.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (InterruptedException | ExecutionException ex) {
-                        Logger.getLogger(HomeCn.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                        hm.lProgress.setVisible(false);
+                        hm.progressMain.setVisible(false);
+                    });
 
                 }
             }
@@ -188,7 +185,7 @@ public class HomeCn {
         jd.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jd.setVisible(true);
         jd.toFront();
-        hm.lacc_periode.setText("Accounting Periode : " + Staticvar.month_periode + "/" + Staticvar.year_periode);
+        hm.lacc_periode.setText("Periode : " + Staticvar.month_periode + "/" + Staticvar.year_periode);
     }
 
 }
