@@ -183,7 +183,7 @@ FROM TB_ACC a WHERE ACC_TYPE=$P{ACC_TYPE} AND ISBOOKPRINT=1 AND ACC_CODE=$P{ACC_
 				<reportElement x="0" y="2" width="555" height="1" uuid="ae0ce63f-2bb0-479f-8c4f-dd6fecab30a9"/>
 			</line>
 			<staticText>
-				<reportElement x="323" y="4" width="65" height="13" uuid="f5e2d150-e952-47a4-ac48-9e148a708d49"/>
+				<reportElement x="322" y="4" width="65" height="13" uuid="f5e2d150-e952-47a4-ac48-9e148a708d49"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

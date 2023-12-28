@@ -920,7 +920,7 @@ public final class CashPaymentOpCn {
                                         if (next1.getCellType() == CellType.BLANK) {
                                             isi = "";
                                         } else if (next1.getCellType() == CellType.NUMERIC) {
-                                            isi = String.valueOf(next1.getNumericCellValue());
+                                            isi = OneforAllfunc.nf(next1.getNumericCellValue());
                                         } else if (next1.getCellType() == CellType.STRING) {
                                             isi = next1.getStringCellValue();
                                         }
@@ -941,7 +941,7 @@ public final class CashPaymentOpCn {
                                     } else if (i == 1) {
                                         o[3] = isi;
                                     } else if (i == 2) {
-                                        o[2] = OneforAllfunc.nf(OneforAllfunc.doubleformat(isi));
+                                        o[2] = isi;
                                     }
                                 }
                                 while (itrcell.hasNext()) {

@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,10 +35,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JDialog;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -116,7 +119,8 @@ public class OneforAllfunc {
     public static String nfcurrency(double ref) {
         String res = "0";
         try {
-            NumberFormat nf = NumberFormat.getCurrencyInstance();
+            Locale myIndonesianLocale = new Locale("in", "ID");
+            NumberFormat nf = NumberFormat.getCurrencyInstance(myIndonesianLocale);
             res = nf.format(ref);
         } catch (Exception e) {
             res = "0";
@@ -128,7 +132,8 @@ public class OneforAllfunc {
     public static String nf(double ref) {
         String res = "0";
         try {
-            NumberFormat nf = NumberFormat.getInstance();
+            Locale myIndonesianLocale = new Locale("in", "ID");
+            NumberFormat nf = NumberFormat.getInstance(myIndonesianLocale);
             res = nf.format(ref);
         } catch (Exception e) {
             res = "0";
@@ -248,15 +253,16 @@ public class OneforAllfunc {
         int tahun = LocalDate.now().getYear();
         Optional<Map<String, Object>> optResult = new DatabaseViews().getAllTransByYear(tahun).stream().filter(d -> {
             java.sql.Date sqldt = (java.sql.Date) d.get("DATE_TRANS");
-            Date dt = new Date(sqldt.getTime());
-            if (dt.getTime() == date_trans.getTime()) {
+            java.sql.Date dt = new java.sql.Date(date_trans.getTime());
+            if (sqldt.toString().equals(dt.toString())) {
                 return true;
             } else {
                 return false;
             }
 
-        }).sorted((o1, o2) -> o1.get("DOC_NO").toString().compareTo(o2.get("DOC_NO").toString()))
+        }).sorted((o1, o2) -> o2.get("DOC_NO").toString().compareTo(o1.get("DOC_NO").toString()))
                 .findFirst();
+        
         if (optResult.isPresent()) {
             String rawresult = optResult.get().get("DOC_NO").toString();
             int panjangprefix = rawresult.length() - 2;
@@ -461,7 +467,7 @@ public class OneforAllfunc {
                     return false;
                 }
 
-            }).toList();
+            }).collect(Collectors.toList());
 
             Statement stupgenerate = dbcon.cn().createStatement();
             for (Map<String, Object> res : lsAllTrans) {

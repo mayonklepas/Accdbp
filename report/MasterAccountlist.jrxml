@@ -116,7 +116,7 @@ FROM TB_ACC ORDER BY ACC_CODE]]>
 	<pageHeader>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="4" width="198" height="13" uuid="0e93f733-a175-48ba-be3a-a65eb28afc7e"/>
+				<reportElement x="3" y="4" width="198" height="13" uuid="0e93f733-a175-48ba-be3a-a65eb28afc7e"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

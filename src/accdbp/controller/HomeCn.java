@@ -5,6 +5,7 @@
  */
 package accdbp.controller;
 
+import accdbp.helper.Dbconnection;
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import accdbp.view.AccountsOpView;
@@ -34,6 +35,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -61,6 +65,17 @@ public class HomeCn {
         hm.setTitle("Accounting Softwares");
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
         hm.setVisible(true);
+        String companyName="";
+        String sql="SELECT * FROM TB_INFO LIMIT 1;";
+        try(Connection c = new Dbconnection().cn(); PreparedStatement ps=c.prepareStatement(sql)) {
+            ResultSet rs=ps.executeQuery();
+            while (rs.next()) {                
+                companyName=rs.getString("COMPANY_NAME").trim();
+            }
+        } catch (Exception e) {
+            
+        }
+        hm.lCompanyLabel.setText(companyName);
         menuActionButton();
         defview();
         hm.progressMain.setIndeterminate(true);
@@ -136,7 +151,6 @@ public class HomeCn {
                 jd.setVisible(true);
                 jd.toFront();
                 if (Staticvar.isyes) {
-                    System.out.println("test");
                     Executors.newSingleThreadExecutor().execute(() -> {
                         hm.lProgress.setVisible(true);
                         hm.progressMain.setVisible(true);

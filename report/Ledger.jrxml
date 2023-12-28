@@ -195,7 +195,7 @@ FROM TB_ACC WHERE ACC_CODE=$P{PACC_CODE}  AND ISBOOKPRINT=0]]>
 				<text><![CDATA[PER DATE :]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="121" y="4" width="89" height="13" uuid="ca312147-f271-45a1-8129-747177937b2a"/>
+				<reportElement x="122" y="4" width="89" height="13" uuid="ca312147-f271-45a1-8129-747177937b2a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

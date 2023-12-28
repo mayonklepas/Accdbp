@@ -307,14 +307,14 @@ ORDER BY ACC_CODE ASC]]>
 			</line>
 			<textField pattern="#,##0.###">
 				<reportElement x="245" y="2" width="150" height="15" uuid="bcb3c28f-568c-4c91-87f2-a0c88c8a946e"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMDEBIT}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
 				<reportElement x="403" y="2" width="147" height="15" uuid="4ce860bf-c788-48b7-bb98-447c343d832c"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMCREDIT}]]></textFieldExpression>

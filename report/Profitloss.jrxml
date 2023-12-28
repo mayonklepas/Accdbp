@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5e889f7-78dc-47ca-884d-92e8bcb6ba33">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="accdb"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbdataadapter.jrdax"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="36"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="953"/>
 	<subDataset name="ledgerdetail" uuid="9ba32f03-b055-477f-a806-689becf3831a">
@@ -144,7 +144,7 @@ ORDER BY ACC_CODE ASC]]>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[ONLINE TRIAL BALANCE]]></text>
+				<text><![CDATA[PROFIT LOSS]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="388" y="5" width="70" height="13" uuid="c653b37c-3200-4b7a-9030-4057a28b602c"/>
@@ -296,14 +296,14 @@ ORDER BY ACC_CODE ASC]]>
 			</line>
 			<textField pattern="#,##0.###">
 				<reportElement x="245" y="2" width="150" height="15" uuid="bcb3c28f-568c-4c91-87f2-a0c88c8a946e"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMDEBIT}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
 				<reportElement x="403" y="2" width="147" height="15" uuid="4ce860bf-c788-48b7-bb98-447c343d832c"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMCREDIT}]]></textFieldExpression>

@@ -50,10 +50,12 @@
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <Component id="edref_date" min="-2" pref="201" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="bImport" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="bsave" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="bcancel" min="-2" max="-2" attributes="0"/>
@@ -93,13 +95,14 @@
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane2" pref="299" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="378" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="bsave" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bcancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImport" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -158,6 +161,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="eddoc_no">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Century Gothic" size="13" style="0"/>
         </Property>
@@ -197,6 +201,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="edref_no">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Century Gothic" size="13" style="0"/>
         </Property>
@@ -412,5 +417,10 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="bImport">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Import from excel"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

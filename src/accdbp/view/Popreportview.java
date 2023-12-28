@@ -7,9 +7,12 @@ package accdbp.view;
 
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearMonthDV;
 import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.Date;
 import javax.swing.JDialog;
 
@@ -27,11 +30,15 @@ public class Popreportview extends javax.swing.JPanel {
     public Popreportview(int type) {
         intype = type;
         initComponents();
-        String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
+        String dateyearfirstperiode = Staticvar.year_periode + "-01" + "-01";
         dtfrom.setDateFormatString("dd/MM/yyyy");
         dtfrom.setDate(OneforAllfunc.datefromdb(dateyearfirstperiode));
+        
+        YearMonth ym = YearMonth.of(Integer.parseInt(Staticvar.year_periode), Month.DECEMBER);
+        
+        String dateyearendperiode = Staticvar.year_periode + "-12-" + ym.atEndOfMonth().getDayOfMonth();
         dtto.setDateFormatString("dd/MM/yyyy");
-        dtto.setDate(new Date());
+        dtto.setDate(OneforAllfunc.datefromdb(dateyearendperiode));
         ckperiode.setSelected(true);
         dtfrom.setEnabled(false);
         if (type == 0) {
@@ -328,7 +335,7 @@ public class Popreportview extends javax.swing.JPanel {
     private void ckperiodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckperiodeActionPerformed
         // TODO add your handling code here:
         if (ckperiode.isSelected()) {
-            String dateyearfirstperiode = OneforAllfunc.getyear(new Date()) + "-01" + "-01";
+            String dateyearfirstperiode = Staticvar.year_periode + "-01" + "-01";
             dtfrom.setDate(OneforAllfunc.datefromdb(dateyearfirstperiode));
             dtfrom.setEnabled(false);
         } else {

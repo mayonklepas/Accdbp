@@ -10,21 +10,17 @@ import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import accdbp.view.Home;
 import accdbp.view.Popreportview;
-import accdbp.view.PopupdatachooserView;
 import accdbp.view.ReportView;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
-import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -57,12 +53,12 @@ public class ReportCn {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    String path = "report/MasterAccountlist.jasper";
+                    String path = "report/MasterAccountlist.jrxml";
                     HashMap hm = new HashMap(3);
                     hm.put("COMPANY_NAME", Staticvar.company_name);
                     hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                     hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                    JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                    JasperReport jr = JasperCompileManager.compileReport(path);
                     JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                     pane.preportview.removeAll();
                     pane.preportview.setLayout(new BorderLayout());
@@ -96,8 +92,7 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Ledger.jasper";
+                        String path = "report/Ledger.jrxml";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
@@ -105,7 +100,7 @@ public class ReportCn {
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperReport jr = JasperCompileManager.compileReport(path);
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
                         pane.preportview.setLayout(new BorderLayout());
@@ -114,6 +109,55 @@ public class ReportCn {
                         pane.preportview.revalidate();
                     }
 
+                } catch (Exception ex) {
+                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
+                    Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    c.dc();
+                }
+
+            }
+        });
+    }
+
+    private void printcasbookprint() {
+        pane.lcashbookprint.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    JDialog jd = new JDialog(new Home());
+                    jd.setResizable(false);
+                    jd.setTitle("Report Parameter");
+                    jd.add(new Popreportview(3));
+                    jd.pack();
+                    jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    jd.setLocationRelativeTo(null);
+                    jd.setVisible(true);
+                    jd.toFront();
+                    if (Staticvar.isprint == true) {
+                        Staticvar.isprint = false;
+                        /*List<BookPrint> data = new ReportQuery().getBookPrint(
+                                 Staticvar.date_print_from,
+                                Staticvar.date_print_to,
+                                Staticvar.acc_type,
+                                Staticvar.code_from);*/
+                        String path = "report/Bookprint.jrxml";
+                        HashMap hm = new HashMap(5);
+                        hm.put("DT_FROM", Staticvar.date_print_from);
+                        hm.put("DT_TO", Staticvar.date_print_to);
+                        hm.put("COMPANY_NAME", Staticvar.company_name);
+                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
+                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
+                        hm.put("ACC_TYPE", Staticvar.acc_type);
+                        hm.put("ACC_CODE", Staticvar.code_from);
+                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
+                        pane.preportview.removeAll();
+                        pane.preportview.setLayout(new BorderLayout());
+                        pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
+                        pane.preportview.repaint();
+                        pane.preportview.revalidate();
+                    }
                 } catch (Exception ex) {
                     OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                     Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,15 +185,17 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Onlinertrialbalance.jasper";
+                        /*List<CodeNameAmount> data = new ReportQuery().getBalanceSheet(Staticvar.date_print_from,
+                                Staticvar.date_print_to);
+                        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(data);*/
+                        String path = "report/Onlinertrialbalance.jrxml";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperReport jr = JasperCompileManager.compileReport(path);
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
                         pane.preportview.setLayout(new BorderLayout());
@@ -185,7 +231,7 @@ public class ReportCn {
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
                         //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Onlineraccbalance.jasper";
+                        String path = "report/Onlineraccbalance.jrxml";
                         HashMap hm = new HashMap(7);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
@@ -229,15 +275,17 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Profitloss.jasper";
+                        /*List<CodeNameAmount> data = new ReportQuery().getProfitLoss(Staticvar.date_print_from,
+                                Staticvar.date_print_to);
+                        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(data);*/
+                        String path = "report/Profitloss.jrxml";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperReport jr = JasperCompileManager.compileReport(path);
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
                         pane.preportview.setLayout(new BorderLayout());
@@ -272,60 +320,17 @@ public class ReportCn {
                     jd.toFront();
                     if (Staticvar.isprint == true) {
                         Staticvar.isprint = false;
-                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Balancesheet.jasper";
+                        /*List<CodeNameAmount> data = new ReportQuery().getBalanceSheet(Staticvar.date_print_from,
+                                Staticvar.date_print_to);
+                        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(data);*/
+                        String path = "report/Balancesheet.jrxml";
                         HashMap hm = new HashMap(5);
                         hm.put("DT_FROM", Staticvar.date_print_from);
                         hm.put("DT_TO", Staticvar.date_print_to);
                         hm.put("COMPANY_NAME", Staticvar.company_name);
                         hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                         hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
-                        JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
-                        pane.preportview.removeAll();
-                        pane.preportview.setLayout(new BorderLayout());
-                        pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
-                        pane.preportview.repaint();
-                        pane.preportview.revalidate();
-                    }
-                } catch (Exception ex) {
-                    OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
-                    Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    c.dc();
-                }
-
-            }
-        });
-    }
-
-    private void printcasbookprint() {
-        pane.lcashbookprint.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    JDialog jd = new JDialog(new Home());
-                    jd.setResizable(false);
-                    jd.setTitle("Report Parameter");
-                    jd.add(new Popreportview(3));
-                    jd.pack();
-                    jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                    jd.setLocationRelativeTo(null);
-                    jd.setVisible(true);
-                    jd.toFront();
-                    if (Staticvar.isprint == true) {
-                        Staticvar.isprint = false;
-                        //OneforAllfunc.generatereport(Staticvar.date_print_from, Staticvar.date_print_to);
-                        String path = "report/Bookprint.jasper";
-                        HashMap hm = new HashMap(5);
-                        hm.put("DT_FROM", Staticvar.date_print_from);
-                        hm.put("DT_TO", Staticvar.date_print_to);
-                        hm.put("COMPANY_NAME", Staticvar.company_name);
-                        hm.put("COMPANY_ADDRESS", Staticvar.company_address);
-                        hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
-                        hm.put("ACC_TYPE", Staticvar.acc_type);
-                        hm.put("ACC_CODE", Staticvar.code_from);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File(path));
+                        JasperReport jr = JasperCompileManager.compileReport(path);
                         JasperPrint jp = JasperFillManager.fillReport(jr, hm, c.cn());
                         pane.preportview.removeAll();
                         pane.preportview.setLayout(new BorderLayout());
