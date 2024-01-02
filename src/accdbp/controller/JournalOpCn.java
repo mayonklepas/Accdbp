@@ -763,6 +763,7 @@ public final class JournalOpCn {
                             }
 
                             rowcounter++;
+                            dtm.fireTableDataChanged();
                         }
 
                         calctotal();

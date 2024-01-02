@@ -65,21 +65,22 @@ public class HomeCn {
         hm.setTitle("Accounting Softwares");
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
         hm.setVisible(true);
-        String companyName="";
-        String sql="SELECT * FROM TB_INFO LIMIT 1;";
-        try(Connection c = new Dbconnection().cn(); PreparedStatement ps=c.prepareStatement(sql)) {
-            ResultSet rs=ps.executeQuery();
-            while (rs.next()) {                
-                companyName=rs.getString("COMPANY_NAME").trim();
+        String companyName = "";
+        String sql = "SELECT * FROM TB_INFO LIMIT 1;";
+        try ( Connection c = new Dbconnection().cn();  PreparedStatement ps = c.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                companyName = rs.getString("COMPANY_NAME").trim();
             }
         } catch (Exception e) {
-            
+
         }
         hm.lCompanyLabel.setText(companyName);
         menuActionButton();
         defview();
         hm.progressMain.setIndeterminate(true);
         hm.progressMain.setVisible(false);
+        hm.progressMain.setEnabled(false);
         hm.lProgress.setVisible(false);
         jdmenupay.setResizable(false);
         jdmenupay.setUndecorated(true);
@@ -152,6 +153,7 @@ public class HomeCn {
                 jd.toFront();
                 if (Staticvar.isyes) {
                     Executors.newSingleThreadExecutor().execute(() -> {
+                        hm.progressMain.setEnabled(true);
                         hm.lProgress.setVisible(true);
                         hm.progressMain.setVisible(true);
                         OneforAllfunc.generatesaldo(Integer.parseInt(Staticvar.year_periode));
@@ -162,6 +164,7 @@ public class HomeCn {
                         }
                         hm.lProgress.setVisible(false);
                         hm.progressMain.setVisible(false);
+                        hm.progressMain.setEnabled(false);
                     });
 
                 }
