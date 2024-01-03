@@ -281,9 +281,21 @@ public class OneforAllfunc {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
         String mastertable = table.replace("DETAIL", "MASTER");
-        String query = "SELECT (SELECT COUNT(*) FROM " + mastertable + ") AS RECDATA,SUM(" + column + ") AS SUMDATA FROM " + table + "";
+        
+        String masterColumnPrefix=column.split("_")[0].substring(0,2)+"M";
+        String docno=masterColumnPrefix+"_"+"DOC"+"_"+"NO";
+        if(masterColumnPrefix.equals("CPM")){
+            docno="CRP_DOC_NO";
+        }
+        String detailColumnPrefix=column.split("_")[0];
+        
+        String query = "SELECT COUNT(*) AS RECDATA, SUM(" + column + ") AS SUMDATA FROM " + table + " d "
+                + "INNER JOIN "+mastertable+" m "
+                + "ON m."+docno+" = d."+detailColumnPrefix+"_"+masterColumnPrefix+"_MASTER "
+                + "WHERE EXTRACT(YEAR FROM "+masterColumnPrefix+"_DATE_TRANS) = ?  ";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
+            pres.setInt(1, Integer.parseInt(Staticvar.year_periode));
             ResultSet res = pres.executeQuery();
             int recdata = 0;
             double sumdata = 0.0;
