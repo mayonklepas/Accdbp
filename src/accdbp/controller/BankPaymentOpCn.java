@@ -599,7 +599,7 @@ public final class BankPaymentOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView(-1));
+                                jd.add(new PopupdatachooserView(3));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);
@@ -791,7 +791,7 @@ public final class BankPaymentOpCn {
                         JDialog jd = new JDialog(new Home());
                         jd.setResizable(false);
                         jd.setTitle("Select Account");
-                        jd.add(new PopupdatachooserView(-1));
+                        jd.add(new PopupdatachooserView(1));
                         jd.pack();
                         jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         jd.setLocationRelativeTo(null);

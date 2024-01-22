@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5e889f7-78dc-47ca-884d-92e8bcb6ba33">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="117"/>
@@ -35,6 +35,8 @@
 	<subDataset name="casbookview" uuid="9ba32f03-b055-477f-a806-689becf3831a">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="accdb"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="805"/>
 		<parameter name="ACC_CODE" class="java.lang.String"/>
 		<parameter name="DT_FROM" class="java.util.Date"/>
 		<parameter name="DT_TO" class="java.util.Date"/>
@@ -93,7 +95,7 @@ AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY ID ASC]]>
 	<parameter name="ACC_CODE" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT ACC_CODE,ACC_NAME ,
-CASE WHEN (SELECT COUNT(*) FROM BOOKPRINT WHERE ACC_CODE=a.ACC_CODE )=0 THEN 
+CASE WHEN (SELECT COUNT(*) FROM BOOKPRINT WHERE ACC_CODE_MASTER=a.ACC_CODE )=0 THEN 
 ACC_CURRENT_BALANCE 
 ELSE
 COALESCE((SELECT
@@ -102,7 +104,7 @@ BOOKPRINT WHERE ACC_CODE_MASTER=a.ACC_CODE AND
 DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO}  ORDER BY ID ASC LIMIT 1
 ),0) END 
  AS OPENING_BALANCE 
-FROM TB_ACC a WHERE ACC_TYPE=$P{ACC_TYPE} AND ISBOOKPRINT=1 AND ACC_CODE=$P{ACC_CODE}]]>
+FROM TB_ACC a WHERE ACC_TYPE=$P{ACC_TYPE} AND ISBOOKPRINT=1 AND ACC_CODE= $P{ACC_CODE} ]]>
 	</queryString>
 	<field name="ACC_CODE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="ACC_CODE"/>

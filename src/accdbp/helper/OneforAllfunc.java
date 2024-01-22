@@ -9,7 +9,6 @@ import accdbp.view.CConfirmDialog;
 import accdbp.view.CConfirmDialogwithpass;
 import accdbp.view.CMessageDialog;
 import accdbp.view.Home;
-import com.google.gson.Gson;
 import java.awt.Dialog;
 import java.io.File;
 import java.io.FileInputStream;
@@ -366,8 +365,6 @@ public class OneforAllfunc {
             ResultSet res = stselectview.executeQuery(queryselectview);*/
             List<Map<String, Object>> lsAllTrans = new DatabaseViews().getAllTransByYear(year);
             
-            String jsonstrr = new Gson().toJson(lsAllTrans);
-            System.out.println(jsonstrr);
             
 
             Statement stupgenerate = dbcon.cn().createStatement();

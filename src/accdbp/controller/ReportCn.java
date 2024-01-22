@@ -114,9 +114,9 @@ public class ReportCn {
                         jd.toFront();
                         if (Staticvar.isprint == true) {
                             Staticvar.isprint = false;
-                            String path = "report/Ledgerall.jrxml";
-                            if (!Staticvar.code_from.equals("all")) {
-                                path = "report/Ledger.jrxml";
+                            String path = "report/Ledger.jrxml";
+                            if (Staticvar.code_from.equals("")) {
+                                path = "report/Ledgerall.jrxml";
                             }
                             HashMap hm = new HashMap(5);
                             hm.put("DT_FROM", Staticvar.date_print_from);
@@ -179,6 +179,9 @@ public class ReportCn {
                                 Staticvar.acc_type,
                                 Staticvar.code_from);*/
                             String path = "report/Bookprint.jrxml";
+                            if (Staticvar.code_from.equals("")) {
+                                path = "report/BookprintAll.jrxml";
+                            }
                             HashMap hm = new HashMap(5);
                             hm.put("DT_FROM", Staticvar.date_print_from);
                             hm.put("DT_TO", Staticvar.date_print_to);
