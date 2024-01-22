@@ -286,7 +286,7 @@ public final class JournalOpCn {
                         List<String> lsNoref = lsNorefUnsort.stream().distinct().collect(Collectors.toList());
                         for (String noref : lsNoref) {
                             Statement st = c.cn().createStatement();
-                            String docno = OneforAllfunc.getautodocno(new Date());
+                            String docno = OneforAllfunc.getautodocno(pane.eddate_trans.getDate())+"000";
                             String queryin = "INSERT INTO TB_JOURNAL_MASTER (JM_DOC_NO, JM_DATE_TRANS, "
                                     + "JM_REF_NO, JM_DATE_REF,JM_TYPE) "
                                     + "VALUES ('" + docno + "',"
@@ -297,13 +297,14 @@ public final class JournalOpCn {
                             st.addBatch(queryin);
                             int rowcount = pane.tabledata.getRowCount();
                             for (int i = 0; i < rowcount; i++) {
+                                long seq = Long.parseLong(docno) + (i + 1);
                                 String norefIn = String.valueOf(pane.tabledata.getValueAt(i, 0));
                                 if (norefIn.equals(noref)) {
                                     double amount_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
                                     double amount_credit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 4)));
                                     String queryindetail = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
                                             + "JD_NO_REF,JD_ACC, JD_AMOUNT_DEBIT,JD_AMOUNT_KREDIT,JD_DESC) "
-                                            + "VALUES ('" + docno + i + "',"
+                                            + "VALUES ('" + seq + "',"
                                             + "'" + docno + "',"
                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 1)) + "',"
@@ -338,49 +339,62 @@ public final class JournalOpCn {
                     try {
                         if (total_debit != total_kredit) {
                             OneforAllfunc.info("Operation Failed", "Amount not balance");
-                        } else {
-                            Statement st = c.cn().createStatement();
-                            String queryup = "UPDATE TB_JOURNAL_MASTER SET "
-                                    + "JM_DOC_NO='" + pane.eddoc_no.getText() + "', "
-                                    + "JM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
-                                    + "JM_REF_NO='" + pane.edref_no.getText() + "', "
-                                    + "JM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "'  "
-                                    + "WHERE JM_DOC_NO='" + id + "'";
-                            st.addBatch(queryup);
-
-                            String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER = '" + id + "'";
-                            st.addBatch(querydel);
-
-                            int rowcount = pane.tabledata.getRowCount();
-                            for (int i = 0; i < rowcount; i++) {
-                                if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                        || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
-
-                                } else {
-                                    double amount_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
-                                    double amount_credit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
-                                    String queryindetail = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
-                                            + "JD_NO_REF,JD_ACC, JD_AMOUNT_DEBIT,JD_AMOUNT_KREDIT, JD_DESC) "
-                                            + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                            + "'" + pane.eddoc_no.getText() + "',"
-                                            + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                            + "'" + String.valueOf(pane.tabledata.getValueAt(i, 1)) + "',"
-                                            + "" + String.valueOf(amount_debit) + ","
-                                            + "" + String.valueOf(amount_credit) + ","
-                                            + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 5)) + "');";
-                                    st.addBatch(queryindetail);
-
-                                }
-                            }
-                            st.executeBatch();
-                            st.close();
-                            c.dc();
-                            OneforAllfunc.info("Operation Success", "Data has been update");
-                            KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
-                            Staticvar.isupdate = true;
-                            JDialog jd = (JDialog) pane.getRootPane().getParent();
-                            jd.dispose();
+                            return;
                         }
+                        
+                        int rowcount = pane.tabledata.getRowCount();
+                        for (int i = 0; i < rowcount; i++) {
+                            if(pane.tabledata.getValueAt(0, 0).equals(pane.tabledata.getValueAt(i, 0))){
+                                continue;
+                            }
+                            OneforAllfunc.info("Operation Failed", "Ref number not match");
+                            return;
+                            
+                        }
+                        
+
+                        Statement st = c.cn().createStatement();
+                        String queryup = "UPDATE TB_JOURNAL_MASTER SET "
+                                + "JM_DOC_NO='" + pane.eddoc_no.getText() + "', "
+                                + "JM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
+                                + "JM_REF_NO='" + pane.edref_no.getText() + "', "
+                                + "JM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "'  "
+                                + "WHERE JM_DOC_NO='" + id + "'";
+                        st.addBatch(queryup);
+
+                        String querydel = "DELETE FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER = '" + id + "'";
+                        st.addBatch(querydel);
+
+                        
+                        for (int i = 0; i < rowcount; i++) {
+                            if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
+                                    || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+
+                            } else {
+                                double amount_debit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 3)));
+                                double amount_credit = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 4)));
+                                long seq = Long.parseLong(pane.eddoc_no.getText()) + (i + 1);
+                                String queryindetail = "INSERT INTO TB_JOURNAL_DETAIL (JD_ID, JD_JM_MASTER, "
+                                        + "JD_NO_REF,JD_ACC, JD_AMOUNT_DEBIT,JD_AMOUNT_KREDIT, JD_DESC) "
+                                        + "VALUES ('" + seq + "',"
+                                        + "'" + pane.eddoc_no.getText() + "',"
+                                        + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                        + "'" + String.valueOf(pane.tabledata.getValueAt(i, 1)) + "',"
+                                        + "" + String.valueOf(amount_debit) + ","
+                                        + "" + String.valueOf(amount_credit) + ","
+                                        + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 5)) + "');";
+                                st.addBatch(queryindetail);
+
+                            }
+                        }
+                        st.executeBatch();
+                        st.close();
+                        c.dc();
+                        OneforAllfunc.info("Operation Success", "Data has been update");
+                        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
+                        Staticvar.isupdate = true;
+                        JDialog jd = (JDialog) pane.getRootPane().getParent();
+                        jd.dispose();
 
                     } catch (SQLException ex) {
                         OneforAllfunc.info("Error", ex.getMessage());
@@ -452,7 +466,7 @@ public final class JournalOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView(3));
+                                jd.add(new PopupdatachooserView(-1));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);
@@ -736,7 +750,7 @@ public final class JournalOpCn {
                                         if (res.first()) {
                                             o[2] = res.getString("ACC_NAME");
                                         } else {
-                                            throw new RuntimeException("Account code ("+isi+") not found");
+                                            throw new RuntimeException("Account code (" + isi + ") not found");
                                         }
 
                                     } else if (i == 2) {
@@ -746,7 +760,7 @@ public final class JournalOpCn {
                                             o[3] = isi;
                                         }
                                     } else if (i == 3) {
-                                       if (isi.equals("")) {
+                                        if (isi.equals("")) {
                                             o[4] = 0;
                                         } else {
                                             o[4] = isi;

@@ -122,9 +122,8 @@ public final class BankPaymentOpCn {
                 pane.eddate_trans.setDate(dt);
                 pane.edref_date.setDate(dt);
             }
-            //String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
-            //String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
-            pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
+            String docNo = OneforAllfunc.getautodocno(pane.eddate_trans.getDate()) + "000";
+            pane.eddoc_no.setText(docNo);
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -132,7 +131,6 @@ public final class BankPaymentOpCn {
                 }
             });
         } else {
-            pane.eddoc_no.setEnabled(false);
             pane.edaccount.setEnabled(false);
             loaddata();
             calctotaledit();
@@ -146,6 +144,7 @@ public final class BankPaymentOpCn {
     }
 
     private void skinning() {
+        pane.eddoc_no.setEnabled(false);
         pane.eddate_trans.setDateFormatString("dd/MM/yyyy");
         pane.edref_date.setDateFormatString("dd/MM/yyyy");
 
@@ -206,8 +205,8 @@ public final class BankPaymentOpCn {
     private void loaddata() {
         try {
             String query = "SELECT a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
-                 + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED FROM TB_BP_MASTER a "
-                 + "INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE WHERE a.BPM_DOC_NO=?";
+                    + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED FROM TB_BP_MASTER a "
+                    + "INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE WHERE a.BPM_DOC_NO=?";
             PreparedStatement pres = c.cn().prepareStatement(query);
             pres.setString(1, id);
             ResultSet res = pres.executeQuery();
@@ -226,9 +225,9 @@ public final class BankPaymentOpCn {
             dtm.getDataVector().removeAllElements();
             dtm.fireTableDataChanged();
             String query2 = "SELECT a.BPD_ID, a.BPD_BPM_MASTER, a.BPD_ACC,b.ACC_NAME, "
-                 + "a.BPD_AMOUNT, a.BPD_DESC, a.BPD_DATE_CREATED FROM "
-                 + "TB_BP_DETAIL a INNER JOIN TB_ACC b ON a.BPD_ACC=b.ACC_CODE "
-                 + "WHERE a.BPD_BPM_MASTER = ?";
+                    + "a.BPD_AMOUNT, a.BPD_DESC, a.BPD_DATE_CREATED FROM "
+                    + "TB_BP_DETAIL a INNER JOIN TB_ACC b ON a.BPD_ACC=b.ACC_CODE "
+                    + "WHERE a.BPD_BPM_MASTER = ?";
             PreparedStatement pres2 = c.cn().prepareStatement(query2);
             pres2.setString(1, id);
             ResultSet res2 = pres2.executeQuery();
@@ -265,41 +264,41 @@ public final class BankPaymentOpCn {
                                 OneforAllfunc.info("Operation Failed", "Account Code not found");
                             } else {
                                 String query = "INSERT INTO TB_BP_MASTER (BPM_DOC_NO, BPM_DATE_TRANS, "
-                                     + "BPM_REF_NO, BPM_DATE_REF,BPM_ACC) "
-                                     + "VALUES ('" + pane.eddoc_no.getText() + "',"
-                                     + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
-                                     + "'" + pane.edref_no.getText() + "',"
-                                     + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                     + "'" + pane.edaccount.getText() + "');";
+                                        + "BPM_REF_NO, BPM_DATE_REF,BPM_ACC) "
+                                        + "VALUES ('" + pane.eddoc_no.getText() + "',"
+                                        + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
+                                        + "'" + pane.edref_no.getText() + "',"
+                                        + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
+                                        + "'" + pane.edaccount.getText() + "');";
                                 Statement st = c.cn().createStatement();
                                 st.addBatch(query);
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
                                     if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                            || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
 
                                         String queryup = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                                + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
+                                                + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
                                         st.addBatch(queryup);
                                         String queryup2 = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
+                                                + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
+                                                + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
                                         st.addBatch(queryup2);
                                         String queryin = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
-                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                             + "'" + pane.eddoc_no.getText() + "',"
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                             + "" + String.valueOf(amount) + ","
-                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
-                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
-                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'))";
+                                                + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
+                                                + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                                + "'" + pane.eddoc_no.getText() + "',"
+                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "" + String.valueOf(amount) + ","
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
+                                                + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
+                                                + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'))";
                                         st.addBatch(queryin);
 
                                     }
@@ -330,17 +329,17 @@ public final class BankPaymentOpCn {
                                 Statement st = c.cn().createStatement();
 
                                 String query = "UPDATE TB_BP_MASTER SET "
-                                     + "BPM_DOC_NO='" + pane.eddoc_no.getText() + "', "
-                                     + "BPM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
-                                     + "BPM_REF_NO='" + pane.edref_no.getText() + "', "
-                                     + "BPM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "', "
-                                     + "BPM_ACC='" + pane.edaccount.getText() + "' "
-                                     + "WHERE BPM_DOC_NO='" + id + "'";
+                                        + "BPM_DOC_NO='" + pane.eddoc_no.getText() + "', "
+                                        + "BPM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
+                                        + "BPM_REF_NO='" + pane.edref_no.getText() + "', "
+                                        + "BPM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "', "
+                                        + "BPM_ACC='" + pane.edaccount.getText() + "' "
+                                        + "WHERE BPM_DOC_NO='" + id + "'";
                                 st.addBatch(query);
 
                                 String queryupbalance = "UPDATE TB_ACC SET "
-                                     + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER='" + id + "')"
-                                     + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                        + "ACC_OPENING_BALANCE=ACC_OPENING_BALANCE+(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER='" + id + "')"
+                                        + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
                                 st.addBatch(queryupbalance);
 
                                 String queryseldel = "SELECT BPD_ID,BPD_AMOUNT,BPD_ACC FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=?";
@@ -349,8 +348,8 @@ public final class BankPaymentOpCn {
                                 ResultSet reseldel = preseldel.executeQuery();
                                 while (reseldel.next()) {
                                     String queryupdetail = "UPDATE TB_ACC SET ACC_OPENING_BALANCE =(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                         + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "')-" + reseldel.getDouble("BPD_AMOUNT") + " "
-                                         + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "'";
+                                            + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "')-" + reseldel.getDouble("BPD_AMOUNT") + " "
+                                            + "WHERE ACC_CODE='" + reseldel.getString("BPD_ACC") + "'";
                                     st.addBatch(queryupdetail);
                                     String querydeldetail = "DELETE FROM TB_BP_DETAIL WHERE BPD_ID = '" + reseldel.getString("BPD_ID") + "'";
                                     st.addBatch(querydeldetail);
@@ -359,30 +358,30 @@ public final class BankPaymentOpCn {
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
                                     if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                            || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
 
                                         String queryup = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
+                                                + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                + "WHERE ACC_CODE='" + pane.edaccount.getText() + "')-" + String.valueOf(amount) + " "
+                                                + "WHERE ACC_CODE='" + pane.edaccount.getText() + "'";
                                         st.addBatch(queryup);
                                         String queryup2 = "UPDATE TB_ACC SET "
-                                             + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
-                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
-                                             + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
+                                                + "ACC_OPENING_BALANCE=(SELECT ACC_OPENING_BALANCE FROM TB_ACC "
+                                                + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "')+" + String.valueOf(amount) + " "
+                                                + "WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'";
                                         st.addBatch(queryup2);
                                         String queryin = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
-                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                             + "'" + pane.eddoc_no.getText() + "',"
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                             + "" + String.valueOf(amount) + ","
-                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
-                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
-                                             + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'));";
+                                                + "BPD_ACC, BPD_AMOUNT, BPD_DESC,BPD_SALDO,BPD_SALDO_MASTER) "
+                                                + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
+                                                + "'" + pane.eddoc_no.getText() + "',"
+                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "" + String.valueOf(amount) + ","
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "', "
+                                                + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "'),"
+                                                + "(SELECT ACC_OPENING_BALANCE FROM TB_ACC WHERE ACC_CODE='" + pane.edaccount.getText() + "'));";
                                         st.addBatch(queryin);
 
                                     }
@@ -422,29 +421,32 @@ public final class BankPaymentOpCn {
                                 OneforAllfunc.info("Operation Failed", "Account Code not found");
                             } else {
                                 String queryin = "INSERT INTO TB_BP_MASTER (BPM_DOC_NO, BPM_DATE_TRANS, "
-                                     + "BPM_REF_NO, BPM_DATE_REF,BPM_ACC) "
-                                     + "VALUES ('" + pane.eddoc_no.getText() + "',"
-                                     + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
-                                     + "'" + pane.edref_no.getText() + "',"
-                                     + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                     + "'" + pane.edaccount.getText() + "');";
+                                        + "BPM_REF_NO, BPM_DATE_REF,BPM_ACC) "
+                                        + "VALUES ('" + pane.eddoc_no.getText() + "',"
+                                        + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
+                                        + "'" + pane.edref_no.getText() + "',"
+                                        + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
+                                        + "'" + pane.edaccount.getText() + "');";
                                 Statement st = c.cn().createStatement();
                                 st.addBatch(queryin);
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
+                                     
+                                    long seq = Long.parseLong(pane.eddoc_no.getText()) + (i+1);
+
                                     if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                            || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
                                         String queryindetail = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
-                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                             + "'" + pane.eddoc_no.getText() + "',"
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                             + "" + String.valueOf(amount) + ","
-                                             + "" + String.valueOf(amount) + ","
-                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
+                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
+                                                + "VALUES ('" + seq + "',"
+                                                + "'" + pane.eddoc_no.getText() + "',"
+                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "" + String.valueOf(amount) + ","
+                                                + "" + String.valueOf(amount) + ","
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -475,12 +477,12 @@ public final class BankPaymentOpCn {
                                 Statement st = c.cn().createStatement();
 
                                 String queryup = "UPDATE TB_BP_MASTER SET "
-                                     + "BPM_DOC_NO='" + pane.eddoc_no.getText() + "', "
-                                     + "BPM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
-                                     + "BPM_REF_NO='" + pane.edref_no.getText() + "', "
-                                     + "BPM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "', "
-                                     + "BPM_ACC='" + pane.edaccount.getText() + "' "
-                                     + "WHERE BPM_DOC_NO='" + id + "'";
+                                        + "BPM_DOC_NO='" + pane.eddoc_no.getText() + "', "
+                                        + "BPM_DATE_TRANS='" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "', "
+                                        + "BPM_REF_NO='" + pane.edref_no.getText() + "', "
+                                        + "BPM_DATE_REF='" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "', "
+                                        + "BPM_ACC='" + pane.edaccount.getText() + "' "
+                                        + "WHERE BPM_DOC_NO='" + id + "'";
                                 st.addBatch(queryup);
 
                                 String querydel = "DELETE FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER = '" + id + "'";
@@ -489,19 +491,21 @@ public final class BankPaymentOpCn {
                                 int rowcount = pane.tabledata.getRowCount();
                                 for (int i = 0; i < rowcount; i++) {
                                     if (String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("")
-                                         || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
+                                            || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
 
+                                        int seq = Integer.parseInt(pane.eddoc_no.getText()) + (i+1);
+
                                         String queryindetail = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                             + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
-                                             + "VALUES ('" + pane.eddoc_no.getText() + i + "',"
-                                             + "'" + pane.eddoc_no.getText() + "',"
-                                             + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
-                                             + "" + String.valueOf(amount) + ","
-                                             + "" + String.valueOf(amount) + ","
-                                             + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "');";
+                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
+                                                + "VALUES ('" + seq + "',"
+                                                + "'" + pane.eddoc_no.getText() + "',"
+                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "" + String.valueOf(amount) + ","
+                                                + "" + String.valueOf(amount) + ","
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "');";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -595,7 +599,7 @@ public final class BankPaymentOpCn {
                                 JDialog jd = new JDialog(new Home());
                                 jd.setResizable(false);
                                 jd.setTitle("Select Account");
-                                jd.add(new PopupdatachooserView(3));
+                                jd.add(new PopupdatachooserView(-1));
                                 jd.pack();
                                 jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                                 jd.setLocationRelativeTo(null);
@@ -710,7 +714,7 @@ public final class BankPaymentOpCn {
                     pane.tabledata.requestFocus();
                     pane.tabledata.changeSelection(row + 1, 0, true, true);
                 } else if (pane.tabledata.getValueAt(row, 0).equals("")
-                     || pane.tabledata.getValueAt(row, 2).equals("")) {
+                        || pane.tabledata.getValueAt(row, 2).equals("")) {
                     OneforAllfunc.info("Operation Failed", "Account Code or Amount cannot be empty");
                 } else {
                     addautorow(row);
@@ -756,8 +760,8 @@ public final class BankPaymentOpCn {
     private void addautorow(int row) {
         int lastrow = pane.tabledata.getRowCount() - 1;
         if (!pane.tabledata.getValueAt(row, 0).equals("")
-             || !pane.tabledata.getValueAt(row, 1).equals("")
-             || !pane.tabledata.getValueAt(row, 2).equals("")) {
+                || !pane.tabledata.getValueAt(row, 1).equals("")
+                || !pane.tabledata.getValueAt(row, 2).equals("")) {
             if (row == lastrow) {
                 dtm.addRow(o);
                 pane.tabledata.requestFocus();
@@ -787,7 +791,7 @@ public final class BankPaymentOpCn {
                         JDialog jd = new JDialog(new Home());
                         jd.setResizable(false);
                         jd.setTitle("Select Account");
-                        jd.add(new PopupdatachooserView(1));
+                        jd.add(new PopupdatachooserView(-1));
                         jd.pack();
                         jd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         jd.setLocationRelativeTo(null);
@@ -852,7 +856,7 @@ public final class BankPaymentOpCn {
                         pane.eddate_trans.setDate(zaman_old);
                     }
                 }
-                pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
+                pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()) + "000");
             }
         });
 
@@ -903,7 +907,7 @@ public final class BankPaymentOpCn {
                                         if (next1.getCellType() == CellType.BLANK) {
                                             isi = "";
                                         } else if (next1.getCellType() == CellType.NUMERIC) {
-                                            isi = String.valueOf(next1.getNumericCellValue());
+                                            isi = OneforAllfunc.nf(next1.getNumericCellValue());
                                         } else if (next1.getCellType() == CellType.STRING) {
                                             isi = next1.getStringCellValue();
                                         }

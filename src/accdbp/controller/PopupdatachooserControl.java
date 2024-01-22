@@ -43,7 +43,7 @@ public class PopupdatachooserControl {
     Dbconnection c = new Dbconnection();
     PopupdatachooserView pane;
     DefaultTableModel dtm = new DefaultTableModel();
-    int acc_type = 0;
+    int view_type = 0;
 
     KeyEventDispatcher keydis = new KeyEventDispatcher() {
         @Override
@@ -65,9 +65,9 @@ public class PopupdatachooserControl {
         }
     };
 
-    public PopupdatachooserControl(PopupdatachooserView pane, int acc_type) {
+    public PopupdatachooserControl(PopupdatachooserView pane, int view_type) {
         this.pane = pane;
-        this.acc_type = acc_type;
+        this.view_type = view_type;
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keydis);
         loadheader();
         loaddata();
@@ -94,18 +94,19 @@ public class PopupdatachooserControl {
         try {
             String query = "";
             PreparedStatement pres = null;
-            if (acc_type == 3) {
-                //query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT = 0 ORDER BY ACC_CODE ASC";
-                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
+            if (view_type == -1) {
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC  ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
-            } else if (acc_type == 4) {
+            } else if (view_type == 3) {
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT = 0 ORDER BY ACC_CODE ASC";
+                pres = c.cn().prepareStatement(query);
+            } else if (view_type == 4) {
                 query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
             } else {
-                //query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? AND ISBOOKPRINT=1 ORDER BY ACC_CODE ASC";
-                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC ORDER BY ACC_CODE ASC";
+                query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? AND ISBOOKPRINT=1 ORDER BY ACC_CODE ASC";
                 pres = c.cn().prepareStatement(query);
-                //pres.setInt(1, acc_type);
+                pres.setInt(1, view_type);
             }
 
             ResultSet res = pres.executeQuery();
@@ -152,22 +153,25 @@ public class PopupdatachooserControl {
                     try {
                         String query = "";
                         PreparedStatement pres = null;
-                        if (acc_type == 3) {
+                        if (view_type == -1) {
+                            query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC  ORDER BY ACC_CODE ASC";
+                            pres = c.cn().prepareStatement(query);
+                        } else if (view_type == 3) {
                             query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ISBOOKPRINT=0 AND lower(ACC_NAME) LIKE ? "
-                                 + "OR ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
+                                    + "OR ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
                             pres = c.cn().prepareStatement(query);
                             pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                             pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
-                        } else if (acc_type == 4) {
+                        } else if (view_type == 4) {
                             query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE lower(ACC_NAME) LIKE ? OR ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
                             pres = c.cn().prepareStatement(query);
                             pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                             pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
                         } else {
                             query = "SELECT ACC_CODE,ACC_NAME FROM TB_ACC WHERE ACC_TYPE=? AND lower(ACC_NAME) LIKE ? "
-                                 + "ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
+                                    + "ACC_CODE LIKE ? ORDER BY ACC_CODE ASC";
                             pres = c.cn().prepareStatement(query);
-                            pres.setInt(1, acc_type);
+                            pres.setInt(1, view_type);
                             pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
                             pres.setString(3, "%" + pane.edfind.getText().toLowerCase() + "%");
                         }

@@ -9,6 +9,7 @@ import accdbp.view.CConfirmDialog;
 import accdbp.view.CConfirmDialogwithpass;
 import accdbp.view.CMessageDialog;
 import accdbp.view.Home;
+import com.google.gson.Gson;
 import java.awt.Dialog;
 import java.io.File;
 import java.io.FileInputStream;
@@ -219,7 +220,7 @@ public class OneforAllfunc {
         Dbconnection cn = new Dbconnection();
         try {
             String query = "SELECT " + column + " FROM " + table + " "
-                    + "WHERE " + column + " LIKE ?  ORDER BY CAST(" + column + " AS integer) DESC LIMIT 1";
+                    + "WHERE " + column + " LIKE SUBSTRING ?  ORDER BY CAST(" + column + " AS integer) DESC LIMIT 1";
             PreparedStatement pres = cn.cn().prepareStatement(query);
             pres.setString(1, "%" + prefix + "%");
             ResultSet res = pres.executeQuery();
@@ -265,15 +266,15 @@ public class OneforAllfunc {
         
         if (optResult.isPresent()) {
             String rawresult = optResult.get().get("DOC_NO").toString();
-            int panjangprefix = rawresult.length() - 2;
+            int panjangprefix = rawresult.length() - 3;
             if (rawresult.substring(0, panjangprefix).equals(prefix)) {
                 int intresult = Integer.parseInt(rawresult) + 1;
                 return String.valueOf(intresult);
             } else {
-                return prefix + "01";
+                return prefix + "001";
             }
         } else {
-            return prefix + "01";
+            return prefix + "001";
         }
     }
 
@@ -364,6 +365,10 @@ public class OneforAllfunc {
             String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS ORDER BY ID ASC";
             ResultSet res = stselectview.executeQuery(queryselectview);*/
             List<Map<String, Object>> lsAllTrans = new DatabaseViews().getAllTransByYear(year);
+            
+            String jsonstrr = new Gson().toJson(lsAllTrans);
+            System.out.println(jsonstrr);
+            
 
             Statement stupgenerate = dbcon.cn().createStatement();
             for (Map<String, Object> res : lsAllTrans) {

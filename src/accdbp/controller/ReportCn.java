@@ -114,11 +114,16 @@ public class ReportCn {
                         jd.toFront();
                         if (Staticvar.isprint == true) {
                             Staticvar.isprint = false;
-                            String path = "report/Ledger.jrxml";
+                            String path = "report/Ledgerall.jrxml";
+                            if (!Staticvar.code_from.equals("all")) {
+                                path = "report/Ledger.jrxml";
+                            }
                             HashMap hm = new HashMap(5);
                             hm.put("DT_FROM", Staticvar.date_print_from);
                             hm.put("DT_TO", Staticvar.date_print_to);
-                            hm.put("PACC_CODE", Staticvar.code_from);
+                            if (!Staticvar.code_from.equals("all")) {
+                                hm.put("PACC_CODE", Staticvar.code_from);
+                            }
                             hm.put("COMPANY_NAME", Staticvar.company_name);
                             hm.put("COMPANY_ADDRESS", Staticvar.company_address);
                             hm.put("COMPANY_TELEPHONE", Staticvar.company_telp);
