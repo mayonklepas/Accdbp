@@ -5,6 +5,7 @@
  */
 package accdbp.view;
 
+import accdbp.helper.ExportExcel;
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.YearMonthDV;
@@ -93,6 +94,7 @@ public class Popreportview extends javax.swing.JPanel {
         bcancel = new javax.swing.JButton();
         pbookprinttype = new javax.swing.JPanel();
         cmbbookprinttype = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -248,7 +250,7 @@ public class Popreportview extends javax.swing.JPanel {
         pbookprinttype.setBackground(new java.awt.Color(255, 255, 255));
         pbookprinttype.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Book Print Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 11))); // NOI18N
 
-        cmbbookprinttype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CASH", "BANK" }));
+        cmbbookprinttype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CASH", "BANK", "ALL" }));
         cmbbookprinttype.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbbookprinttypeActionPerformed(evt);
@@ -272,6 +274,13 @@ public class Popreportview extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton1.setText("Export Excel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -285,6 +294,8 @@ public class Popreportview extends javax.swing.JPanel {
                     .addComponent(pbookprinttype, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bprint)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bcancel)))
@@ -303,7 +314,8 @@ public class Popreportview extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bcancel)
-                    .addComponent(bprint))
+                    .addComponent(bprint)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -315,7 +327,7 @@ public class Popreportview extends javax.swing.JPanel {
         Staticvar.date_print_to = dtto.getDate();
         Staticvar.code_from = edfromaccount.getText();
         Staticvar.code_to = edtoaccount.getText();
-        Staticvar.acc_type = cmbbookprinttype.getSelectedIndex() == 0 ? 0 : 1;
+        Staticvar.acc_type = cmbbookprinttype.getSelectedIndex();
         JDialog jd = (JDialog) this.getRootPane().getParent();
         jd.dispose();
 
@@ -347,6 +359,7 @@ public class Popreportview extends javax.swing.JPanel {
 
     private void edfromaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edfromaccountActionPerformed
         // TODO add your handling code here:
+        
 
     }//GEN-LAST:event_edfromaccountActionPerformed
 
@@ -424,6 +437,19 @@ public class Popreportview extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbbookprinttypeActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Staticvar.isExportExcel = true;
+        Staticvar.date_print_from = dtfrom.getDate();
+        Staticvar.date_print_to = dtto.getDate();
+        Staticvar.code_from = edfromaccount.getText();
+        Staticvar.code_to = edtoaccount.getText();
+        Staticvar.acc_type = cmbbookprinttype.getSelectedIndex();
+        JDialog jd = (JDialog) this.getRootPane().getParent();
+        jd.dispose();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Llabel;
     public javax.swing.JButton bcancel;
@@ -434,6 +460,7 @@ public class Popreportview extends javax.swing.JPanel {
     public com.toedter.calendar.JDateChooser dtto;
     public javax.swing.JTextField edfromaccount;
     public javax.swing.JTextField edtoaccount;
+    public javax.swing.JButton jButton1;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JPanel jPanel1;

@@ -21,7 +21,8 @@ public class Dbconnection {
     //String filecon = new File("ACCDB.FDB").getAbsolutePath();
     //String host = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
     //String host = "";
-    String host = "jdbc:h2:tcp://localhost:9092/./accdb";
+    String host = "jdbc:h2:./accdb";
+    //String host = "jdbc:h2:tcp://localhost:9092/./accdb";
     String username = "SYSDBA";
     String passsword = "masterkey";
     Connection con;

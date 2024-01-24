@@ -6,6 +6,7 @@
 package accdbp.controller;
 
 import accdbp.helper.Dbconnection;
+import accdbp.helper.ExportExcel;
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
 import accdbp.view.Home;
@@ -50,7 +51,7 @@ public class ReportCn {
         printonlineaccountbalance();
         printprofitloss();
         printbalancesheet();
-        printcasbookprint();
+        printbookprint();
     }
 
     private void printmasteraccounlist() {
@@ -121,7 +122,7 @@ public class ReportCn {
                             HashMap hm = new HashMap(5);
                             hm.put("DT_FROM", Staticvar.date_print_from);
                             hm.put("DT_TO", Staticvar.date_print_to);
-                            if (!Staticvar.code_from.equals("all")) {
+                            if (!Staticvar.code_from.equals("")) {
                                 hm.put("PACC_CODE", Staticvar.code_from);
                             }
                             hm.put("COMPANY_NAME", Staticvar.company_name);
@@ -134,6 +135,10 @@ public class ReportCn {
                             pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
+                        }
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportLedger();
                         }
 
                     } catch (Exception ex) {
@@ -151,7 +156,7 @@ public class ReportCn {
         );
     }
 
-    private void printcasbookprint() {
+    private void printbookprint() {
         pane.lcashbookprint.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -182,6 +187,10 @@ public class ReportCn {
                             if (Staticvar.code_from.equals("")) {
                                 path = "report/BookprintAll.jrxml";
                             }
+
+                            if (Staticvar.acc_type == 2) {
+                                path = "report/BookprintAllAll.jrxml";
+                            }
                             HashMap hm = new HashMap(5);
                             hm.put("DT_FROM", Staticvar.date_print_from);
                             hm.put("DT_TO", Staticvar.date_print_to);
@@ -198,6 +207,12 @@ public class ReportCn {
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
                         }
+                        
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportBookPrint();
+                        }
+
                     } catch (Exception ex) {
                         OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                         Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
@@ -252,6 +267,11 @@ public class ReportCn {
                             pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
+                        }
+                        
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportBalance("trialbalance");
                         }
                     } catch (Exception ex) {
                         OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
@@ -309,6 +329,11 @@ public class ReportCn {
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
                         }
+                        
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportBalance("accountbalance");
+                        }
                     } catch (Exception ex) {
                         //OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                         Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);
@@ -363,6 +388,11 @@ public class ReportCn {
                             pane.preportview.add(new JRViewer(jp), BorderLayout.CENTER);
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
+                        }
+                        
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportBalance("profitloss");
                         }
                     } catch (Exception ex) {
                         OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
@@ -419,6 +449,12 @@ public class ReportCn {
                             pane.preportview.repaint();
                             pane.preportview.revalidate();
                         }
+                        
+                        if (Staticvar.isExportExcel) {
+                            Staticvar.isExportExcel = false;
+                            new ExportExcel().exportBalance("balancesheet");
+                        }
+                        
                     } catch (Exception ex) {
                         OneforAllfunc.info("System Error", "Details : " + ex.getMessage());
                         Logger.getLogger(ReportCn.class.getName()).log(Level.SEVERE, null, ex);

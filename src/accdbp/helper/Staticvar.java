@@ -53,5 +53,6 @@ public class Staticvar {
         "LEFT_PARENTHESIS", "QUOTEDBL", "QUOTE", "BACK_QUOTE", "OPEN_BRACKET", "CLOSE_BRACKET", "PLUS", "MINUS",
         "PERIOD", "NUMBER_SIGN", "GREATER", "BRACELEFT", "BRACERIGHT"};*/
     public static String keyholdnumeric[] = {"ENTER"};
+    public static boolean isExportExcel = false;
 
 }
