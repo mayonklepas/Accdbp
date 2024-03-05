@@ -228,7 +228,7 @@ public class OneforAllfunc {
                 rawresult = res.getString(column);
             }
             if (!rawresult.equals("")) {
-                int panjangprefix = rawresult.length() - 5;
+                int panjangprefix = rawresult.length() - 6;
                 if (rawresult.substring(0, panjangprefix).equals(prefix)) {
                     int intresult = Integer.parseInt(rawresult) + 1;
                     result = String.valueOf(intresult);
@@ -265,15 +265,17 @@ public class OneforAllfunc {
         
         if (optResult.isPresent()) {
             String rawresult = optResult.get().get("DOC_NO").toString();
-            int panjangprefix = rawresult.length() - 3;
-            if (rawresult.substring(0, panjangprefix).equals(prefix)) {
-                int intresult = Integer.parseInt(rawresult) + 1;
-                return String.valueOf(intresult);
+            String lastExistPrefix = rawresult.substring(0, 6);
+            if (lastExistPrefix.equals(prefix)) {
+                String incPrefix = rawresult.substring(0, 9);
+                int intresult = Integer.parseInt(incPrefix) + 1;
+                String resNum = String.valueOf(intresult)+"000";
+                return resNum; 
             } else {
-                return prefix + "001";
+                return prefix + "001000";
             }
         } else {
-            return prefix + "001";
+            return prefix + "001000";
         }
     }
 
@@ -607,5 +609,6 @@ public class OneforAllfunc {
         intext = text.replaceAll("['\"]", " ");
         return intext;
     }
-
+    
+    
 }

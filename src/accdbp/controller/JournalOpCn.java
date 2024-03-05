@@ -34,6 +34,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -286,7 +287,7 @@ public final class JournalOpCn {
                         List<String> lsNoref = lsNorefUnsort.stream().distinct().collect(Collectors.toList());
                         for (String noref : lsNoref) {
                             Statement st = c.cn().createStatement();
-                            String docno = OneforAllfunc.getautodocno(pane.eddate_trans.getDate())+"000";
+                            String docno = OneforAllfunc.getautodocno(pane.eddate_trans.getDate());
                             String queryin = "INSERT INTO TB_JOURNAL_MASTER (JM_DOC_NO, JM_DATE_TRANS, "
                                     + "JM_REF_NO, JM_DATE_REF,JM_TYPE) "
                                     + "VALUES ('" + docno + "',"

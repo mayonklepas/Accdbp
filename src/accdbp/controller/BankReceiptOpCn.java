@@ -123,7 +123,7 @@ public final class BankReceiptOpCn {
             }
             //String prefix = Staticvar.month_periode + Staticvar.year_periode.substring(2);
             //String prefix = OneforAllfunc.getmonth(new Date()) + OneforAllfunc.getyear2digit(new Date());
-            pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()) + "000");
+            pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -693,7 +693,7 @@ public final class BankReceiptOpCn {
                         OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
                         pane.eddate_trans.setDate(zaman_old);
                     }
-                    pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate())+"000");
+                    pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
                 }
             }
         });
