@@ -371,8 +371,8 @@ public class OneforAllfunc {
 
             Statement stupgenerate = dbcon.cn().createStatement();
             for (Map<String, Object> res : lsAllTrans) {
-                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "')";
-                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "')";
+                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "') LIMIT 1";
+                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "') LIMIT  1";
                 String queryupgen = "";
                 String queryupmaster = "";
                 String queryupdetail = "";
