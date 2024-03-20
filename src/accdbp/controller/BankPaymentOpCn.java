@@ -142,6 +142,7 @@ public final class BankPaymentOpCn {
         checkaccount();
         checkperiode();
         importfromexcel();
+        
     }
 
     private void skinning() {
@@ -245,6 +246,7 @@ public final class BankPaymentOpCn {
             c.dc();
 
             calctotal();
+            pane.bcheck.requestFocus();
         } catch (SQLException ex) {
             OneforAllfunc.info("Error", ex.getMessage());
             Logger.getLogger(BankPaymentOpCn.class.getName()).log(Level.SEVERE, null, ex);

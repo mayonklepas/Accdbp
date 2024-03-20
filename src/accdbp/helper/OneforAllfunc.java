@@ -262,15 +262,15 @@ public class OneforAllfunc {
 
         }).sorted((o1, o2) -> o2.get("DOC_NO").toString().compareTo(o1.get("DOC_NO").toString()))
                 .findFirst();
-        
+
         if (optResult.isPresent()) {
             String rawresult = optResult.get().get("DOC_NO").toString();
             String lastExistPrefix = rawresult.substring(0, 6);
             if (lastExistPrefix.equals(prefix)) {
                 String incPrefix = rawresult.substring(0, 9);
                 int intresult = Integer.parseInt(incPrefix) + 1;
-                String resNum = String.valueOf(intresult)+"000";
-                return resNum; 
+                String resNum = String.valueOf(intresult) + "000";
+                return resNum;
             } else {
                 return prefix + "001000";
             }
@@ -283,18 +283,18 @@ public class OneforAllfunc {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
         String mastertable = table.replace("DETAIL", "MASTER");
-        
-        String masterColumnPrefix=column.split("_")[0].substring(0,2)+"M";
-        String docno=masterColumnPrefix+"_"+"DOC"+"_"+"NO";
-        if(masterColumnPrefix.equals("CPM")){
-            docno="CRP_DOC_NO";
+
+        String masterColumnPrefix = column.split("_")[0].substring(0, 2) + "M";
+        String docno = masterColumnPrefix + "_" + "DOC" + "_" + "NO";
+        if (masterColumnPrefix.equals("CPM")) {
+            docno = "CRP_DOC_NO";
         }
-        String detailColumnPrefix=column.split("_")[0];
-        
+        String detailColumnPrefix = column.split("_")[0];
+
         String query = "SELECT COUNT(*) AS RECDATA, SUM(" + column + ") AS SUMDATA FROM " + table + " d "
-                + "INNER JOIN "+mastertable+" m "
-                + "ON m."+docno+" = d."+detailColumnPrefix+"_"+masterColumnPrefix+"_MASTER "
-                + "WHERE EXTRACT(YEAR FROM "+masterColumnPrefix+"_DATE_TRANS) = ?  ";
+                + "INNER JOIN " + mastertable + " m "
+                + "ON m." + docno + " = d." + detailColumnPrefix + "_" + masterColumnPrefix + "_MASTER "
+                + "WHERE EXTRACT(YEAR FROM " + masterColumnPrefix + "_DATE_TRANS) = ?  ";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
             pres.setInt(1, Integer.parseInt(Staticvar.year_periode));
@@ -362,25 +362,24 @@ public class OneforAllfunc {
             }
             stsetcurbal.executeBatch();
 
-            /*Statement stselectview = dbcon.cn().createStatement();
-            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS ORDER BY ID ASC";
-            ResultSet res = stselectview.executeQuery(queryselectview);*/
-            List<Map<String, Object>> lsAllTrans = new DatabaseViews().getAllTransByYear(year);
-            
-            
+            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS WHERE EXTRACT(YEAR FROM DATE_TRANS) = ? ORDER BY ID ASC";
+
+            List<Map<String, Object>> lsAllTrans = DbResultSetter(queryselectview, new Object[]{year});
 
             Statement stupgenerate = dbcon.cn().createStatement();
             for (Map<String, Object> res : lsAllTrans) {
-                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "') LIMIT 1";
-                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "') LIMIT  1";
+                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' LIMIT 1) ";
+                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "' LIMIT 1)";
                 String queryupgen = "";
                 String queryupmaster = "";
                 String queryupdetail = "";
                 switch (res.get("DOC_TYPE").toString()) {
                     case "CP":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
                         stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
                         stupgenerate.addBatch(queryupdetail);
                         queryupgen = "UPDATE TB_CP_DETAIL SET "
                                 + "CPD_SALDO_MASTER=" + opbalmaster + " ,"
@@ -389,9 +388,11 @@ public class OneforAllfunc {
                         stupgenerate.addBatch(queryupgen);
                         break;
                     case "BP":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
                         stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
                         stupgenerate.addBatch(queryupdetail);
                         queryupgen = "UPDATE TB_BP_DETAIL SET "
                                 + "BPD_SALDO_MASTER=" + opbalmaster + " ,"
@@ -400,9 +401,11 @@ public class OneforAllfunc {
                         stupgenerate.addBatch(queryupgen);
                         break;
                     case "CR":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "'";
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "'";
                         stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
                         stupgenerate.addBatch(queryupdetail);
                         queryupgen = "UPDATE TB_CR_DETAIL SET "
                                 + "CRD_SALDO_MASTER=" + opbalmaster + " ,"
@@ -411,9 +414,11 @@ public class OneforAllfunc {
                         stupgenerate.addBatch(queryupgen);
                         break;
                     case "BR":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
+                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
                         stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
+                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT")
+                                + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
                         stupgenerate.addBatch(queryupdetail);
                         queryupgen = "UPDATE TB_BR_DETAIL SET "
                                 + "BRD_SALDO_MASTER=" + opbalmaster + " ,"
@@ -423,14 +428,16 @@ public class OneforAllfunc {
                         break;
                     default:
                         if ((double) res.get("DEBIT") == 0) {
-                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
+                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " "
+                                    + "WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
                             stupgenerate.addBatch(queryupmaster);
                             queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
                                     + "JD_SALDO=" + opbaldetail + " "
                                     + "WHERE JD_ID='" + res.get("ID") + "' ";
                             stupgenerate.addBatch(queryupgen);
                         } else {
-                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
+                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " "
+                                    + "WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
                             stupgenerate.addBatch(queryupmaster);
                             queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
                                     + "JD_SALDO=" + opbaldetail + " "
@@ -450,119 +457,6 @@ public class OneforAllfunc {
             stupgenerate.close();
             dbcon.dc();
             Logger.getLogger(OneforAllfunc.class.getName()).info("Transaction success, data has been generate");
-        } catch (SQLException ex) {
-            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public static void generatereportold(Date tanggal_dari, Date tanggal_hingga) {
-        try {
-            Dbconnection dbcon = new Dbconnection();
-            dbcon.cn().setAutoCommit(false);
-            Statement stgetcurbal = dbcon.cn().createStatement();
-            ResultSet resgetcurbal = stgetcurbal.executeQuery("SELECT ACC_CODE FROM TB_ACC");
-            Statement stsetcurbal = dbcon.cn().createStatement();
-            while (resgetcurbal.next()) {
-                String query = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=ACC_OPENING_BALANCE WHERE ACC_CODE='" + resgetcurbal.getString("ACC_CODE") + "'";
-                stsetcurbal.addBatch(query);
-            }
-            stsetcurbal.executeBatch();
-
-            /*Statement stselectview = dbcon.cn().createStatement();
-            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS "
-                    + "WHERE DATE_TRANS BETWEEN " + stanggal_dari + " AND " + stanggal_hingga + " ORDER BY ID ASC";
-            ResultSet res = stselectview.executeQuery(queryselectview);*/
-            int tahun = LocalDate.now().getYear();
-            List<Map<String, Object>> lsAllTrans = new DatabaseViews().getAllTransByYear(tahun).stream().filter(d -> {
-                java.sql.Date sqldt = (java.sql.Date) d.get("DATE_TRANS");
-                Date dt = new Date(sqldt.getTime());
-                if (dt.getTime() >= tanggal_dari.getTime() && dt.getTime() <= tanggal_hingga.getTime()) {
-                    return true;
-                } else {
-                    return false;
-                }
-
-            }).collect(Collectors.toList());
-
-            Statement stupgenerate = dbcon.cn().createStatement();
-            for (Map<String, Object> res : lsAllTrans) {
-                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "')";
-                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "')";
-                String queryupgen = "";
-                String queryupmaster = "";
-                String queryupdetail = "";
-                switch (res.get("DOC_TYPE").toString()) {
-                    case "CP":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
-                        stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
-                        stupgenerate.addBatch(queryupdetail);
-                        queryupgen = "UPDATE TB_CP_DETAIL SET "
-                                + "CPD_SALDO_MASTER=" + opbalmaster + " ,"
-                                + "CPD_SALDO=" + opbaldetail + " "
-                                + "WHERE CPD_ID='" + res.get("ID") + "' ";
-                        stupgenerate.addBatch(queryupgen);
-                        break;
-                    case "BP":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
-                        stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
-                        stupgenerate.addBatch(queryupdetail);
-                        queryupgen = "UPDATE TB_BP_DETAIL SET "
-                                + "BPD_SALDO_MASTER=" + opbalmaster + " ,"
-                                + "BPD_SALDO=" + opbaldetail + " "
-                                + "WHERE BPD_ID='" + res.get("ID") + "' ";
-                        stupgenerate.addBatch(queryupgen);
-                        break;
-                    case "CR":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "'";
-                        stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
-                        stupgenerate.addBatch(queryupdetail);
-                        queryupgen = "UPDATE TB_CR_DETAIL SET "
-                                + "CRD_SALDO_MASTER=" + opbalmaster + " ,"
-                                + "CRD_SALDO=" + opbaldetail + " "
-                                + "WHERE CRD_ID='" + res.get("ID") + "' ";
-                        stupgenerate.addBatch(queryupgen);
-                        break;
-                    case "BR":
-                        queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbalmaster + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' ";
-                        stupgenerate.addBatch(queryupmaster);
-                        queryupdetail = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "' ";
-                        stupgenerate.addBatch(queryupdetail);
-                        queryupgen = "UPDATE TB_BR_DETAIL SET "
-                                + "BRD_SALDO_MASTER=" + opbalmaster + " ,"
-                                + "BRD_SALDO=" + opbaldetail + " "
-                                + "WHERE BRD_ID='" + res.get("ID") + "' ";
-                        stupgenerate.addBatch(queryupgen);
-                        break;
-                    default:
-                        if ((double) res.get("DEBIT") == 0) {
-                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "-" + res.get("CREDIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
-                            stupgenerate.addBatch(queryupmaster);
-                            queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
-                                    + "JD_SALDO=" + opbaldetail + " "
-                                    + "WHERE JD_ID='" + res.get("ID") + "' ";
-                            stupgenerate.addBatch(queryupgen);
-                        } else {
-                            queryupmaster = "UPDATE TB_ACC SET ACC_CURRENT_BALANCE=" + opbaldetail + "+" + res.get("DEBIT") + " WHERE ACC_CODE='" + res.get("ACC_CODE") + "'";
-                            stupgenerate.addBatch(queryupmaster);
-                            queryupgen = "UPDATE TB_JOURNAL_DETAIL SET "
-                                    + "JD_SALDO=" + opbaldetail + " "
-                                    + "WHERE JD_ID='" + res.get("ID") + "' ";
-                            stupgenerate.addBatch(queryupgen);
-                        }
-
-                        break;
-                }
-
-            }
-            stupgenerate.executeBatch();
-            stgetcurbal.close();
-            stupgenerate.close();
-            dbcon.cn().commit();
-            dbcon.dc();
         } catch (SQLException ex) {
             Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -609,6 +503,49 @@ public class OneforAllfunc {
         intext = text.replaceAll("['\"]", " ");
         return intext;
     }
-    
-    
+
+    public static List<Map<String, Object>> DbResultSetter(String query, Object[] param) {
+        try (Connection con = new Dbconnection().cn(); PreparedStatement ps = con.prepareStatement(query)) {
+            for (int i = 0; i < param.length; i++) {
+                ps.setObject(i + 1, param[i]);
+            }
+            ResultSet rs = ps.executeQuery();
+            List<Map<String, Object>> result = new ArrayList<>();
+            while (rs.next()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columCount = metaData.getColumnCount();
+                Map<String, Object> mapRes = new HashMap<>();
+                for (int i = 0; i < columCount; i++) {
+                    String columnName = metaData.getColumnLabel(i + 1);
+                    mapRes.put(columnName, rs.getObject(columnName));
+                }
+                result.add(mapRes);
+            }
+            rs.close();
+            ps.close();
+            return result;
+        } catch (SQLException ex) {
+            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+    }
+
+    public static boolean DbExec(String query, Object[] param) {
+        try (Connection con = new Dbconnection().cn(); PreparedStatement ps = con.prepareStatement(query)) {
+            for (int i = 0; i < param.length; i++) {
+                ps.setObject(i + 1, param[i]);
+            }
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                return true;
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(OneforAllfunc.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+    }
+
 }
