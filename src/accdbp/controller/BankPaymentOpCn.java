@@ -142,11 +142,11 @@ public final class BankPaymentOpCn {
         checkaccount();
         checkperiode();
         importfromexcel();
-        
+
     }
 
     private void skinning() {
-        pane.eddoc_no.setEnabled(false);
+        pane.eddoc_no.setEditable(false);
         pane.eddate_trans.setDateFormatString("dd/MM/yyyy");
         pane.edref_date.setDateFormatString("dd/MM/yyyy");
 
@@ -342,7 +342,7 @@ public final class BankPaymentOpCn {
                                     } else {
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
 
-                                        int seq = Integer.parseInt(pane.eddoc_no.getText()) + (i + 1);
+                                        long seq = Long.parseLong(pane.eddoc_no.getText()) + (i + 1);
 
                                         String queryindetail = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
                                                 + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
