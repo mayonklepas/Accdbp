@@ -134,7 +134,7 @@ public final class AccountOpCn {
                     if (id.equals("")) {
                         try {
                             String query = "INSERT INTO TB_ACC (ACC_CODE, ACC_NAME, ACC_OPENING_BALANCE, "
-                                 + "ACC_TYPE, ACC_GROUP, ACC_DESC,ISBOOKPRINT) VALUES (?,?,?,?,?,?,?);";
+                                 + "ACC_TYPE, ACC_GROUP, ACC_DESC,ISBOOKPRINT) VALUES (?,?,?,?,?,?,?)";
                             PreparedStatement pres = c.cn().prepareStatement(query);
                             pres.setString(1, pane.edaccount_master_code.getText());
                             pres.setString(2, pane.edaccount_master_name.getText());

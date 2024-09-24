@@ -92,7 +92,7 @@ public class BankPaymentCn {
                 try {
                     String query = "SELECT a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
                          + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED,(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=a.BPM_DOC_NO) AS TOTAL"
-                         + " FROM TB_BP_MASTER a INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE ORDER BY a.BPM_DOC_NO DESC;";
+                         + " FROM TB_BP_MASTER a INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE ORDER BY a.BPM_DOC_NO DESC";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {
@@ -318,7 +318,7 @@ public class BankPaymentCn {
                                      + "WHERE lower(a.BPM_DOC_NO) LIKE ? "
                                      + "OR lower(a.BPM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.BPM_DATE_TRANS LIKE ?  ORDER BY a.BPM_DOC_NO DESC;";
+                                     + "OR a.BPM_DATE_TRANS LIKE ?  ORDER BY a.BPM_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

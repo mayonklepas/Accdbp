@@ -52,7 +52,7 @@ public class DatabaseViews {
                     + "FROM TB_CP_DETAIL "
                     + "INNER JOIN TB_CP_MASTER "
                     + "    ON TB_CP_DETAIL.CPD_CPM_MASTER=TB_CP_MASTER.CRP_DOC_NO  "
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
 
         });
@@ -76,7 +76,7 @@ public class DatabaseViews {
                     + "FROM TB_CR_DETAIL "
                     + "INNER JOIN TB_CR_MASTER "
                     + "    ON TB_CR_DETAIL.CRD_CRM_MASTER =TB_CR_MASTER.CRM_DOC_NO  "
-                    + "WHERE EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
 
         });
@@ -100,7 +100,7 @@ public class DatabaseViews {
                     + "FROM TB_BP_DETAIL "
                     + "INNER JOIN TB_BP_MASTER "
                     + "    ON TB_BP_DETAIL.BPD_BPM_MASTER = TB_BP_MASTER.BPM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -123,7 +123,7 @@ public class DatabaseViews {
                     + "FROM TB_BR_DETAIL "
                     + "INNER JOIN TB_BR_MASTER "
                     + "    ON TB_BR_DETAIL.BRD_BRM_MASTER = TB_BR_MASTER.BRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -146,7 +146,7 @@ public class DatabaseViews {
                     + "FROM TB_JOURNAL_DETAIL "
                     + "INNER JOIN TB_JOURNAL_MASTER "
                     + "    ON TB_JOURNAL_DETAIL.JD_JM_MASTER = TB_JOURNAL_MASTER.JM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -184,11 +184,11 @@ public class DatabaseViews {
                     + "    CPM_ACC AS ACC_CODE_MASTER ,"
                     + "    CPD_SALDO AS SALDO,"
                     + "    CPD_SALDO_MASTER  AS SALDO_MASTER ,"
-                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE  ACC_CODE = CPM_ACC LIMIT 1) AS  ISBOOKPRINT "
+                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE  ACC_CODE = CPM_ACC FETCH FIRST 1 ROWS ONLY) AS  ISBOOKPRINT "
                     + "FROM  TB_CP_DETAIL "
                     + "INNER JOIN  TB_CP_MASTER "
                     + "    ON TB_CP_DETAIL.CPD_CPM_MASTER=TB_CP_MASTER.CRP_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -201,11 +201,11 @@ public class DatabaseViews {
                     + "    CRM_ACC AS ACC_CODE_MASTER,"
                     + "    CRD_SALDO AS SALDO,"
                     + "    CRD_SALDO_MASTER AS SALDO_MASTER,"
-                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = CRM_ACC LIMIT 1) AS ISBOOKPRINT "
+                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = CRM_ACC FETCH FIRST 1 ROWS ONLY) AS ISBOOKPRINT "
                     + "FROM  TB_CR_DETAIL "
                     + "INNER JOIN  TB_CR_MASTER "
                     + "    ON TB_CR_DETAIL.CRD_CRM_MASTER = TB_CR_MASTER.CRM_DOC_NO "
-                    + "WHERE  EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
+                    + "WHERE  YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -217,11 +217,11 @@ public class DatabaseViews {
                     + "    BPM_ACC AS ACC_CODE_MASTER,"
                     + "    BPD_SALDO AS SALDO,"
                     + "    BPD_SALDO_MASTER AS SALDO_MASTER,"
-                    + "   (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = BPM_ACC LIMIT 1) AS ISBOOKPRINT "
+                    + "   (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = BPM_ACC FETCH FIRST 1 ROWS ONLY) AS ISBOOKPRINT "
                     + "FROM  TB_BP_DETAIL "
                     + "INNER JOIN TB_BP_MASTER "
                     + "    ON TB_BP_DETAIL.BPD_BPM_MASTER = TB_BP_MASTER.BPM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
 
         });
@@ -234,11 +234,11 @@ public class DatabaseViews {
                     + "     BRM_ACC AS ACC_CODE_MASTER,"
                     + "     BRD_SALDO AS SALDO,"
                     + "     BRD_SALDO_MASTER AS SALDO_MASTER, "
-                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = BRM_ACC  LIMIT 1) AS ISBOOKPRINT "
+                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = BRM_ACC FETCH FIRST 1 ROWS ONLY) AS ISBOOKPRINT "
                     + "FROM  TB_BR_DETAIL  "
                     + "INNER JOIN TB_BR_MASTER  "
                     + "    ON TB_BR_DETAIL.BRD_BRM_MASTER = TB_BR_MASTER.BRM_DOC_NO "
-                    + "WHERE  EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
+                    + "WHERE  YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -250,11 +250,11 @@ public class DatabaseViews {
                     + "    JD_ACC AS ACC_CODE_MASTER,"
                     + "    JD_SALDO AS SALDO,"
                     + "    JD_SALDO AS SALDO_MASTER,"
-                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = JD_ACC LIMIT 1) AS ISBOOKPRINT "
+                    + "    (SELECT ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE = JD_ACC FETCH FIRST 1 ROWS ONLY) AS ISBOOKPRINT "
                     + "FROM TB_JOURNAL_DETAIL "
                     + "INNER JOIN TB_JOURNAL_MASTER "
                     + "    ON TB_JOURNAL_DETAIL.JD_JM_MASTER = TB_JOURNAL_MASTER.JM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -303,7 +303,7 @@ public class DatabaseViews {
                     + "FROM TB_CP_DETAIL"
                     + "INNER JOIN TB_CP_MASTER"
                     + "    ON TB_CP_DETAIL.CPD_CPM_MASTER = TB_CP_MASTER.CRP_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -327,7 +327,7 @@ public class DatabaseViews {
                     + "FROM TB_CR_DETAIL"
                     + "INNER JOIN TB_CR_MASTER"
                     + "    ON TB_CR_DETAIL.CRD_CRM_MASTER = TB_CR_MASTER.CRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -350,7 +350,7 @@ public class DatabaseViews {
                     + "FROM TB_BP_DETAI "
                     + "INNER JOIN TB_BP_MASTER "
                     + "    ON TB_BP_DETAIL.BPD_BPM_MASTER = TB_BP_MASTER.BPM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -374,7 +374,7 @@ public class DatabaseViews {
                     + "FROM TB_BR_DETAIL "
                     + "INNER JOIN TB_BR_MASTER "
                     + "    ON TB_BR_DETAIL.BRD_BRM_MASTER = TB_BR_MASTER.BRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -397,7 +397,7 @@ public class DatabaseViews {
                     + "FROM TB_JOURNAL_DETAIL "
                     + "INNER JOIN TB_JOURNAL_MASTER "
                     + "    ON TB_JOURNAL_DETAIL.JD_JM_MASTER = TB_JOURNAL_MASTER.JM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_JOURNAL_MASTER.JM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_JOURNAL_MASTER.JM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -444,7 +444,7 @@ public class DatabaseViews {
                     + "FROM TB_CP_DETAIL "
                     + "INNER JOIN TB_CP_MASTER "
                     + "    ON TB_CP_DETAIL.CPD_CPM_MASTER = TB_CP_MASTER.CRP_DOC_NO"
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -466,7 +466,7 @@ public class DatabaseViews {
                     + "FROM TB_CR_DETAIL "
                     + "INNER JOIN TB_CR_MASTER "
                     + "    ON TB_CR_DETAIL.CRD_CRM_MASTER = TB_CR_MASTER.CRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -487,7 +487,7 @@ public class DatabaseViews {
                     + "FROM TB_BP_DETAIL "
                     + "INNER JOIN TB_BP_MASTER "
                     + "    ON TB_BP_DETAIL.BPD_BPM_MASTER = TB_BP_MASTER.BPM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -509,7 +509,7 @@ public class DatabaseViews {
                     + "FROM TB_BR_DETAIL"
                     + "INNER JOIN TB_BR_MASTER"
                     + "    ON TB_BR_DETAIL.BRD_BRM_MASTER = TB_BR_MASTER.BRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -549,7 +549,7 @@ public class DatabaseViews {
                     + "FROM TB_CP_MASTER "
                     + "INNER JOIN TB_ACC "
                     + "    ON TB_CP_MASTER.CPM_ACC = TB_ACC.ACC_CODE "
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -564,7 +564,7 @@ public class DatabaseViews {
                     + "FROM TB_CR_MASTER "
                     + "INNER JOIN TB_ACC "
                     + "    ON TB_CR_MASTER.CRM_ACC = TB_ACC.ACC_CODE "
-                    + "WHERE EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -578,7 +578,7 @@ public class DatabaseViews {
                     + "FROM TB_BP_MASTER "
                     + "INNER JOIN TB_ACC "
                     + "    ON TB_BP_MASTER.BPM_ACC = TB_ACC.ACC_CODE "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
 
         });
@@ -593,7 +593,7 @@ public class DatabaseViews {
                     + "FROM TB_BR_MASTER "
                     + "INNER JOIN TB_ACC "
                     + "    ON TB_BR_MASTER.BRM_ACC = TB_ACC.ACC_CODE"
-                    + "WHERE EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -642,7 +642,7 @@ public class DatabaseViews {
                     + "FROM TB_CP_DETAIL "
                     + "INNER JOIN TB_CP_MASTER "
                     + "    ON TB_CP_DETAIL.CPD_CPM_MASTER=TB_CP_MASTER.CRP_DOC_NO  "
-                    + "WHERE EXTRACT(YEAR FROM TB_CP_MASTER.CPM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_CP_MASTER.CPM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
 
         });
@@ -666,7 +666,7 @@ public class DatabaseViews {
                     + "FROM TB_CR_DETAIL "
                     + "INNER JOIN TB_CR_MASTER "
                     + "    ON TB_CR_DETAIL.CRD_CRM_MASTER =TB_CR_MASTER.CRM_DOC_NO  "
-                    + "WHERE EXTRACT(YEAR FROM TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_CR_MASTER.CRM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
 
         });
@@ -690,7 +690,7 @@ public class DatabaseViews {
                     + "FROM TB_BP_DETAIL "
                     + "INNER JOIN TB_BP_MASTER "
                     + "    ON TB_BP_DETAIL.BPD_BPM_MASTER = TB_BP_MASTER.BPM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
+                    + "WHERE YEAR(TB_BP_MASTER.BPM_DATE_TRANS) = ? ";
             return DbResultSetter(query, param);
         });
 
@@ -713,7 +713,7 @@ public class DatabaseViews {
                     + "FROM TB_BR_DETAIL "
                     + "INNER JOIN TB_BR_MASTER "
                     + "    ON TB_BR_DETAIL.BRD_BRM_MASTER = TB_BR_MASTER.BRM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_BR_MASTER.BRM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_BR_MASTER.BRM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 
@@ -736,7 +736,7 @@ public class DatabaseViews {
                     + "FROM TB_JOURNAL_DETAIL "
                     + "INNER JOIN TB_JOURNAL_MASTER "
                     + "    ON TB_JOURNAL_DETAIL.JD_JM_MASTER = TB_JOURNAL_MASTER.JM_DOC_NO "
-                    + "WHERE EXTRACT(YEAR FROM TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
+                    + "WHERE YEAR(TB_JOURNAL_MASTER.JM_DATE_TRANS) = ?";
             return DbResultSetter(query, param);
         });
 

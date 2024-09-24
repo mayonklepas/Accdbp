@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.2.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5e889f7-78dc-47ca-884d-92e8bcb6ba33">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="accdb"/>
@@ -64,11 +64,11 @@ CASE WHEN
 (SELECT SALDO
 	FROM ALLTRANS
 	WHERE ACC_CODE=ta.ACC_CODE 
-	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} LIMIT 1 )
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} FETCH FIRST 1 ROWS ONLY)
 	ELSE (SELECT SALDO_MASTER
 	FROM ALLTRANS
 	WHERE ACC_CODE_MASTER=ta.ACC_CODE 
-	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO}  LIMIT 1) END)>0 
+	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO}  FETCH FIRST 1 ROWS ONLY) END)>0 
 	THEN 0 ELSE 
 
 (CASE WHEN ISBOOKPRINT = 0
@@ -77,12 +77,12 @@ COALESCE((SELECT SALDO
 	FROM ALLTRANS
 	WHERE ACC_CODE=ta.ACC_CODE 
 	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
-	AND SALDO > 0 ORDER BY ID DESC LIMIT 1
+	AND SALDO > 0 ORDER BY ID DESC FETCH FIRST 1 ROWS ONLY
 ),0)  ELSE COALESCE((SELECT SALDO_MASTER
 	FROM ALLTRANS
 	WHERE ACC_CODE_MASTER=ta.ACC_CODE 
 	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
-	AND SALDO_MASTER > 0 ORDER BY ID DESC LIMIT 1
+	AND SALDO_MASTER > 0 ORDER BY ID FETCH FIRST 1 ROWS ONLY
 ),0) END) END AS DEBIT,
 CASE WHEN ISBOOKPRINT = 0
 THEN
@@ -91,12 +91,12 @@ COALESCE((SELECT SALDO
 	WHERE ACC_CODE=ta.ACC_CODE 
 	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
 	AND SALDO < 0 ORDER BY ID DESC
- LIMIT 1),0)  ELSE COALESCE((SELECT SALDO_MASTER
+ FETCH FIRST 1 ROWS ONLY),0)  ELSE COALESCE((SELECT SALDO_MASTER
 	FROM ALLTRANS
 	WHERE ACC_CODE_MASTER=ta.ACC_CODE 
 	AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} 
 	AND SALDO_MASTER < 0 ORDER BY ID DESC
- LIMIT 1 ),0) END AS CREDIT
+ FETCH FIRST 1 ROWS ONLY),0) END AS CREDIT
 FROM TB_ACC ta WHERE ACC_GROUP=1 OR ACC_GROUP=3]]>
 	</queryString>
 	<field name="ACC_CODE" class="java.lang.String">

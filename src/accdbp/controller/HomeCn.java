@@ -66,7 +66,7 @@ public class HomeCn {
         hm.setExtendedState(Frame.MAXIMIZED_BOTH);
         hm.setVisible(true);
         String companyName = "";
-        String sql = "SELECT * FROM TB_INFO LIMIT 1;";
+        String sql = "SELECT * FROM TB_INFO FETCH FIRST 1 ROWS ONLY";
         try ( Connection c = new Dbconnection().cn();  PreparedStatement ps = c.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

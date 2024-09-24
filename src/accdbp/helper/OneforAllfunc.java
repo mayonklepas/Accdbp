@@ -180,7 +180,7 @@ public class OneforAllfunc {
         int counrow = 0;
         Dbconnection dcon = new Dbconnection();
         try {
-            PreparedStatement pres = dcon.cn().prepareStatement("SELECT COUNT(ACC_CODE) AS RESL FROM TB_ACC WHERE ACC_CODE=? ;");
+            PreparedStatement pres = dcon.cn().prepareStatement("SELECT COUNT(ACC_CODE) AS RESL FROM TB_ACC WHERE ACC_CODE=?");
             pres.setString(1, id);
             ResultSet res = pres.executeQuery();
             while (res.next()) {
@@ -219,7 +219,7 @@ public class OneforAllfunc {
         Dbconnection cn = new Dbconnection();
         try {
             String query = "SELECT " + column + " FROM " + table + " "
-                    + "WHERE " + column + " LIKE SUBSTRING ?  ORDER BY CAST(" + column + " AS integer) DESC LIMIT 1";
+                    + "WHERE " + column + " LIKE SUBSTRING ?  ORDER BY CAST(" + column + " AS integer) DESC FETCH FIRST 1 ROWS ONLY";
             PreparedStatement pres = cn.cn().prepareStatement(query);
             pres.setString(1, "%" + prefix + "%");
             ResultSet res = pres.executeQuery();
@@ -294,7 +294,7 @@ public class OneforAllfunc {
         String query = "SELECT COUNT(*) AS RECDATA, SUM(" + column + ") AS SUMDATA FROM " + table + " d "
                 + "INNER JOIN " + mastertable + " m "
                 + "ON m." + docno + " = d." + detailColumnPrefix + "_" + masterColumnPrefix + "_MASTER "
-                + "WHERE EXTRACT(YEAR FROM " + masterColumnPrefix + "_DATE_TRANS) = ?  ";
+                + "WHERE YEAR(" + masterColumnPrefix + "_DATE_TRANS) = ?  ";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
             pres.setInt(1, Integer.parseInt(Staticvar.year_periode));
@@ -362,14 +362,14 @@ public class OneforAllfunc {
             }
             stsetcurbal.executeBatch();
 
-            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS WHERE EXTRACT(YEAR FROM DATE_TRANS) = ? ORDER BY ID ASC";
+            String queryselectview = "SELECT ID,ACC_CODE,ACC_CODE_MASTER,DEBIT,CREDIT,SALDO,SALDO_MASTER,DOC_TYPE FROM ALLTRANS WHERE YEAR(DATE_TRANS) = ? ORDER BY ID ASC";
 
             List<Map<String, Object>> lsAllTrans = DbResultSetter(queryselectview, new Object[]{year});
 
             Statement stupgenerate = dbcon.cn().createStatement();
             for (Map<String, Object> res : lsAllTrans) {
-                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' LIMIT 1) ";
-                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "' LIMIT 1)";
+                String opbalmaster = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE_MASTER") + "' FETCH FIRST 1 ROWS ONLY) ";
+                String opbaldetail = "(SELECT ACC_CURRENT_BALANCE FROM TB_ACC WHERE ACC_CODE='" + res.get("ACC_CODE") + "'  FETCH FIRST 1 ROWS ONLY)";
                 String queryupgen = "";
                 String queryupmaster = "";
                 String queryupdetail = "";

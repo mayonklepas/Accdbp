@@ -62,7 +62,7 @@ public class SettingController {
             String query = "SELECT COMPANY_NAME,COMPANY_ADDRESS,COMPANY_TELEPHONE FROM TB_INFO WHERE ID=1";
             PreparedStatement pre = c.cn().prepareStatement(query);
             ResultSet res = pre.executeQuery();
-            res.first();
+            res.next();
             pane.edcompanyname.setText(res.getString("COMPANY_NAME"));
             pane.edcompanyaddress.setText(res.getString("COMPANY_ADDRESS"));
             pane.edcompanytelp.setText(res.getString("COMPANY_TELEPHONE"));

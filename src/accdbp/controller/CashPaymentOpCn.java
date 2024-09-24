@@ -286,7 +286,7 @@ public final class CashPaymentOpCn {
                                         + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
                                         + "'" + pane.edref_no.getText() + "',"
                                         + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                        + "'" + pane.edaccount.getText() + "');";
+                                        + "'" + pane.edaccount.getText() + "')";
                                 Statement st = c.cn().createStatement();
                                 st.addBatch(queryin);
                                 int rowcount = pane.tabledata.getRowCount();
@@ -361,7 +361,7 @@ public final class CashPaymentOpCn {
                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                                 + "" + String.valueOf(amount) + ","
                                                 + "" + String.valueOf(amount) + ","
-                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "');";
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
                                         st.addBatch(queryindetail);
 
                                     }

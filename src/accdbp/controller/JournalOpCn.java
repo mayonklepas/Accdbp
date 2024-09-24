@@ -294,7 +294,7 @@ public final class JournalOpCn {
                                     + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
                                     + "'" + noref + "',"
                                     + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                    + "'" + Staticvar.journaltype + "');";
+                                    + "'" + Staticvar.journaltype + "')";
                             st.addBatch(queryin);
                             int rowcount = pane.tabledata.getRowCount();
                             for (int i = 0; i < rowcount; i++) {
@@ -383,7 +383,7 @@ public final class JournalOpCn {
                                         + "'" + String.valueOf(pane.tabledata.getValueAt(i, 1)) + "',"
                                         + "" + String.valueOf(amount_debit) + ","
                                         + "" + String.valueOf(amount_credit) + ","
-                                        + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 5)) + "');";
+                                        + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 5)) + "')";
                                 st.addBatch(queryindetail);
 
                             }

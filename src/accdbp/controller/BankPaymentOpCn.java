@@ -20,7 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -33,19 +32,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -55,7 +48,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import org.apache.poi.ss.usermodel.Cell;
@@ -64,7 +56,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import sun.util.calendar.CalendarUtils;
 
 /**
  *
@@ -272,7 +263,7 @@ public final class BankPaymentOpCn {
                                         + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
                                         + "'" + pane.edref_no.getText() + "',"
                                         + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                        + "'" + pane.edaccount.getText() + "');";
+                                        + "'" + pane.edaccount.getText() + "')";
                                 Statement st = c.cn().createStatement();
                                 st.addBatch(queryin);
                                 int rowcount = pane.tabledata.getRowCount();
@@ -351,7 +342,7 @@ public final class BankPaymentOpCn {
                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                                 + "" + String.valueOf(amount) + ","
                                                 + "" + String.valueOf(amount) + ","
-                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "');";
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -701,11 +692,10 @@ public final class BankPaymentOpCn {
                         OneforAllfunc.info("Operation Failed", "Year not match with accounting periode");
                         pane.eddate_trans.setDate(zaman_old);
                     }
+                    pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
                 }
-                pane.eddoc_no.setText(OneforAllfunc.getautodocno(pane.eddate_trans.getDate()));
             }
         });
-
         pane.edref_date.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {

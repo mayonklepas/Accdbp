@@ -71,7 +71,7 @@ public class LoginCn {
                         String queryinfo = "SELECT COMPANY_NAME,COMPANY_ADDRESS,COMPANY_TELEPHONE FROM TB_INFO WHERE ID=1";
                         PreparedStatement preinfo = c.cn().prepareStatement(queryinfo);
                         ResultSet resinfo = preinfo.executeQuery();
-                        resinfo.first();
+                        resinfo.next();
                         Staticvar.company_name = resinfo.getString("COMPANY_NAME");
                         Staticvar.company_address = resinfo.getString("COMPANY_ADDRESS");
                         Staticvar.company_telp = resinfo.getString("COMPANY_TELEPHONE");

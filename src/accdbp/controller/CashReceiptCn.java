@@ -92,7 +92,7 @@ public class CashReceiptCn {
                 try {
                     String query = "SELECT  a.CRM_DOC_NO, a.CRM_DATE_TRANS, a.CRM_REF_NO, a.CRM_DATE_REF, "
                          + "a.CRM_ACC,b.ACC_NAME,a.CRM_DATE_CREATED,(SELECT SUM(CRD_AMOUNT) FROM TB_CR_DETAIL WHERE CRD_CRM_MASTER=a.CRM_DOC_NO) AS TOTAL"
-                         + " FROM TB_CR_MASTER a INNER JOIN TB_ACC b ON a.CRM_ACC=b.ACC_CODE ORDER BY a.CRM_DOC_NO DESC;";
+                         + " FROM TB_CR_MASTER a INNER JOIN TB_ACC b ON a.CRM_ACC=b.ACC_CODE ORDER BY a.CRM_DOC_NO DESC";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {
@@ -319,7 +319,7 @@ public class CashReceiptCn {
                                      + "WHERE lower(a.CRM_DOC_NO) LIKE ? "
                                      + "OR lower(a.CRM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.CRM_DATE_TRANS LIKE ?  ORDER BY a.CRM_DOC_NO DESC;";
+                                     + "OR a.CRM_DATE_TRANS LIKE ?  ORDER BY a.CRM_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

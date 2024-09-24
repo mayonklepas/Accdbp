@@ -1,0 +1,789 @@
+2024-09-23 09:32:01.692771+07:00 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1626)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:130)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1191)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1056)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectionTestJob.run(ConnectionTestJob.java:103)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2024-09-23 09:32:05.980020+07:00 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1626)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:130)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1191)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1056)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.runSync(ConnectJob.java:97)
+	at org.jkiss.dbeaver.ui.actions.datasource.DataSourceHandler.connectToDataSource(DataSourceHandler.java:109)
+	at org.jkiss.dbeaver.ui.actions.datasource.UIServiceConnectionsImpl.initConnection(UIServiceConnectionsImpl.java:87)
+	at org.jkiss.dbeaver.model.navigator.DBNDataSource.initializeNode(DBNDataSource.java:158)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:225)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:1)
+	at org.jkiss.dbeaver.model.navigator.DBNUtils.getNodeChildrenFiltered(DBNUtils.java:80)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:49)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:1)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:88)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:72)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2024-09-23 09:32:18.774135+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Cannot drop "TB_ACC" because "PLBSHEAD, HEADERLEDGER" depends on it; SQL statement:
+DROP TABLE PUBLIC.TB_ACC [90107-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:108)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:133)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.executePersistAction(DBExecUtils.java:357)
+	at org.jkiss.dbeaver.model.impl.edit.AbstractObjectManager.executePersistAction(AbstractObjectManager.java:40)
+	at org.jkiss.dbeaver.model.impl.edit.AbstractCommandContext.executeCommands(AbstractCommandContext.java:206)
+	at org.jkiss.dbeaver.model.impl.edit.AbstractCommandContext.saveChanges(AbstractCommandContext.java:122)
+	at org.jkiss.dbeaver.ui.navigator.actions.NavigatorHandlerObjectBase$ObjectSaver.run(NavigatorHandlerObjectBase.java:296)
+	at org.jkiss.dbeaver.runtime.TasksJob.run(TasksJob.java:58)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2024-09-23 09:33:05.494730+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_INFO" already exists; SQL statement:
+CREATE CACHED TABLE "PUBLIC"."TB_INFO"(
+    "ID" SMALLINT,
+    "COMPANY_NAME" CHARACTER(100),
+    "COMPANY_ADDRESS" CHARACTER(200),
+    "COMPANY_CITY" CHARACTER(50),
+    "COMPANY_COUNTRY" CHARACTER(50),
+    "COMPANY_TELEPHONE" CHARACTER(20),
+    "COMPANY_HANDPHONE" CHARACTER(20)
+) [42101-222]
+2024-09-23 09:33:28.677385+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_INFO" already exists; SQL statement:
+CREATE CACHED TABLE "PUBLIC"."TB_INFO"(
+    "ID" SMALLINT,
+    "COMPANY_NAME" CHARACTER(100),
+    "COMPANY_ADDRESS" CHARACTER(200),
+    "COMPANY_CITY" CHARACTER(50),
+    "COMPANY_COUNTRY" CHARACTER(50),
+    "COMPANY_TELEPHONE" CHARACTER(20),
+    "COMPANY_HANDPHONE" CHARACTER(20)
+) [42101-222]
+2024-09-23 09:33:30.088920+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_INFO" already exists; SQL statement:
+CREATE CACHED TABLE "PUBLIC"."TB_INFO"(
+    "ID" SMALLINT,
+    "COMPANY_NAME" CHARACTER(100),
+    "COMPANY_ADDRESS" CHARACTER(200),
+    "COMPANY_CITY" CHARACTER(50),
+    "COMPANY_COUNTRY" CHARACTER(50),
+    "COMPANY_TELEPHONE" CHARACTER(20),
+    "COMPANY_HANDPHONE" CHARACTER(20)
+) [42101-222]
+2024-09-23 09:33:58.023981+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "O_14" already exists; SQL statement:
+---- Table Data ----
+CREATE TABLE O_14(C0 VARCHAR, C1 VARCHAR, C2 VARCHAR, C3 VARCHAR, C4 VARCHAR, C5 VARCHAR, C6 VARCHAR, C [42101-222]
+2024-09-23 09:34:07.726712+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "O_14" already exists; SQL statement:
+---- Table Data ----
+CREATE TABLE O_14(C0 VARCHAR, C1 VARCHAR, C2 VARCHAR, C3 VARCHAR, C4 VARCHAR, C5 VARCHAR, C6 VARCHAR, C [42101-222]
+2024-09-23 09:34:24.614742+07:00 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1626)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:130)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1191)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1056)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.runSync(ConnectJob.java:97)
+	at org.jkiss.dbeaver.ui.actions.datasource.DataSourceHandler.connectToDataSource(DataSourceHandler.java:109)
+	at org.jkiss.dbeaver.ui.actions.datasource.UIServiceConnectionsImpl.initConnection(UIServiceConnectionsImpl.java:87)
+	at org.jkiss.dbeaver.model.navigator.DBNDataSource.initializeNode(DBNDataSource.java:158)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:225)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:1)
+	at org.jkiss.dbeaver.model.navigator.DBNUtils.getNodeChildrenFiltered(DBNUtils.java:80)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:49)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:1)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:88)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:72)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2024-09-23 09:34:48.766926+07:00 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1626)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:130)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1191)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1056)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.runSync(ConnectJob.java:97)
+	at org.jkiss.dbeaver.ui.actions.datasource.DataSourceHandler.connectToDataSource(DataSourceHandler.java:109)
+	at org.jkiss.dbeaver.ui.actions.datasource.UIServiceConnectionsImpl.initConnection(UIServiceConnectionsImpl.java:87)
+	at org.jkiss.dbeaver.model.navigator.DBNDataSource.initializeNode(DBNDataSource.java:158)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:225)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:1)
+	at org.jkiss.dbeaver.model.navigator.DBNUtils.getNodeChildrenFiltered(DBNUtils.java:80)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:49)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:1)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:88)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:72)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2024-09-23 09:40:37.682333+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: View "PUBLIC.ALLTRANS" is invalid: "Table ""TB_CP_DETAIL"" not found [42102-222]"; SQL statement:
+SELECT x.* FROM PUBLIC.ALLTRANS x [90109-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.table.TableView.getScanIndex(TableView.java:303)
+	at org.h2.table.TableFilter.getBestPlanItem(TableFilter.java:222)
+	at org.h2.table.Plan.calculateCost(Plan.java:115)
+	at org.h2.command.query.Optimizer.testPlan(Optimizer.java:182)
+	at org.h2.command.query.Optimizer.calculateBestPlan(Optimizer.java:81)
+	at org.h2.command.query.Optimizer.optimize(Optimizer.java:241)
+	at org.h2.command.query.Select.preparePlan(Select.java:1325)
+	at org.h2.command.query.Select.preparePlan(Select.java:1202)
+	at org.h2.command.query.Query.prepare(Query.java:219)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.model.impl.jdbc.struct.JDBCTable.readData(JDBCTable.java:186)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.lambda$0(ResultSetJobDataRead.java:123)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.run(ResultSetJobDataRead.java:121)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetViewer$ResultSetDataPumpJob.run(ResultSetViewer.java:5091)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.h2.message.DbException: Table "TB_CP_DETAIL" not found [42102-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8064)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8045)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8029)
+	at org.h2.command.Parser.readTableOrView(Parser.java:8024)
+	at org.h2.command.Parser.readTablePrimary(Parser.java:1788)
+	at org.h2.command.Parser.readTableReference(Parser.java:2268)
+	at org.h2.command.Parser.parseSelectFromPart(Parser.java:2718)
+	at org.h2.command.Parser.parseSelect(Parser.java:2824)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepare(Parser.java:451)
+	at org.h2.engine.SessionLocal.prepare(SessionLocal.java:589)
+	at org.h2.table.TableView.compileViewQuery(TableView.java:94)
+	at org.h2.table.TableView.initColumnsAndTables(TableView.java:146)
+	at org.h2.table.TableView.init(TableView.java:87)
+	at org.h2.table.TableView.<init>(TableView.java:49)
+	at org.h2.command.ddl.CreateView.update(CreateView.java:123)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:582)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$1(SQLQueryJob.java:491)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:498)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:238)
+	... 2 more
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_CP_DETAIL" not found; SQL statement:
+((((SELECT
+    "CPD_ID" AS "ID",
+    "CPD_DATE_CREATED" AS "DATE_CREATED",
+    'CP' AS "DOC_TYPE",
+    "CPM_DATE_TRANS" AS "DATE_TRANS",
+    "CRP_DOC_NO" AS "DOC_NO",
+    "CPM_REF_NO" AS "REF_NO",
+    "CPD_CPM_MASTER" AS "DOC_NO_2",
+    COALESCE("CPD_AMOUNT", 0) AS "CREDIT",
+    COALESCE("CPD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "CPD_SALDO" AS "SALDO",
+    "CPD_SALDO_MASTER" AS "SALDO_MASTER",
+    "CPD_DESC" AS "DESCRIPTION",
+    "CPD_ACC" AS "ACC_CODE",
+    "TB_CP_MASTER"."CPM_ACC" AS "ACC_CODE_MASTER"
+FROM "PUBLIC"."TB_CP_DETAIL"
+INNER JOIN "PUBLIC"."TB_CP_MASTER"
+    ON 1=1
+WHERE "TB_CP_DETAIL"."CPD_CPM_MASTER" = "TB_CP_MASTER"."CRP_DOC_NO")
+UNION
+(SELECT
+    "CRD_ID",
+    "CRD_DATE_CREATED",
+    'CR' AS "DOC_TYPE",
+    "CRM_DATE_TRANS",
+    "CRM_DOC_NO",
+    "CRM_REF_NO",
+    "CRD_CRM_MASTER",
+    COALESCE("CRD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("CRD_AMOUNT", 0) AS "DEBIT",
+    "CRD_SALDO",
+    "CRD_SALDO_MASTER",
+    "CRD_DESC",
+    "CRD_ACC",
+    "TB_CR_MASTER"."CRM_ACC"
+FROM "PUBLIC"."TB_CR_DETAIL"
+INNER JOIN "PUBLIC"."TB_CR_MASTER"
+    ON 1=1
+WHERE "TB_CR_DETAIL"."CRD_CRM_MASTER" = "TB_CR_MASTER"."CRM_DOC_NO"))
+UNION
+(SELECT
+    "BPD_ID",
+    "BPD_DATE_CREATED",
+    'BP' AS "DOC_TYPE",
+    "BPM_DATE_TRANS",
+    "BPM_DOC_NO",
+    "BPM_REF_NO",
+    "BPD_BPM_MASTER",
+    COALESCE("BPD_AMOUNT", 0) AS "CREDIT",
+    COALESCE("BPD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "BPD_SALDO",
+    "BPD_SALDO_MASTER",
+    "BPD_DESC",
+    "BPD_ACC",
+    "TB_BP_MASTER"."BPM_ACC"
+FROM "PUBLIC"."TB_BP_DETAIL"
+INNER JOIN "PUBLIC"."TB_BP_MASTER"
+    ON 1=1
+WHERE "TB_BP_DETAIL"."BPD_BPM_MASTER" = "TB_BP_MASTER"."BPM_DOC_NO"))
+UNION
+(SELECT
+    "BRD_ID",
+    "BRD_DATE_CREATED",
+    'BR' AS "DOC_TYPE",
+    "BRM_DATE_TRANS",
+    "BRM_DOC_NO",
+    "BRM_REF_NO",
+    "BRD_BRM_MASTER",
+    COALESCE("BRD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("BRD_AMOUNT", 0) AS "DEBIT",
+    "BRD_SALDO",
+    "BRD_SALDO_MASTER",
+    "BRD_DESC",
+    "BRD_ACC",
+    "TB_BR_MASTER"."BRM_ACC"
+FROM "PUBLIC"."TB_BR_DETAIL"
+INNER JOIN "PUBLIC"."TB_BR_MASTER"
+    ON 1=1
+WHERE "TB_BR_DETAIL"."BRD_BRM_MASTER" = "TB_BR_MASTER"."BRM_DOC_NO"))
+UNION
+(SELECT
+    "JD_ID",
+    "JD_DATE_CREATED",
+    CASE "JM_TYPE" WHEN 0 THEN 'GJ' WHEN 1 THEN 'PJ' ELSE 'SJ' END AS "DOC_TYPE",
+    "JM_DATE_TRANS",
+    "JM_DOC_NO",
+    "JM_REF_NO",
+    "JD_JM_MASTER",
+    COALESCE("JD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("JD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "JD_SALDO",
+    "JD_SALDO",
+    "JD_DESC",
+    "JD_ACC",
+    "JD_ACC"
+FROM "PUBLIC"."TB_JOURNAL_DETAIL"
+INNER JOIN "PUBLIC"."TB_JOURNAL_MASTER"
+    ON 1=1
+WHERE "TB_JOURNAL_DETAIL"."JD_JM_MASTER" = "TB_JOURNAL_MASTER"."JM_DOC_NO") [42102-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 58 more
+2024-09-23 09:40:47.167045+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: View "PUBLIC.BALANCESET" is invalid: "Table ""TB_ACC"" not found [42102-222]"; SQL statement:
+SELECT x.* FROM PUBLIC.BALANCESET x [90109-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.table.TableView.getScanIndex(TableView.java:303)
+	at org.h2.table.TableFilter.getBestPlanItem(TableFilter.java:222)
+	at org.h2.table.Plan.calculateCost(Plan.java:115)
+	at org.h2.command.query.Optimizer.testPlan(Optimizer.java:182)
+	at org.h2.command.query.Optimizer.calculateBestPlan(Optimizer.java:81)
+	at org.h2.command.query.Optimizer.optimize(Optimizer.java:241)
+	at org.h2.command.query.Select.preparePlan(Select.java:1325)
+	at org.h2.command.query.Select.preparePlan(Select.java:1202)
+	at org.h2.command.query.Query.prepare(Query.java:219)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.model.impl.jdbc.struct.JDBCTable.readData(JDBCTable.java:186)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.lambda$0(ResultSetJobDataRead.java:123)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.run(ResultSetJobDataRead.java:121)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetViewer$ResultSetDataPumpJob.run(ResultSetViewer.java:5091)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.h2.message.DbException: Table "TB_ACC" not found [42102-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8064)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8045)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8029)
+	at org.h2.command.Parser.readTableOrView(Parser.java:8024)
+	at org.h2.command.Parser.readTablePrimary(Parser.java:1788)
+	at org.h2.command.Parser.readTableReference(Parser.java:2268)
+	at org.h2.command.Parser.parseSelectFromPart(Parser.java:2718)
+	at org.h2.command.Parser.parseSelect(Parser.java:2824)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.readTermWithoutIdentifier(Parser.java:4926)
+	at org.h2.command.Parser.readTerm(Parser.java:4834)
+	at org.h2.command.Parser.readFactor(Parser.java:3337)
+	at org.h2.command.Parser.readSum(Parser.java:3324)
+	at org.h2.command.Parser.readConcat(Parser.java:3289)
+	at org.h2.command.Parser.readCondition(Parser.java:3079)
+	at org.h2.command.Parser.readExpression(Parser.java:2999)
+	at org.h2.command.Parser.parseSelectExpressions(Parser.java:2799)
+	at org.h2.command.Parser.parseSelect(Parser.java:2817)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepare(Parser.java:451)
+	at org.h2.engine.SessionLocal.prepare(SessionLocal.java:589)
+	at org.h2.table.TableView.compileViewQuery(TableView.java:94)
+	at org.h2.table.TableView.initColumnsAndTables(TableView.java:146)
+	at org.h2.table.TableView.init(TableView.java:87)
+	at org.h2.table.TableView.<init>(TableView.java:49)
+	at org.h2.command.ddl.CreateView.update(CreateView.java:123)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:582)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$1(SQLQueryJob.java:491)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:498)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:238)
+	... 2 more
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_ACC" not found; SQL statement:
+((((SELECT
+    "CPD_ID" AS "ID",
+    "CPM_DATE_TRANS" AS "DATE_TRANS",
+    "CPD_ACC" AS "ACC_CODE",
+    "CPM_ACC" AS "ACC_CODE_MASTER",
+    "CPD_SALDO" AS "SALDO",
+    "CPD_SALDO_MASTER" AS "SALDO_MASTER",
+    (SELECT
+        "ISBOOKPRINT"
+    FROM "PUBLIC"."TB_ACC"
+    WHERE "ACC_CODE" = "CPM_ACC"
+    FETCH FIRST ROW ONLY) AS "ISBOOKPRINT"
+FROM "PUBLIC"."TB_CP_DETAIL"
+INNER JOIN "PUBLIC"."TB_CP_MASTER"
+    ON 1=1
+WHERE "TB_CP_DETAIL"."CPD_CPM_MASTER" = "TB_CP_MASTER"."CRP_DOC_NO")
+UNION
+(SELECT
+    "BPD_ID" AS "ID",
+    "BPM_DATE_TRANS" AS "DATE_TRANS",
+    "BPD_ACC",
+    "BPM_ACC",
+    "BPD_SALDO",
+    "BPD_SALDO_MASTER",
+    (SELECT
+        "ISBOOKPRINT"
+    FROM "PUBLIC"."TB_ACC"
+    WHERE "ACC_CODE" = "BPM_ACC"
+    FETCH FIRST ROW ONLY)
+FROM "PUBLIC"."TB_BP_DETAIL"
+INNER JOIN "PUBLIC"."TB_BP_MASTER"
+    ON 1=1
+WHERE "TB_BP_DETAIL"."BPD_BPM_MASTER" = "TB_BP_MASTER"."BPM_DOC_NO"))
+UNION
+(SELECT
+    "CRD_ID" AS "ID",
+    "CRM_DATE_TRANS" AS "DATE_TRANS",
+    "CRD_ACC",
+    "CRM_ACC",
+    "CRD_SALDO",
+    "CRD_SALDO_MASTER",
+    (SELECT
+        "ISBOOKPRINT"
+    FROM "PUBLIC"."TB_ACC"
+    WHERE "ACC_CODE" = "CRM_ACC"
+    FETCH FIRST ROW ONLY)
+FROM "PUBLIC"."TB_CR_DETAIL"
+INNER JOIN "PUBLIC"."TB_CR_MASTER"
+    ON 1=1
+WHERE "TB_CR_DETAIL"."CRD_CRM_MASTER" = "TB_CR_MASTER"."CRM_DOC_NO"))
+UNION
+(SELECT
+    "BRD_ID" AS "ID",
+    "BRM_DATE_TRANS" AS "DATE_TRANS",
+    "BRD_ACC",
+    "BRM_ACC",
+    "BRD_SALDO",
+    "BRD_SALDO_MASTER",
+    (SELECT
+        "ISBOOKPRINT"
+    FROM "PUBLIC"."TB_ACC"
+    WHERE "ACC_CODE" = "BRM_ACC"
+    FETCH FIRST ROW ONLY)
+FROM "PUBLIC"."TB_BR_DETAIL"
+INNER JOIN "PUBLIC"."TB_BR_MASTER"
+    ON 1=1
+WHERE "TB_BR_DETAIL"."BRD_BRM_MASTER" = "TB_BR_MASTER"."BRM_DOC_NO"))
+UNION
+(SELECT
+    "JD_ID" AS "ID",
+    "JM_DATE_TRANS" AS "DATE_TRANS",
+    "JD_ACC",
+    "JD_ACC",
+    "JD_SALDO",
+    "JD_SALDO",
+    (SELECT
+        "ISBOOKPRINT"
+    FROM "PUBLIC"."TB_ACC"
+    WHERE "ACC_CODE" = "JD_ACC"
+    FETCH FIRST ROW ONLY)
+FROM "PUBLIC"."TB_JOURNAL_DETAIL"
+INNER JOIN "PUBLIC"."TB_JOURNAL_MASTER"
+    ON 1=1
+WHERE "TB_JOURNAL_DETAIL"."JD_JM_MASTER" = "TB_JOURNAL_MASTER"."JM_DOC_NO") [42102-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 73 more
+2024-09-23 09:41:12.871756+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: View "PUBLIC.ALLTRANS" is invalid: "Table ""TB_CP_DETAIL"" not found [42102-222]"; SQL statement:
+SELECT * FROM PUBLIC.ALLTRANS [90109-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.table.TableView.getScanIndex(TableView.java:303)
+	at org.h2.table.TableFilter.getBestPlanItem(TableFilter.java:222)
+	at org.h2.table.Plan.calculateCost(Plan.java:115)
+	at org.h2.command.query.Optimizer.testPlan(Optimizer.java:182)
+	at org.h2.command.query.Optimizer.calculateBestPlan(Optimizer.java:81)
+	at org.h2.command.query.Optimizer.optimize(Optimizer.java:241)
+	at org.h2.command.query.Select.preparePlan(Select.java:1325)
+	at org.h2.command.query.Select.preparePlan(Select.java:1202)
+	at org.h2.command.query.Query.prepare(Query.java:219)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:582)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$1(SQLQueryJob.java:491)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:498)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.extractData(SQLQueryJob.java:934)
+	at org.jkiss.dbeaver.ui.editors.sql.SQLEditor$QueryResultsContainer.readData(SQLEditor.java:3864)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.lambda$0(ResultSetJobDataRead.java:123)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.run(ResultSetJobDataRead.java:121)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetViewer$ResultSetDataPumpJob.run(ResultSetViewer.java:5091)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.h2.message.DbException: Table "TB_CP_DETAIL" not found [42102-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8064)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8045)
+	at org.h2.command.Parser.getTableOrViewNotFoundDbException(Parser.java:8029)
+	at org.h2.command.Parser.readTableOrView(Parser.java:8024)
+	at org.h2.command.Parser.readTablePrimary(Parser.java:1788)
+	at org.h2.command.Parser.readTableReference(Parser.java:2268)
+	at org.h2.command.Parser.parseSelectFromPart(Parser.java:2718)
+	at org.h2.command.Parser.parseSelect(Parser.java:2824)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2702)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepare(Parser.java:451)
+	at org.h2.engine.SessionLocal.prepare(SessionLocal.java:589)
+	at org.h2.table.TableView.compileViewQuery(TableView.java:94)
+	at org.h2.table.TableView.initColumnsAndTables(TableView.java:146)
+	at org.h2.table.TableView.init(TableView.java:87)
+	at org.h2.table.TableView.<init>(TableView.java:49)
+	at org.h2.command.ddl.CreateView.update(CreateView.java:123)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:329)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.lambda$0(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.utils.SecurityManagerUtils.wrapDriverActions(SecurityManagerUtils.java:96)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:131)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:582)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$1(SQLQueryJob.java:491)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:189)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:498)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:238)
+	... 2 more
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_CP_DETAIL" not found; SQL statement:
+((((SELECT
+    "CPD_ID" AS "ID",
+    "CPD_DATE_CREATED" AS "DATE_CREATED",
+    'CP' AS "DOC_TYPE",
+    "CPM_DATE_TRANS" AS "DATE_TRANS",
+    "CRP_DOC_NO" AS "DOC_NO",
+    "CPM_REF_NO" AS "REF_NO",
+    "CPD_CPM_MASTER" AS "DOC_NO_2",
+    COALESCE("CPD_AMOUNT", 0) AS "CREDIT",
+    COALESCE("CPD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "CPD_SALDO" AS "SALDO",
+    "CPD_SALDO_MASTER" AS "SALDO_MASTER",
+    "CPD_DESC" AS "DESCRIPTION",
+    "CPD_ACC" AS "ACC_CODE",
+    "TB_CP_MASTER"."CPM_ACC" AS "ACC_CODE_MASTER"
+FROM "PUBLIC"."TB_CP_DETAIL"
+INNER JOIN "PUBLIC"."TB_CP_MASTER"
+    ON 1=1
+WHERE "TB_CP_DETAIL"."CPD_CPM_MASTER" = "TB_CP_MASTER"."CRP_DOC_NO")
+UNION
+(SELECT
+    "CRD_ID",
+    "CRD_DATE_CREATED",
+    'CR' AS "DOC_TYPE",
+    "CRM_DATE_TRANS",
+    "CRM_DOC_NO",
+    "CRM_REF_NO",
+    "CRD_CRM_MASTER",
+    COALESCE("CRD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("CRD_AMOUNT", 0) AS "DEBIT",
+    "CRD_SALDO",
+    "CRD_SALDO_MASTER",
+    "CRD_DESC",
+    "CRD_ACC",
+    "TB_CR_MASTER"."CRM_ACC"
+FROM "PUBLIC"."TB_CR_DETAIL"
+INNER JOIN "PUBLIC"."TB_CR_MASTER"
+    ON 1=1
+WHERE "TB_CR_DETAIL"."CRD_CRM_MASTER" = "TB_CR_MASTER"."CRM_DOC_NO"))
+UNION
+(SELECT
+    "BPD_ID",
+    "BPD_DATE_CREATED",
+    'BP' AS "DOC_TYPE",
+    "BPM_DATE_TRANS",
+    "BPM_DOC_NO",
+    "BPM_REF_NO",
+    "BPD_BPM_MASTER",
+    COALESCE("BPD_AMOUNT", 0) AS "CREDIT",
+    COALESCE("BPD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "BPD_SALDO",
+    "BPD_SALDO_MASTER",
+    "BPD_DESC",
+    "BPD_ACC",
+    "TB_BP_MASTER"."BPM_ACC"
+FROM "PUBLIC"."TB_BP_DETAIL"
+INNER JOIN "PUBLIC"."TB_BP_MASTER"
+    ON 1=1
+WHERE "TB_BP_DETAIL"."BPD_BPM_MASTER" = "TB_BP_MASTER"."BPM_DOC_NO"))
+UNION
+(SELECT
+    "BRD_ID",
+    "BRD_DATE_CREATED",
+    'BR' AS "DOC_TYPE",
+    "BRM_DATE_TRANS",
+    "BRM_DOC_NO",
+    "BRM_REF_NO",
+    "BRD_BRM_MASTER",
+    COALESCE("BRD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("BRD_AMOUNT", 0) AS "DEBIT",
+    "BRD_SALDO",
+    "BRD_SALDO_MASTER",
+    "BRD_DESC",
+    "BRD_ACC",
+    "TB_BR_MASTER"."BRM_ACC"
+FROM "PUBLIC"."TB_BR_DETAIL"
+INNER JOIN "PUBLIC"."TB_BR_MASTER"
+    ON 1=1
+WHERE "TB_BR_DETAIL"."BRD_BRM_MASTER" = "TB_BR_MASTER"."BRM_DOC_NO"))
+UNION
+(SELECT
+    "JD_ID",
+    "JD_DATE_CREATED",
+    CASE "JM_TYPE" WHEN 0 THEN 'GJ' WHEN 1 THEN 'PJ' ELSE 'SJ' END AS "DOC_TYPE",
+    "JM_DATE_TRANS",
+    "JM_DOC_NO",
+    "JM_REF_NO",
+    "JD_JM_MASTER",
+    COALESCE("JD_AMOUNT_KREDIT", 0) AS "CREDIT",
+    COALESCE("JD_AMOUNT_DEBIT", 0) AS "DEBIT",
+    "JD_SALDO",
+    "JD_SALDO",
+    "JD_DESC",
+    "JD_ACC",
+    "JD_ACC"
+FROM "PUBLIC"."TB_JOURNAL_DETAIL"
+INNER JOIN "PUBLIC"."TB_JOURNAL_MASTER"
+    ON 1=1
+WHERE "TB_JOURNAL_DETAIL"."JD_JM_MASTER" = "TB_JOURNAL_MASTER"."JM_DOC_NO") [42102-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 58 more
+2024-09-23 09:41:50.791770+07:00 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1626)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:130)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1191)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1056)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.runSync(ConnectJob.java:97)
+	at org.jkiss.dbeaver.ui.actions.datasource.DataSourceHandler.connectToDataSource(DataSourceHandler.java:109)
+	at org.jkiss.dbeaver.ui.actions.datasource.UIServiceConnectionsImpl.initConnection(UIServiceConnectionsImpl.java:87)
+	at org.jkiss.dbeaver.model.navigator.DBNDataSource.initializeNode(DBNDataSource.java:158)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:225)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:1)
+	at org.jkiss.dbeaver.model.navigator.DBNUtils.getNodeChildrenFiltered(DBNUtils.java:80)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:49)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:1)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:88)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:72)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)

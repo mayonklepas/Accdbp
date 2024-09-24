@@ -270,7 +270,7 @@ public final class CashReceiptOpCn {
                                         + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
                                         + "'" + pane.edref_no.getText() + "',"
                                         + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                        + "'" + pane.edaccount.getText() + "');";
+                                        + "'" + pane.edaccount.getText() + "')";
                                 Statement st = c.cn().createStatement();
                                 st.addBatch(queryin);
                                 int rowcount = pane.tabledata.getRowCount();

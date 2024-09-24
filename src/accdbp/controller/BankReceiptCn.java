@@ -93,7 +93,7 @@ public class BankReceiptCn {
                 try {
                     String query = "SELECT  a.BRM_DOC_NO, a.BRM_DATE_TRANS, a.BRM_REF_NO, a.BRM_DATE_REF, "
                          + "a.BRM_ACC,b.ACC_NAME,a.BRM_DATE_CREATED,(SELECT SUM(BRD_AMOUNT) FROM TB_BR_DETAIL WHERE BRD_BRM_MASTER=a.BRM_DOC_NO) AS TOTAL"
-                         + " FROM TB_BR_MASTER a INNER JOIN TB_ACC b ON a.BRM_ACC=b.ACC_CODE ORDER BY a.BRM_DOC_NO DESC;";
+                         + " FROM TB_BR_MASTER a INNER JOIN TB_ACC b ON a.BRM_ACC=b.ACC_CODE ORDER BY a.BRM_DOC_NO DESC";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {

@@ -102,7 +102,7 @@ public class JournalCn {
                     String query = "SELECT  a.JM_DOC_NO, a.JM_DATE_TRANS, a.JM_REF_NO, a.JM_DATE_REF,a.JM_DATE_CREATED,"
                          + "(SELECT SUM(JD_AMOUNT_DEBIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_DEBIT,"
                          + "(SELECT SUM(JD_AMOUNT_KREDIT) FROM TB_JOURNAL_DETAIL WHERE JD_JM_MASTER=a.JM_DOC_NO) AS TOTAL_KREDIT"
-                         + " FROM TB_JOURNAL_MASTER a WHERE a.JM_TYPE=? ORDER BY a.JM_DOC_NO DESC;";
+                         + " FROM TB_JOURNAL_MASTER a WHERE a.JM_TYPE=? ORDER BY a.JM_DOC_NO DESC";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     pres.setInt(1, Staticvar.journaltype);
                     ResultSet res = pres.executeQuery();
@@ -316,7 +316,7 @@ public class JournalCn {
                              + "WHERE (lower(a.JM_DOC_NO) LIKE ? "
                              + "OR lower(a.JM_REF_NO) LIKE ? "
                              + "OR lower(b.ACC_NAME) LIKE ? "
-                             + "OR a.JM_DATE_TRANS LIKE ?) AND a.JM_TYPE=?   ORDER BY a.JM_DOC_NO DESC;";
+                             + "OR a.JM_DATE_TRANS LIKE ?) AND a.JM_TYPE=?   ORDER BY a.JM_DOC_NO DESC";
                         PreparedStatement pres = c.cn().prepareStatement(query);
                         pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                         pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

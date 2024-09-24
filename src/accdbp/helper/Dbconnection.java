@@ -9,6 +9,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,28 +19,28 @@ import java.util.logging.Logger;
  */
 public class Dbconnection {
 
-    //String filecon = new File("ACCDB.FDB").getAbsolutePath();
-    //String host = "jdbc:firebirdsql://localhost:3050/" + filecon + "?defaultResultSetHoldable=True";
-    //String host = "";
-    String host = "jdbc:h2:./accdb";
-    //String host = "jdbc:h2:tcp://localhost:9092/./accdb";
-    String username = "SYSDBA";
-    String passsword = "masterkey";
-    Connection con;
+    String host = "jdbc:derby:accappdb;create=true;user=SYSDBA;password=masterkey";
+    Connection conn;
 
     public Connection cn() {
         try {
-            con = DriverManager.getConnection(host, username, passsword);
+            conn = DriverManager.getConnection(host);
+            Statement s = conn.createStatement();
+            conn.setSchema("APP");
+            /*s.executeUpdate("CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.connection.requireAuthentication', 'true')");
+            s.executeUpdate("CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.authentication.provider', 'BUILTIN')");
+            s.executeUpdate("CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.user.SYSDBA', 'masterkey')");
+            s.executeUpdate("CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.database.propertiesOnly', 'true')");*/
         } catch (SQLException ex) {
             Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return con;
+        return conn;
     }
 
     public void dc() {
         try {
-            if (con != null) {
-                con.close();
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(Dbconnection.class.getName()).log(Level.SEVERE, null, ex);

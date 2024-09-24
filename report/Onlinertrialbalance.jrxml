@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.2.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5e889f7-78dc-47ca-884d-92e8bcb6ba33">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbdataadapter.jrdax"/>
@@ -70,18 +70,18 @@ ELSE
 CASE WHEN ISBOOKPRINT=0 THEN 
 
 
-CASE WHEN  (SELECT DATE_TRANS FROM BALANCESET ORDER BY ID DESC LIMIT 1) <= $P{DT_TO} THEN 
+CASE WHEN  (SELECT DATE_TRANS FROM BALANCESET ORDER BY ID DESC FETCH FIRST 1 ROWS ONLY) <= $P{DT_TO} THEN 
 ACC_CURRENT_BALANCE 
-ELSE COALESCE((SELECT SALDO FROM BALANCESET WHERE ACC_CODE=ta.ACC_CODE AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY ID DESC LIMIT 1),0) END
+ELSE COALESCE((SELECT SALDO FROM BALANCESET WHERE ACC_CODE=ta.ACC_CODE AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY ID FETCH FIRST 1 ROWS ONLY),0) END
 
 
 ELSE 
 
 
 
-CASE WHEN  (SELECT DATE_TRANS FROM BALANCESET ORDER BY ID DESC LIMIT 1 ) <=$P{DT_TO} THEN 
+CASE WHEN  (SELECT DATE_TRANS FROM BALANCESET ORDER BY ID DESC FETCH FIRST 1 ROWS ONLY ) <=$P{DT_TO} THEN 
 ACC_CURRENT_BALANCE 
-ELSE COALESCE((SELECT SALDO_MASTER FROM BALANCESET WHERE ACC_CODE_MASTER=ta.ACC_CODE  AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY ID DESC LIMIT 1 ),0) END
+ELSE COALESCE((SELECT SALDO_MASTER FROM BALANCESET WHERE ACC_CODE_MASTER=ta.ACC_CODE  AND DATE_TRANS BETWEEN $P{DT_FROM} AND $P{DT_TO} ORDER BY ID DESC FETCH FIRST 1 ROWS ONLY ),0) END
 
 END END AS AMOUNT
 

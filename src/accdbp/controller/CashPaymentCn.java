@@ -93,7 +93,7 @@ public class CashPaymentCn {
                 try {
                     String query = "SELECT  a.CRP_DOC_NO, a.CPM_DATE_TRANS, a.CPM_REF_NO, a.CPM_DATE_REF, "
                          + "a.CPM_ACC,b.ACC_NAME,a.CPM_DATE_CREATED,(SELECT SUM(CPD_AMOUNT) FROM TB_CP_DETAIL WHERE CPD_CPM_MASTER=a.CRP_DOC_NO) AS TOTAL"
-                         + " FROM TB_CP_MASTER a INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE ORDER BY a.CRP_DOC_NO DESC;";
+                         + " FROM TB_CP_MASTER a INNER JOIN TB_ACC b ON a.CPM_ACC=b.ACC_CODE ORDER BY a.CRP_DOC_NO DESC";
                     PreparedStatement pres = c.cn().prepareStatement(query);
                     ResultSet res = pres.executeQuery();
                     while (res.next()) {
@@ -318,7 +318,7 @@ public class CashPaymentCn {
                                      + "WHERE lower(a.CRP_DOC_NO) LIKE ? "
                                      + "OR lower(a.CPM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.CPM_DATE_TRANS LIKE ?  ORDER BY a.CRP_DOC_NO DESC;";
+                                     + "OR a.CPM_DATE_TRANS LIKE ?  ORDER BY a.CRP_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
