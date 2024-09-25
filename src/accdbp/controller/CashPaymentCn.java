@@ -204,7 +204,7 @@ public class CashPaymentCn {
                             PreparedStatement presacchead = c.cn().prepareStatement(querygetacchead);
                             presacchead.setString(1, value);
                             ResultSet resacchead = presacchead.executeQuery();
-                            resacchead.first();
+                            resacchead.next();
                             acc_code = resacchead.getString("COD");
                             presacchead.close();
                             resacchead.close();
