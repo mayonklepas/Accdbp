@@ -316,18 +316,20 @@ public class OneforAllfunc {
     public static HashMap getrecandsumjurnal() {
         HashMap hm = new HashMap();
         Dbconnection db = new Dbconnection();
-        String query = "SELECT (SELECT COUNT(*) FROM TB_JOURNAL_MASTER) AS RECDATA,SUM(JD_AMOUNT_DEBIT) AS SUMDATADEBIT,SUM(JD_AMOUNT_KREDIT) AS SUMDATAKREDIT FROM TB_JOURNAL_DETAIL";
+        String queryCount = "SELECT COUNT(*) AS RECDATA FROM TB_JOURNAL_MASTER";
+        String query = "SELECT SUM(JD_AMOUNT_DEBIT) AS SUMDATADEBIT,SUM(JD_AMOUNT_KREDIT) AS SUMDATAKREDIT FROM TB_JOURNAL_DETAIL";
         try {
             PreparedStatement pres = db.cn().prepareStatement(query);
             ResultSet res = pres.executeQuery();
-            int recdata = 0;
-            double sumdatadebit = 0.0;
-            double sumdatakredit = 0.0;
-            while (res.next()) {
-                recdata = res.getInt("RECDATA");
-                sumdatadebit = res.getDouble("SUMDATADEBIT");
-                sumdatakredit = res.getDouble("SUMDATAKREDIT");
-            }
+            res.next();
+            double sumdatadebit = res.getDouble("SUMDATADEBIT");
+            double sumdatakredit = res.getDouble("SUMDATAKREDIT");
+
+            PreparedStatement pres2 = db.cn().prepareStatement(queryCount);
+            ResultSet res2 = pres2.executeQuery();
+            res2.next();
+            int recdata = res2.getInt("RECDATA");
+
             hm.put("recdata", recdata);
             hm.put("sumdatadebit", sumdatadebit);
             hm.put("sumdatakredit", sumdatakredit);

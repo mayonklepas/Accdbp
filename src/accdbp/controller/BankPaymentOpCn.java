@@ -33,7 +33,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -275,15 +277,22 @@ public final class BankPaymentOpCn {
                                             || String.valueOf(pane.tabledata.getValueAt(i, 0)).equals("null")) {
 
                                     } else {
+
+                                        String accCode = String.valueOf(pane.tabledata.getValueAt(i, 0));
+                                        Map<String, String> acc = getAccountByCode(accCode);
+                                        boolean isTransfer = (acc.get("ISBOOKPRINT").equals("1"));
+                                        String desc = OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3));
+
                                         double amount = OneforAllfunc.doubleformat(String.valueOf(pane.tabledata.getValueAt(i, 2)));
                                         String queryindetail = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
+                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC,BPD_ISTRANSFER) "
                                                 + "VALUES ('" + seq + "',"
                                                 + "'" + pane.eddoc_no.getText() + "',"
-                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "'" + accCode + "',"
                                                 + "" + String.valueOf(amount) + ","
                                                 + "" + String.valueOf(amount) + ","
-                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
+                                                + "'" + desc + "',"
+                                                + " " + isTransfer + " )";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -335,14 +344,20 @@ public final class BankPaymentOpCn {
 
                                         long seq = Long.parseLong(pane.eddoc_no.getText()) + (i + 1);
 
+                                        String accCode = String.valueOf(pane.tabledata.getValueAt(i, 0));
+                                        Map<String, String> acc = getAccountByCode(accCode);
+                                        boolean isTransfer = (acc.get("ISBOOKPRINT").equals("1"));
+                                        String desc = OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3));
+
                                         String queryindetail = "INSERT INTO TB_BP_DETAIL (BPD_ID, BPD_BPM_MASTER, "
-                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC) "
+                                                + "BPD_ACC, BPD_AMOUNT,BPD_AMOUNT_DEBIT, BPD_DESC, BPD_ISTRANSFER) "
                                                 + "VALUES ('" + seq + "',"
                                                 + "'" + pane.eddoc_no.getText() + "',"
-                                                + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
+                                                + "'" + accCode + "',"
                                                 + "" + String.valueOf(amount) + ","
                                                 + "" + String.valueOf(amount) + ","
-                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
+                                                + "'" +desc+ "',"
+                                                + " "+isTransfer+" )";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -420,16 +435,9 @@ public final class BankPaymentOpCn {
                     if (col == 0) {
                         try {
                             terset = true;
-                            String query = "SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE=?";
-                            PreparedStatement pres = c.cn().prepareStatement(query);
-                            pres.setString(1, String.valueOf(tm.getValueAt(row, 0)));
-                            ResultSet res = pres.executeQuery();
-                            String resl = "";
-                            while (res.next()) {
-                                resl = String.valueOf(res.getString("ACC_NAME"));
-
-                            }
-                            if (resl.equals("") || resl.toLowerCase().equals("null")) {
+                            Map<String, String> acc = getAccountByCode(String.valueOf(tm.getValueAt(row, 0)));
+                            String resl = acc.getOrDefault("ACC_NAME", "");
+                            if (resl.equals("")) {
                                 KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(Staticvar.keydis);
                                 oldaccountval = String.valueOf(tm.getValueAt(row, 0));
                                 oldaccountname = String.valueOf(tm.getValueAt(row, 1));
@@ -456,8 +464,6 @@ public final class BankPaymentOpCn {
                             }
                             pane.tabledata.requestFocus();
                             pane.tabledata.changeSelection(row, 2, false, false);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(BankPaymentOpCn.class.getName()).log(Level.SEVERE, null, ex);
                         } finally {
                             terset = false;
                         }
@@ -481,7 +487,6 @@ public final class BankPaymentOpCn {
         };
 
         pane.tabledata.getModel().addTableModelListener(tml);
-
         pane.tabledata.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "enter");
         pane.tabledata.getActionMap().put("enter", new AbstractAction() {
             @Override
@@ -789,4 +794,21 @@ public final class BankPaymentOpCn {
         );
 
     }
+
+    private Map<String, String> getAccountByCode(String accCode) {
+        Map<String, String> result = new HashMap<>();
+        try (PreparedStatement ps = c.cn().prepareStatement("SELECT ACC_CODE,ACC_NAME,ISBOOKPRINT FROM TB_ACC WHERE ACC_CODE=?")) {
+            ps.setString(1, accCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                result.put("ACC_CODE", rs.getString("ACC_CODE"));
+                result.put("ACC_NAME", rs.getString("ACC_NAME"));
+                result.put("ISBOOKPRINT", rs.getString("ISBOOKPRINT"));
+            }
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+        }
+        return result;
+    }
+
 }
