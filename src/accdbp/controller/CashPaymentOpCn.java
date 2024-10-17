@@ -262,6 +262,16 @@ public final class CashPaymentOpCn {
                 if (pane.eddoc_no.getText().equals("") || pane.edaccount.getText().equals("")) {
                     OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
                 } else {
+
+                    for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
+                        String accCode = pane.tabledata.getValueAt(i, 0).toString();
+                        boolean isExist = OneforAllfunc.accountcheck(accCode);
+                        if (!isExist) {
+                            OneforAllfunc.info("Account not found", "Account code " + accCode + " not found in database");
+                            return;
+                        }
+                    }
+
                     if (id.equals("")) {
                         try {
                             if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {

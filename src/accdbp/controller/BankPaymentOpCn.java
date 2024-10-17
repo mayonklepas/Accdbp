@@ -254,6 +254,16 @@ public final class BankPaymentOpCn {
                 if (pane.eddoc_no.getText().equals("") || pane.edaccount.getText().equals("")) {
                     OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
                 } else {
+                    
+                    for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
+                        String accCode = pane.tabledata.getValueAt(i, 0).toString();
+                        boolean isExist = OneforAllfunc.accountcheck(accCode);
+                        if(!isExist){
+                           OneforAllfunc.info("Account not found", "Account code "+accCode+" not found in database");
+                            return;
+                        }
+                    }
+                    
                     if (id.equals("")) {
                         try {
                             if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
@@ -760,7 +770,8 @@ public final class BankPaymentOpCn {
                                         o[0] = isi.replace(".", "");
                                         Statement st = c.cn().createStatement();
                                         ResultSet res = st.executeQuery("SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE='" + isi.replace(".", "") + "'");
-                                        if (res.first()) {
+                                        boolean isExist = res.next();
+                                        if (isExist) {
                                             o[1] = res.getString("ACC_NAME");
                                         } else {
                                             o[1] = isi;

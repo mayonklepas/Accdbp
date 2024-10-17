@@ -5,7 +5,6 @@
  */
 package accdbp.controller;
 
-import static accdbp.controller.BankReceiptOpCn.id;
 import accdbp.helper.Dbconnection;
 import accdbp.helper.OneforAllfunc;
 import accdbp.helper.Staticvar;
@@ -21,7 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -34,18 +32,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -55,7 +48,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import org.apache.poi.ss.usermodel.Cell;
@@ -259,6 +251,14 @@ public final class CashReceiptOpCn {
                 if (pane.eddoc_no.getText().equals("") || pane.edaccount.getText().equals("")) {
                     OneforAllfunc.info("Operation Failed", "Please Fill Account Code and Account name");
                 } else {
+                    for (int i = 0; i < pane.tabledata.getRowCount(); i++) {
+                        String accCode = pane.tabledata.getValueAt(i, 0).toString();
+                        boolean isExist = OneforAllfunc.accountcheck(accCode);
+                        if (!isExist) {
+                            OneforAllfunc.info("Account not found", "Account code " + accCode + " not found in database");
+                            return;
+                        }
+                    }
                     if (id.equals("")) {
                         try {
                             if (OneforAllfunc.accountcheck(pane.edaccount.getText()) == false) {
@@ -345,7 +345,7 @@ public final class CashReceiptOpCn {
                                                 + "'" + String.valueOf(pane.tabledata.getValueAt(i, 0)) + "',"
                                                 + "" + String.valueOf(amount) + ","
                                                 + "" + String.valueOf(amount) + ","
-                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "');";
+                                                + "'" + OneforAllfunc.sof(pane.tabledata.getValueAt(i, 3)) + "')";
                                         st.addBatch(queryindetail);
 
                                     }
@@ -759,7 +759,8 @@ public final class CashReceiptOpCn {
                                         o[0] = isi.replace(".", "");
                                         Statement st = c.cn().createStatement();
                                         ResultSet res = st.executeQuery("SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE='" + isi.replace(".", "") + "'");
-                                        if (res.first()) {
+                                        boolean isExist = res.next();
+                                        if (isExist) {
                                             o[1] = res.getString("ACC_NAME");
                                         } else {
                                             o[1] = isi;
