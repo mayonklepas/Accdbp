@@ -17,6 +17,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +59,7 @@ public class SettingController {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(Staticvar.keydis);
         loaddata();
         savedata();
+        backupAndClearData();
         cancel();
     }
 
@@ -81,18 +87,17 @@ public class SettingController {
         pane.bsave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Statement st = c.cn().createStatement();
+                try (Statement st = c.cn().createStatement()) {
                     String queryupdatecompany = "UPDATE TB_INFO SET COMPANY_NAME='" + pane.edcompanyname.getText() + "',"
-                         + "COMPANY_ADDRESS='" + pane.edcompanyaddress.getText() + "',"
-                         + "COMPANY_TELEPHONE='" + pane.edcompanytelp.getText() + "'";
+                            + "COMPANY_ADDRESS='" + pane.edcompanyaddress.getText() + "',"
+                            + "COMPANY_TELEPHONE='" + pane.edcompanytelp.getText() + "'";
                     st.addBatch(queryupdatecompany);
                     if (pane.edrepassword.getText().equals("")) {
 
                     } else {
                         if (pane.edrepassword.getText().equals(pane.ednewpassword.getText())) {
                             String queryupdateuser = "UPDATE TB_USER SET U_USERNAME='" + pane.edusername.getText() + "',"
-                                 + "U_PASSWORD='" + OneforAllfunc.shahash256(pane.edrepassword.getText()) + "' WHERE U_USERNAME='" + Staticvar.username + "'";
+                                    + "U_PASSWORD='" + OneforAllfunc.shahash256(pane.edrepassword.getText()) + "' WHERE U_USERNAME='" + Staticvar.username + "'";
                             st.addBatch(queryupdateuser);
                         } else {
                             OneforAllfunc.info("Operation Failed", "Password Not Match");
@@ -101,6 +106,7 @@ public class SettingController {
                     }
                     st.executeBatch();
                     OneforAllfunc.info("Operation Sucsess", "Company Info Has Been Update");
+                    c.cn().close();
                 } catch (SQLException ex) {
                     OneforAllfunc.info("Error", ex.getMessage());
                     Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,6 +114,34 @@ public class SettingController {
             }
         });
 
+    }
+
+    private void backupAndClearData() {
+        pane.bClearTrxData.addActionListener((e) -> {
+            OneforAllfunc.confirmwitpass("Confirmation", "All transaction data will be cleared");
+            if (Staticvar.isyes == true) {
+                Staticvar.isyes = false;
+                try (Statement st = c.cn().createStatement()) {
+                    st.addBatch("TRUNCATE TABLE TB_BP_MASTER");
+                    st.addBatch("TRUNCATE TABLE TB_BP_DETAIL");
+                    st.addBatch("TRUNCATE TABLE TB_CP_MASTER");
+                    st.addBatch("TRUNCATE TABLE TB_CP_DETAIL");
+                    st.addBatch("TRUNCATE TABLE TB_BR_MASTER");
+                    st.addBatch("TRUNCATE TABLE TB_BR_DETAIL");
+                    st.addBatch("TRUNCATE TABLE TB_CR_MASTER");
+                    st.addBatch("TRUNCATE TABLE TB_CR_DETAIL");
+                    st.addBatch("TRUNCATE TABLE TB_JOURNAL_MASTER");
+                    st.addBatch("TRUNCATE TABLE TB_JOURNAL_DETAIL");
+                    st.executeBatch();
+                    OneforAllfunc.info("Operation Sucsess", "Data has been cleared");
+                    c.cn().close();
+                } catch (SQLException ex) {
+                    OneforAllfunc.info("Error", ex.getMessage());
+                    Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
     }
 
     private void cancel() {

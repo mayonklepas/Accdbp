@@ -204,7 +204,7 @@ public class BankReceiptCn {
                             PreparedStatement presacchead = c.cn().prepareStatement(querygetacchead);
                             presacchead.setString(1, value);
                             ResultSet resacchead = presacchead.executeQuery();
-                            resacchead.first();
+                            resacchead.next();
                             acc_code = resacchead.getString("COD");
                             presacchead.close();
                             resacchead.close();
@@ -318,7 +318,7 @@ public class BankReceiptCn {
                                      + "WHERE lower(a.BRM_DOC_NO) LIKE ? "
                                      + "OR lower(a.BRM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.BRM_DATE_TRANS LIKE ?  ORDER BY a.BRM_DOC_NO DESC;";
+                                     + "OR CAST(a.BRM_DATE_TRANS AS VARCHAR(100)) LIKE ?  ORDER BY a.BRM_DOC_NO DESC;";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

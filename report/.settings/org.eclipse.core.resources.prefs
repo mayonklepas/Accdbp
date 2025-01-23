@@ -9,6 +9,7 @@ encoding/Bookprint.jrxml=UTF-8
 encoding/BookprintAllAll.jrxml=UTF-8
 encoding/Journalregister.jrxml=UTF-8
 encoding/Ledger.jrxml=UTF-8
+encoding/Ledgerall.jrxml=UTF-8
 encoding/MasterAccountlist.jrxml=UTF-8
 encoding/Onlineraccbalance.jrxml=UTF-8
 encoding/Onlinertrialbalance.jrxml=UTF-8

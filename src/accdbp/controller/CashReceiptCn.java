@@ -319,7 +319,7 @@ public class CashReceiptCn {
                                      + "WHERE lower(a.CRM_DOC_NO) LIKE ? "
                                      + "OR lower(a.CRM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.CRM_DATE_TRANS LIKE ?  ORDER BY a.CRM_DOC_NO DESC";
+                                     + "OR CAST(a.CRM_DATE_TRANS AS VARCHAR(100)) LIKE ?  ORDER BY a.CRM_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

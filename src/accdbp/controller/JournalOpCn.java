@@ -294,7 +294,7 @@ public final class JournalOpCn {
                                     + "'" + OneforAllfunc.datetodb(pane.eddate_trans.getDate()) + "',"
                                     + "'" + noref + "',"
                                     + "'" + OneforAllfunc.datetodb(pane.edref_date.getDate()) + "',"
-                                    + "'" + Staticvar.journaltype + "')";
+                                    + "" + Staticvar.journaltype + ")";
                             st.addBatch(queryin);
                             int rowcount = pane.tabledata.getRowCount();
                             for (int i = 0; i < rowcount; i++) {
@@ -748,7 +748,8 @@ public final class JournalOpCn {
                                         o[1] = isi.replace(".", "");
                                         Statement st = c.cn().createStatement();
                                         ResultSet res = st.executeQuery("SELECT ACC_NAME FROM TB_ACC WHERE ACC_CODE='" + isi.replace(".", "") + "'");
-                                        if (res.first()) {
+                                        boolean isExist = res.next();
+                                        if (isExist) {
                                             o[2] = res.getString("ACC_NAME");
                                         } else {
                                             throw new RuntimeException("Account code (" + isi + ") not found");

@@ -251,7 +251,7 @@ public class OneforAllfunc {
 
     public static String getautodocno(Date date_trans) {
         String prefix = getyear2digit(date_trans) + getmonth(date_trans) + getdate(date_trans);
-        int tahun = LocalDate.now().getYear();
+        int tahun = Integer.parseInt(Staticvar.year_periode); //LocalDate.now().getYear();
         Optional<Map<String, Object>> optResult = new DatabaseViews().getAllTransByYear(tahun).stream().filter(d -> {
             java.sql.Date sqldt = (java.sql.Date) d.get("DATE_TRANS");
             java.sql.Date dt = new java.sql.Date(date_trans.getTime());

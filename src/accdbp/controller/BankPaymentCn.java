@@ -203,7 +203,7 @@ public class BankPaymentCn {
                             PreparedStatement presacchead = c.cn().prepareStatement(querygetacchead);
                             presacchead.setString(1, value);
                             ResultSet resacchead = presacchead.executeQuery();
-                            resacchead.first();
+                            resacchead.next();
                             acc_code = resacchead.getString("COD");
                             presacchead.close();
                             resacchead.close();
@@ -312,13 +312,13 @@ public class BankPaymentCn {
                             try {
                                 String query = "SELECT a.BPM_DOC_NO, a.BPM_DATE_TRANS, a.BPM_REF_NO, a.BPM_DATE_REF, "
                                      + "a.BPM_ACC,b.ACC_NAME,a.BPM_DATE_CREATED,"
-                                     + "(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=a.BPM_DOC_NO) AS TOTAL"
-                                     + " FROM TB_BP_MASTER a "
+                                     + "(SELECT SUM(BPD_AMOUNT) FROM TB_BP_DETAIL WHERE BPD_BPM_MASTER=a.BPM_DOC_NO) AS TOTAL "
+                                     + "FROM TB_BP_MASTER a "
                                      + "INNER JOIN TB_ACC b ON a.BPM_ACC=b.ACC_CODE "
                                      + "WHERE lower(a.BPM_DOC_NO) LIKE ? "
                                      + "OR lower(a.BPM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.BPM_DATE_TRANS LIKE ?  ORDER BY a.BPM_DOC_NO DESC";
+                                     + "OR CAST(a.BPM_DATE_TRANS AS VARCHAR(100)) LIKE ?  ORDER BY a.BPM_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");

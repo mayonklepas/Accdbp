@@ -318,7 +318,7 @@ public class CashPaymentCn {
                                      + "WHERE lower(a.CRP_DOC_NO) LIKE ? "
                                      + "OR lower(a.CPM_REF_NO) LIKE ? "
                                      + "OR lower(b.ACC_NAME) LIKE ? "
-                                     + "OR a.CPM_DATE_TRANS LIKE ?  ORDER BY a.CRP_DOC_NO DESC";
+                                     + "OR CAST(a.CPM_DATE_TRANS AS VARCHAR(100)) LIKE ?  ORDER BY a.CRP_DOC_NO DESC";
                                 PreparedStatement pres = c.cn().prepareStatement(query);
                                 pres.setString(1, "%" + pane.edfind.getText().toLowerCase() + "%");
                                 pres.setString(2, "%" + pane.edfind.getText().toLowerCase() + "%");
