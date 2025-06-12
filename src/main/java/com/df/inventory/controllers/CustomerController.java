@@ -31,8 +31,11 @@ public class CustomerController {
     CustomerService srv;
 
     @GetMapping("")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(
+            @RequestParam(required = false, defaultValue = "") String sortBy,
+            @RequestParam(required = false, defaultValue = "") String sortType) {
 
+        
         ServiceResponseData<?> result = srv.findAll();
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
@@ -43,10 +46,17 @@ public class CustomerController {
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @GetMapping("/code/{code}")
-    public ResponseEntity<?> findById(@PathVariable("code") String code) {
-        ServiceResponseData<?> result = srv.findByCode(code);
+    @GetMapping("find")
+    public ResponseEntity<?> findByQuery(@RequestParam String searchBy, @RequestParam String keyword) {
+
+        if (searchBy.equals("code")) {
+            ServiceResponseData<?> result = srv.findAllByCode(keyword);
+            return ResponseEntity.status(result.getStatusCode()).body(result);
+        }
+
+        ServiceResponseData<?> result = srv.findAllByName(keyword);
         return ResponseEntity.status(result.getStatusCode()).body(result);
+
     }
 
     @PostMapping("")
@@ -55,21 +65,27 @@ public class CustomerController {
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody Customer payload, @RequestParam long id) {
+    @PutMapping("/id/{id}")
+    public ResponseEntity<?> update(@RequestBody Customer payload, @PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.update(payload, id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> delete(@RequestParam long id) {
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.delete(id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @PutMapping("/update-status")
-    public ResponseEntity<?> updateStatus(@RequestParam boolean isActive, @RequestParam long id) {
-        ServiceResponseData<?> result = srv.updateStatus(isActive, id);
+    @PutMapping("/id/{id}/enabled")
+    public ResponseEntity<?> enabledCustomer(@PathVariable("id") long id) {
+        ServiceResponseData<?> result = srv.updateStatus(true, id);
+        return ResponseEntity.status(result.getStatusCode()).body(result);
+    }
+
+    @PutMapping("/id/{id}/disabled")
+    public ResponseEntity<?> disabledCustomer(@PathVariable("id") long id) {
+        ServiceResponseData<?> result = srv.updateStatus(false, id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 

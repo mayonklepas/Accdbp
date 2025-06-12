@@ -8,6 +8,7 @@ import com.df.inventory.entities.Customer;
 import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.repositories.CustomerRepo;
+import com.df.inventory.utilities.GeneratorFunction;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +21,34 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class CustomerService {
-    
+
     @Autowired
     CustomerRepo repo;
-    
+
     @Autowired
     ServiceResponse reponse;
     
+    @Autowired
+    GeneratorFunction generator;
+
     public ServiceResponseData<?> findAll() {
         Iterable<Customer> data = repo.findAll();
         ServiceResponseData<?> result = reponse.setSuccess(data);
         return result;
     }
+
+    public ServiceResponseData<?> findAllByName(String name) {
+        Iterable<Customer> data = repo.findAllByName(name);
+        ServiceResponseData<?> result = reponse.setSuccess(data);
+        return result;
+    }
     
+    public ServiceResponseData<?> findAllByCode(String code) {
+        Iterable<Customer> data = repo.findAllByCode(code);
+        ServiceResponseData<?> result = reponse.setSuccess(data);
+        return result;
+    }
+
     public ServiceResponseData<?> findByCode(String code) {
         Optional<Customer> data = repo.findByCode(code);
         if (data.isEmpty()) {
@@ -41,7 +57,7 @@ public class CustomerService {
         ServiceResponseData<?> result = reponse.setSuccess(data.get());
         return result;
     }
-    
+
     public ServiceResponseData<?> findById(long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
@@ -50,28 +66,28 @@ public class CustomerService {
         ServiceResponseData<?> result = reponse.setSuccess(data.get());
         return result;
     }
-    
+
     @Transactional
     public ServiceResponseData<?> create(Customer payload) {
         try {
+            payload.setCode(generator.generateCustomerCode());
             Customer data = repo.save(payload);
             return reponse.setSuccess(data);
         } catch (Exception e) {
             return reponse.setFailedInternalServerError(e.getMessage());
         }
-        
+
     }
-    
+
     @Transactional
     public ServiceResponseData<?> update(Customer payload, long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
             return reponse.setFailedNotfound("Failed update, customer not found");
         }
-        
+
         try {
             Customer dataUpdate = data.get();
-            dataUpdate.setCode(payload.getCode());
             dataUpdate.setName(payload.getName());
             dataUpdate.setEmail(payload.getEmail());
             dataUpdate.setPhoneNumber(payload.getPhoneNumber());
@@ -84,16 +100,16 @@ public class CustomerService {
         } catch (Exception e) {
             return reponse.setFailedInternalServerError(e.getMessage());
         }
-        
+
     }
-    
+
     @Transactional
     public ServiceResponseData<?> updateStatus(boolean isActive, long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
             return reponse.setFailedNotfound("Failed update status, customer not found");
         }
-        
+
         try {
             Customer dataUpdate = data.get();
             dataUpdate.setActive(isActive);
@@ -102,9 +118,9 @@ public class CustomerService {
         } catch (Exception e) {
             return reponse.setFailedInternalServerError(e.getMessage());
         }
-        
+
     }
-    
+
     @Transactional
     public ServiceResponseData<?> delete(long id) {
         Optional<Customer> data = repo.findById(id);
@@ -117,7 +133,7 @@ public class CustomerService {
         } catch (Exception e) {
             return reponse.setFailedInternalServerError(e.getMessage());
         }
-        
+
     }
-    
+
 }
