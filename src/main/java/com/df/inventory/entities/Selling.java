@@ -25,35 +25,32 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Selling extends CommonField{
-    
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private long id;
-   @Column(length = 20)
-   private String sellingNumber;
-   private Timestamp sellingDate;
-   private double discount;
-   private long customerId;
-   private long userId;
-   @Column(length = 200)
-   private String description;
-   @Column(length = 50)
-   private String statusType;
-   private double totalSelling;
-   
-   @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name="id", insertable = false, updatable = false)
-   private Customer customer;
-   
-   @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name="id", insertable = false, updatable = false)
-   private UserApp user;
-   
-   @OneToMany(fetch = FetchType.LAZY, mappedBy = "selling")
-   private List<SellingDetail> sellingDetail;
-   
-   
-   
-    
+public class Selling extends CommonField {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(length = 20)
+    private String sellingNumber;
+    private Timestamp sellingDate;
+    private double discount;
+    private long customerId;
+    private long userId;
+    @Column(length = 200)
+    private String description;
+    @Column(length = 50)
+    private String statusType;
+    private double totalSelling;
+
+    @ManyToOne
+    @JoinColumn(name = "id", insertable = false, updatable = false)
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "id", insertable = false, updatable = false)
+    private UserApp user;
+
+    @OneToMany(mappedBy = "selling")
+    private List<SellingDetail> sellingDetail;
+
 }

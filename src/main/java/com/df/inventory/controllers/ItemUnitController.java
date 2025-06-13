@@ -4,12 +4,8 @@
  */
 package com.df.inventory.controllers;
 
-import com.df.inventory.entities.Customer;
-import com.df.inventory.entities.Item;
 import com.df.inventory.entities.ItemUnit;
 import com.df.inventory.message.ServiceResponseData;
-import com.df.inventory.services.CustomerService;
-import com.df.inventory.services.ItemService;
 import com.df.inventory.services.ItemUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +35,6 @@ public class ItemUnitController {
     public ResponseEntity<?> findAll(
             @RequestParam(required = false, defaultValue = "") String searchBy,
             @RequestParam(required = false, defaultValue = "") String keyword,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "ASC") String sortType,
             Pageable page
     ) {
         ServiceResponseData<?> result = srv.findAll(searchBy, keyword, page);

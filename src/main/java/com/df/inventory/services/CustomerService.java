@@ -9,11 +9,10 @@ import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.repositories.CustomerRepo;
 import com.df.inventory.utilities.GeneratorFunction;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,32 +31,19 @@ public class CustomerService {
 
     @Autowired
     GeneratorFunction generator;
-
+    
     @Autowired
-    EntityManager enma;
+    CustomQueryService customQuery;
 
-    public ServiceResponseData<?> findAll(String searchBy, String keyword, String sortBy, String sortType) {
-        if (keyword.isBlank() && sortBy.equals("id")) {
-            return response.setSuccess(repo.findAll());
+  
+
+    public ServiceResponseData<?> findAll(String searchBy, String keyword,Pageable page) {
+        if (keyword.isBlank()) {
+            return response.setSuccess(repo.findAll(page));
         }
-        List<?> result = findAllByParamAndSort(searchBy, keyword, sortBy, sortType);
+        Page<?> result = customQuery.findAllWithPagingAndSortingByParam(Customer.class, searchBy, keyword, page);
         return response.setSuccess(result);
 
-    }
-
-    public List<Customer> findAllByParamAndSort(String searchBy, String keyword, String sortBy, String sortType) {
-        String sql = String.format("SELECT c FROM Customer c WHERE %s ILIKE ?1 ORDER BY %s %s ", searchBy, sortBy, sortType);
-        if (keyword.isBlank()) {
-            sql = String.format("SELECT c FROM Customer c ORDER BY %s %s ", sortBy, sortType);
-        }
-
-        Query query = enma.createQuery(sql, Customer.class);
-        if (!keyword.isBlank()) {
-            query.setParameter(1, "%" + keyword + "%");
-        }
-
-        List<Customer> result = query.getResultList();
-        return result;
     }
 
     public ServiceResponseData<?> findByCode(String code) {

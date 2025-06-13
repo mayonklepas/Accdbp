@@ -8,6 +8,7 @@ import com.df.inventory.entities.Customer;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,10 +35,9 @@ public class CustomerController {
     public ResponseEntity<?> findAll(
             @RequestParam(required = false, defaultValue = "") String searchBy,
             @RequestParam(required = false, defaultValue = "") String keyword,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "ASC") String sortType
+            Pageable page
     ) {
-        ServiceResponseData<?> result = srv.findAll(searchBy, keyword, sortBy, sortType);
+        ServiceResponseData<?> result = srv.findAll(searchBy, keyword, page);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 

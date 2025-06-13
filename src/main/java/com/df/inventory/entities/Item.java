@@ -36,8 +36,8 @@ public class Item {
     private double purchasePrice;
     private double sellingPrice;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "id",insertable = false, updatable = false)
     private ItemUnit itemUnit;
 
 }

@@ -6,6 +6,7 @@ package com.df.inventory.services;
 
 import com.df.inventory.config.StatusType;
 import com.df.inventory.dto.SellingDTO;
+import com.df.inventory.entities.Item;
 import com.df.inventory.entities.Selling;
 import com.df.inventory.entities.SellingDetail;
 import com.df.inventory.message.ServiceResponse;
@@ -20,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,29 +40,36 @@ public class SellingService {
     SellingDetailRepo repoDetail;
 
     @Autowired
-    ServiceResponse reponse;
+    ServiceResponse response;
 
     @Autowired
     GeneratorFunction generator;
 
-    public ServiceResponseData<?> findAll() {
-        Iterable<Selling> data = repo.findAll();
-        ServiceResponseData<?> result = reponse.setSuccess(data);
-        return result;
+    @Autowired
+    CustomQueryService customQuery;
+
+    public ServiceResponseData<?> findAll(String searchBy, String keyword, Pageable page) {
+        if (keyword.isBlank()) {
+            Page<?> result = repo.findAll(page);
+            return response.setSuccess(result);
+        }
+        Page<?> result = customQuery.findAllWithPagingAndSortingByParam(Selling.class, searchBy, keyword, page);
+        return response.setSuccess(result);
+
     }
 
-    public ServiceResponseData<?> findAllByCustomerId(long customerId) {
-        Iterable<Selling> data = repo.findAllByCustomerId(customerId);
-        ServiceResponseData<?> result = reponse.setSuccess(data);
+    public ServiceResponseData<?> findAllByCustomerId(Pageable page, long customerId) {
+        Iterable<Selling> data = repo.findAllByCustomerId(page, customerId);
+        ServiceResponseData<?> result = response.setSuccess(data);
         return result;
     }
 
     public ServiceResponseData<?> findById(long id) {
         Optional<Selling> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound();
+            return response.setFailedNotfound();
         }
-        ServiceResponseData<?> result = reponse.setSuccess(data.get());
+        ServiceResponseData<?> result = response.setSuccess(data.get());
         return result;
     }
 
@@ -67,7 +77,7 @@ public class SellingService {
     public ServiceResponseData<?> updateStatus(String status, long id) {
         Optional<Selling> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound("Failed update, selling data not found");
+            return response.setFailedNotfound("Failed update, selling data not found");
         }
 
         try {
@@ -75,9 +85,9 @@ public class SellingService {
             dataUpdate.setStatusType(status);
             dataUpdate.setDateEdited(Timestamp.valueOf(LocalDateTime.now()));
             Selling resultUpdate = repo.save(dataUpdate);
-            return reponse.setSuccess(resultUpdate);
+            return response.setSuccess(resultUpdate);
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }
@@ -86,15 +96,15 @@ public class SellingService {
     public ServiceResponseData<?> delete(long id) {
         Optional<Selling> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound("Failed delete, selling data not found");
+            return response.setFailedNotfound("Failed delete, selling data not found");
         }
         try {
             Iterable<SellingDetail> dataDetail = repoDetail.findAllBySellingId(id);
             repoDetail.deleteAll(dataDetail);
             repo.delete(data.get());
-            return reponse.setSuccess(data.get());
+            return response.setSuccess(data.get());
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }
@@ -110,18 +120,16 @@ public class SellingService {
             if (header.getId() != 0) {
                 Optional<Selling> getHeaderById = repo.findById(header.getId());
                 if (getHeaderById.isEmpty()) {
-                    return reponse.setFailed(404, "Update failed, Selling Id not found");
+                    return response.setFailed(404, "Update failed, Selling Id not found");
                 }
-                
-                header=getHeaderById.get();
-                
-                if(!header.getStatusType().equals(StatusType.ORDERING)){
-                    return reponse.setFailed(404, "Update failed, Order has been process");
+
+                header = getHeaderById.get();
+
+                if (!header.getStatusType().equals(StatusType.ORDERING)) {
+                    return response.setFailed(404, "Update failed, Order has been process");
                 }
 
             }
-            
-            
 
             if (header.getId() != 0) {
                 header.setSellingNumber(generator.generateSellingNumber());
@@ -133,7 +141,7 @@ public class SellingService {
             Selling headerSave = repo.save(header);
 
             if (header.getId() != 0) {
-                Iterable<SellingDetail> oldDataList=repoDetail.findAllBySellingId(header.getId());
+                Iterable<SellingDetail> oldDataList = repoDetail.findAllBySellingId(header.getId());
                 repoDetail.deleteAll(oldDataList);
             } else {
                 for (int i = 0; i < detail.size(); i++) {
@@ -142,9 +150,9 @@ public class SellingService {
             }
 
             repoDetail.saveAll(detail);
-            return reponse.setSuccess();
+            return response.setSuccess();
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }

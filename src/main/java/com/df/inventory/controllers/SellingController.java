@@ -9,6 +9,8 @@ import com.df.inventory.dto.StatusDTO;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.services.SellingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +34,12 @@ public class SellingController {
     SellingService srv;
 
     @GetMapping("")
-    public ResponseEntity<?> findAll() {
-        ServiceResponseData<?> result = srv.findAll();
+    public ResponseEntity<?> findAll(
+            @RequestParam(required = false, defaultValue = "") String searchBy,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            Pageable page
+    ) {
+        ServiceResponseData<?> result = srv.findAll(searchBy, keyword, page);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
@@ -50,8 +56,8 @@ public class SellingController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<?> findByCustomer(@PathVariable("customerId") long customerId) {
-        ServiceResponseData<?> result = srv.findAllByCustomerId(customerId);
+    public ResponseEntity<?> findByCustomer(@PathVariable("customerId") long customerId, Pageable page) {
+        ServiceResponseData<?> result = srv.findAllByCustomerId(page, customerId);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
