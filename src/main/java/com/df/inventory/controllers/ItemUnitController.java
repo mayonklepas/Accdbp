@@ -12,6 +12,7 @@ import com.df.inventory.services.CustomerService;
 import com.df.inventory.services.ItemService;
 import com.df.inventory.services.ItemUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,14 @@ public class ItemUnitController {
     ItemUnitService srv;
 
     @GetMapping("")
-    public ResponseEntity<?> findAll() {
-
-        ServiceResponseData<?> result = srv.findAll();
+    public ResponseEntity<?> findAll(
+            @RequestParam(required = false, defaultValue = "") String searchBy,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String sortType,
+            Pageable page
+    ) {
+        ServiceResponseData<?> result = srv.findAll(searchBy, keyword, page);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
@@ -59,14 +65,14 @@ public class ItemUnitController {
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody ItemUnit payload, @RequestParam long id) {
+    @PutMapping("/id/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody ItemUnit payload) {
         ServiceResponseData<?> result = srv.update(payload, id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> delete(@RequestParam long id) {
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.delete(id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }

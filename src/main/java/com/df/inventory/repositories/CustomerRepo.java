@@ -21,15 +21,7 @@ public interface CustomerRepo extends PagingAndSortingRepository<Customer, Long>
     @Query("SELECT c FROM Customer c WHERE c.code=?1")
     Optional<Customer> findByCode(String code);
 
-    @Query("SELECT c FROM Customer c WHERE c.name ILIKE %?1%")
-    Iterable<Customer> findAllByName(String name);
-
-    @Query("SELECT c FROM Customer c WHERE c.code ILIKE %?1%")
-    Iterable<Customer> findAllByCode(String code);
-
     @Query("SELECT c FROM Customer c ORDER BY c.id DESC LIMIT 1")
     Optional<Customer> findLast();
     
-    @Query("SELECT c FROM Customer c ORDER BY c.id DESC ")
-    Iterable<Customer> findAllSortDesc(String sortBy);
 }

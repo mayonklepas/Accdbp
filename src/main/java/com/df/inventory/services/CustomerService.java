@@ -9,6 +9,8 @@ import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.repositories.CustomerRepo;
 import com.df.inventory.utilities.GeneratorFunction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,44 +28,53 @@ public class CustomerService {
     CustomerRepo repo;
 
     @Autowired
-    ServiceResponse reponse;
-    
+    ServiceResponse response;
+
     @Autowired
     GeneratorFunction generator;
 
-    public ServiceResponseData<?> findAll() {
-        Iterable<Customer> data = repo.findAll();
-        ServiceResponseData<?> result = reponse.setSuccess(data);
-        return result;
+    @Autowired
+    EntityManager enma;
+
+    public ServiceResponseData<?> findAll(String searchBy, String keyword, String sortBy, String sortType) {
+        if (keyword.isBlank() && sortBy.equals("id")) {
+            return response.setSuccess(repo.findAll());
+        }
+        List<?> result = findAllByParamAndSort(searchBy, keyword, sortBy, sortType);
+        return response.setSuccess(result);
+
     }
 
-    public ServiceResponseData<?> findAllByName(String name) {
-        Iterable<Customer> data = repo.findAllByName(name);
-        ServiceResponseData<?> result = reponse.setSuccess(data);
-        return result;
-    }
-    
-    public ServiceResponseData<?> findAllByCode(String code) {
-        Iterable<Customer> data = repo.findAllByCode(code);
-        ServiceResponseData<?> result = reponse.setSuccess(data);
+    public List<Customer> findAllByParamAndSort(String searchBy, String keyword, String sortBy, String sortType) {
+        String sql = String.format("SELECT c FROM Customer c WHERE %s ILIKE ?1 ORDER BY %s %s ", searchBy, sortBy, sortType);
+        if (keyword.isBlank()) {
+            sql = String.format("SELECT c FROM Customer c ORDER BY %s %s ", sortBy, sortType);
+        }
+
+        Query query = enma.createQuery(sql, Customer.class);
+        if (!keyword.isBlank()) {
+            query.setParameter(1, "%" + keyword + "%");
+        }
+
+        List<Customer> result = query.getResultList();
         return result;
     }
 
     public ServiceResponseData<?> findByCode(String code) {
         Optional<Customer> data = repo.findByCode(code);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound();
+            return response.setFailedNotfound();
         }
-        ServiceResponseData<?> result = reponse.setSuccess(data.get());
+        ServiceResponseData<?> result = response.setSuccess(data.get());
         return result;
     }
 
     public ServiceResponseData<?> findById(long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound();
+            return response.setFailedNotfound();
         }
-        ServiceResponseData<?> result = reponse.setSuccess(data.get());
+        ServiceResponseData<?> result = response.setSuccess(data.get());
         return result;
     }
 
@@ -72,9 +83,9 @@ public class CustomerService {
         try {
             payload.setCode(generator.generateCustomerCode());
             Customer data = repo.save(payload);
-            return reponse.setSuccess(data);
+            return response.setSuccess(data);
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }
@@ -83,7 +94,7 @@ public class CustomerService {
     public ServiceResponseData<?> update(Customer payload, long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound("Failed update, customer not found");
+            return response.setFailedNotfound("Failed update, customer not found");
         }
 
         try {
@@ -96,9 +107,9 @@ public class CustomerService {
             dataUpdate.setLongitude(payload.getLongitude());
             dataUpdate.setLatitude(payload.getLatitude());
             Customer resultUpdate = repo.save(dataUpdate);
-            return reponse.setSuccess(resultUpdate);
+            return response.setSuccess(resultUpdate);
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }
@@ -107,16 +118,16 @@ public class CustomerService {
     public ServiceResponseData<?> updateStatus(boolean isActive, long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound("Failed update status, customer not found");
+            return response.setFailedNotfound("Failed update status, customer not found");
         }
 
         try {
             Customer dataUpdate = data.get();
             dataUpdate.setActive(isActive);
             Customer resultUpdate = repo.save(dataUpdate);
-            return reponse.setSuccess(resultUpdate);
+            return response.setSuccess(resultUpdate);
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }
@@ -125,13 +136,13 @@ public class CustomerService {
     public ServiceResponseData<?> delete(long id) {
         Optional<Customer> data = repo.findById(id);
         if (data.isEmpty()) {
-            return reponse.setFailedNotfound("Failed delete, customer not found");
+            return response.setFailedNotfound("Failed delete, customer not found");
         }
         try {
             repo.delete(data.get());
-            return reponse.setSuccess(data.get());
+            return response.setSuccess(data.get());
         } catch (Exception e) {
-            return reponse.setFailedInternalServerError(e.getMessage());
+            return response.setFailedInternalServerError(e.getMessage());
         }
 
     }

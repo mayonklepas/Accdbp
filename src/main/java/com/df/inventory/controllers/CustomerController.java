@@ -32,11 +32,12 @@ public class CustomerController {
 
     @GetMapping("")
     public ResponseEntity<?> findAll(
-            @RequestParam(required = false, defaultValue = "") String sortBy,
-            @RequestParam(required = false, defaultValue = "") String sortType) {
-
-        
-        ServiceResponseData<?> result = srv.findAll();
+            @RequestParam(required = false, defaultValue = "") String searchBy,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String sortType
+    ) {
+        ServiceResponseData<?> result = srv.findAll(searchBy, keyword, sortBy, sortType);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
@@ -44,19 +45,6 @@ public class CustomerController {
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.findById(id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
-    }
-
-    @GetMapping("find")
-    public ResponseEntity<?> findByQuery(@RequestParam String searchBy, @RequestParam String keyword) {
-
-        if (searchBy.equals("code")) {
-            ServiceResponseData<?> result = srv.findAllByCode(keyword);
-            return ResponseEntity.status(result.getStatusCode()).body(result);
-        }
-
-        ServiceResponseData<?> result = srv.findAllByName(keyword);
-        return ResponseEntity.status(result.getStatusCode()).body(result);
-
     }
 
     @PostMapping("")
