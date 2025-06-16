@@ -54,7 +54,7 @@ public class Selling extends CommonField {
     private UserApp user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "selling", cascade = CascadeType.ALL, fetch =  )
+    @OneToMany(mappedBy = "selling", cascade = CascadeType.ALL,orphanRemoval = true )
     private List<SellingDetail> sellingDetail;
 
 }
