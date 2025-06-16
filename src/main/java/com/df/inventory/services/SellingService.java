@@ -137,8 +137,6 @@ public class SellingService {
             if (header.getId() == 0) {
                 header.setSellingNumber(generator.generateSellingNumber());
                 header.setDateCreated(timeNow);
-                header.setSellingDate(timeNow);
-
             }
 
             header.setDateEdited(timeNow);
