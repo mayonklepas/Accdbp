@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class SellingDetail extends CommonField{
+public class SellingDetail extends CommonField {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,16 +32,13 @@ public class SellingDetail extends CommonField{
     private double amount;
     private double price;
     private double discount;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id",insertable = false, updatable = false)
+
+    @ManyToOne()
+    @JoinColumn(name = "sellingId", referencedColumnName = "id", insertable = false, updatable = false)
     private Selling selling;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+
+    @ManyToOne()
+    @JoinColumn(name = "itemId", referencedColumnName = "id", insertable = false, updatable = false)
     private Item item;
-    
-    
-    
 
 }

@@ -37,7 +37,7 @@ public class Item {
     private double sellingPrice;
     
     @ManyToOne
-    @JoinColumn(name = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "unitId",referencedColumnName = "id",insertable = false, updatable = false)
     private ItemUnit itemUnit;
 
 }

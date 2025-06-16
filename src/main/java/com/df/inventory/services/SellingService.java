@@ -129,24 +129,25 @@ public class SellingService {
                     return response.setFailed(404, "Update failed, Order has been process");
                 }
 
+                Iterable<SellingDetail> oldDataList = repoDetail.findAllBySellingId(header.getId());
+                repoDetail.deleteAll(oldDataList);
+
             }
 
-            if (header.getId() != 0) {
+            if (header.getId() == 0) {
                 header.setSellingNumber(generator.generateSellingNumber());
                 header.setDateCreated(timeNow);
+                header.setSellingDate(timeNow);
+
             }
 
             header.setDateEdited(timeNow);
             header.setStatusType(StatusType.ORDERING);
+            header.setUserId(1);
             Selling headerSave = repo.save(header);
 
-            if (header.getId() != 0) {
-                Iterable<SellingDetail> oldDataList = repoDetail.findAllBySellingId(header.getId());
-                repoDetail.deleteAll(oldDataList);
-            } else {
-                for (int i = 0; i < detail.size(); i++) {
-                    detail.get(i).setSellingId(headerSave.getId());
-                }
+            for (int i = 0; i < detail.size(); i++) {
+                detail.get(i).setSellingId(headerSave.getId());
             }
 
             repoDetail.saveAll(detail);

@@ -59,14 +59,14 @@ public class ItemController {
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody Item payload, @RequestParam long id) {
+    @PutMapping("/id/{id}")
+    public ResponseEntity<?> update(@RequestBody Item payload, @PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.update(payload, id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> delete(@RequestParam long id) {
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
         ServiceResponseData<?> result = srv.delete(id);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
