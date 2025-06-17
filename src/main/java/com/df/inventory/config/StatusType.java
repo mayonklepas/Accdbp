@@ -12,8 +12,6 @@ public class StatusType {
 
         public static String ORDERING="ordering";
         public static String APPROVED="approved";
-        public static String PREPARING="preparing";
-        public static String SENDING="sending";
         public static String FINISH="finish";
                 
         
