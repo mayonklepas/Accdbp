@@ -141,7 +141,6 @@ public class SellingService {
 
             header.setDateEdited(timeNow);
             header.setStatusType(StatusType.ORDERING);
-            header.setUserId(1);
             Selling headerSave = repo.save(header);
 
             for (int i = 0; i < detail.size(); i++) {
