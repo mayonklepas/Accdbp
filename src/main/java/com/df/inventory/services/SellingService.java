@@ -5,6 +5,7 @@
 package com.df.inventory.services;
 
 import com.df.inventory.config.StatusType;
+import com.df.inventory.config.UserCredential;
 import com.df.inventory.dto.SellingDTO;
 import com.df.inventory.entities.Item;
 import com.df.inventory.entities.Selling;
@@ -137,6 +138,7 @@ public class SellingService {
             if (header.getId() == 0) {
                 header.setSellingNumber(generator.generateSellingNumber());
                 header.setDateCreated(timeNow);
+                header.setUserId(UserCredential.getUserCredential().getId());
             }
 
             header.setDateEdited(timeNow);

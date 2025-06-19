@@ -4,14 +4,22 @@
  */
 package com.df.inventory.services;
 
+import com.df.inventory.config.GlobalParameter;
+import com.df.inventory.dto.TokenEntity;
+import com.df.inventory.dto.TokenResponse;
 import com.df.inventory.entities.Customer;
 import com.df.inventory.entities.UserApp;
 import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
-import com.df.inventory.repositories.CustomerRepo;
 import com.df.inventory.repositories.UserAppRepo;
-import com.df.inventory.utilities.GeneratorFunction;
+import com.df.inventory.utilities.Encryption;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,21 +38,86 @@ public class UserAppService {
 
     @Autowired
     ServiceResponse response;
-
-    @Autowired
-    GeneratorFunction generator;
     
     @Autowired
     CustomQueryService customQuery;
 
-  
-
-    public ServiceResponseData<?> findAll(String searchBy, String keyword,Pageable page) {
+    public ServiceResponseData<?> findAll(String searchBy, String keyword, Pageable page) {
         if (keyword.isBlank()) {
             return response.setSuccess(repo.findAll(page));
         }
         Page<?> result = customQuery.findAllWithPagingAndSortingByParam(Customer.class, searchBy, keyword, page);
         return response.setSuccess(result);
+
+    }
+
+    public ServiceResponseData<?> findByUsernameAndpassword(String username, String password) {
+        Optional<?> result = repo.findByUsernameAndPassword(username.trim(), password.trim());
+        return response.setSuccess(result);
+
+    }
+
+    public ServiceResponseData<?> generateToken(String username, String password) {
+        Optional<UserApp> result = repo.findByUsernameAndPassword(username.trim(), password.trim());
+        if (result.isEmpty()) {
+            return response.setFailedBadRequest("Username or password wrong");
+        }
+
+        try {
+            UserApp dataUser = result.get();
+            LocalDateTime generateTime = LocalDateTime.now();
+            LocalDateTime expiredTime = generateTime.plusMinutes(GlobalParameter.TokenLifeSpanInMinutes);
+
+            String generateTimeStr = generateTime.toString();
+            String expiredTimeStr = expiredTime.toString();
+
+            TokenEntity tokenEntity = new TokenEntity();
+            tokenEntity.setUserApp(dataUser);
+            tokenEntity.setGenerateTime(generateTimeStr);
+            tokenEntity.setExpiredTime(expiredTimeStr);
+
+            String payload = new ObjectMapper().writeValueAsString(tokenEntity);
+            String token = new Encryption().cbcEncrypt(payload);
+            TokenResponse tokenRes = new TokenResponse();
+            tokenRes.setUsername(dataUser.getUsername());
+            tokenRes.setFullname(dataUser.getFullname());
+            tokenRes.setUsertype(dataUser.getUsertype());
+            tokenRes.setToken(token);
+            return response.setSuccess(tokenRes);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserAppService.class.getName()).log(Level.SEVERE, null, ex);
+            return response.setFailedInternalServerError(ex.getLocalizedMessage());
+        }
+
+    }
+
+    public ServiceResponseData<TokenEntity> validateToken(String token) {
+        try {
+            String dataToken = new Encryption().cbcDecrypt(token);
+            TokenEntity extractData = new ObjectMapper().readValue(dataToken, TokenEntity.class);
+            String username = extractData.getUserApp().getUsername();
+            String password = extractData.getUserApp().getPassword();
+            Optional<UserApp> result = repo.findByUsernameAndPassword(username.trim(), password.trim());
+            if (result.isEmpty()) {
+                return response.setFailedBadRequest("Invalid Token");
+            }
+
+            String expiredTimeStr = extractData.getExpiredTime();
+
+            LocalDateTime curentDateTime = LocalDateTime.now();
+            LocalDateTime expireDateTime = LocalDateTime.parse(expiredTimeStr);
+
+            Duration dura = Duration.between(expireDateTime, curentDateTime);
+            if (dura.isNegative()) {
+                return response.setFailedBadRequest("Token expired");
+            }
+
+            return response.setSuccess(extractData);
+
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserAppService.class.getName()).log(Level.SEVERE, null, ex);
+            return response.setFailedInternalServerError(ex.getLocalizedMessage());
+        }
 
     }
 
