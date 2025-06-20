@@ -94,6 +94,9 @@ public class UserAppService {
     public ServiceResponseData<TokenEntity> validateToken(String token) {
         try {
             String dataToken = new Encryption().cbcDecrypt(token);
+            if(dataToken==null){
+                return response.setFailedBadRequest("Invalid Token");
+            }
             TokenEntity extractData = new ObjectMapper().readValue(dataToken, TokenEntity.class);
             String username = extractData.getUserApp().getUsername();
             String password = extractData.getUserApp().getPassword();
@@ -112,6 +115,7 @@ public class UserAppService {
                 return response.setFailedBadRequest("Token expired");
             }
 
+           
             return response.setSuccess(extractData);
 
         } catch (JsonProcessingException ex) {
