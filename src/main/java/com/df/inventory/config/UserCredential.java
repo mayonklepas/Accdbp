@@ -12,7 +12,7 @@ import com.df.inventory.entities.UserApp;
  */
 public class UserCredential {
 
-    public static ThreadLocal<UserApp> userAccessData;
+    public static ThreadLocal<UserApp> userAccessData=new ThreadLocal<>();
 
     public static void setUserCredetial(UserApp data) {
         userAccessData.set(data);

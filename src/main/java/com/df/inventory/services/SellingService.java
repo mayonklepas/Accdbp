@@ -10,6 +10,7 @@ import com.df.inventory.dto.SellingDTO;
 import com.df.inventory.entities.Item;
 import com.df.inventory.entities.Selling;
 import com.df.inventory.entities.SellingDetail;
+import com.df.inventory.entities.UserApp;
 import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.repositories.SellingDetailRepo;
@@ -50,10 +51,22 @@ public class SellingService {
     CustomQueryService customQuery;
 
     public ServiceResponseData<?> findAll(String searchBy, String keyword, Pageable page) {
+        UserApp user = UserCredential.getUserCredential();
         if (keyword.isBlank()) {
+            if (user.getUsertype().equals("SALES")) {
+                Page<?> result = repo.findAllByUserId(page, user.getId());
+                return response.setSuccess(result);
+            }
             Page<?> result = repo.findAll(page);
             return response.setSuccess(result);
         }
+
+        if (user.getUsertype().equals("SALES")) {
+            String extraQuery = "e.userId=" + user.getId();
+            Page<?> result = customQuery.findAllWithPagingAndSortingByParam(Selling.class, searchBy, keyword, extraQuery, page);
+            return response.setSuccess(result);
+        }
+
         Page<?> result = customQuery.findAllWithPagingAndSortingByParam(Selling.class, searchBy, keyword, page);
         return response.setSuccess(result);
 
@@ -143,6 +156,10 @@ public class SellingService {
 
             header.setDateEdited(timeNow);
             header.setStatusType(StatusType.ORDERING);
+            if (UserCredential.getUserCredential().getUsertype().equals("ADMIN")) {
+                header.setStatusType(StatusType.FINISH);
+            }
+
             Selling headerSave = repo.save(header);
 
             for (int i = 0; i < detail.size(); i++) {

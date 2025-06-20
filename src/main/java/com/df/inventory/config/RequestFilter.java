@@ -5,6 +5,7 @@
 package com.df.inventory.config;
 
 import com.df.inventory.dto.TokenEntity;
+import com.df.inventory.entities.UserApp;
 import com.df.inventory.message.ServiceResponse;
 import com.df.inventory.message.ServiceResponseData;
 import com.df.inventory.services.UserAppService;
@@ -24,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author mulyadi
  */
 
+@Component
 public class RequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -32,7 +34,9 @@ public class RequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String[] allowedRequestUrl = {"/api/auth/login"};
+        
+        
+        String[] allowedRequestUrl = {"/api/auth/login","/api/auth/validate"};
         boolean allowedRequest = false;
         for (String url : allowedRequestUrl) {
             Pattern pattern = Pattern.compile(url);
@@ -63,8 +67,8 @@ public class RequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        
-        UserCredential.setUserCredetial(extractToken.getData().getUserApp());
+        UserApp userData= extractToken.getData().getUserApp();
+        UserCredential.setUserCredetial(userData);
         filterChain.doFilter(request, response);
     }
 

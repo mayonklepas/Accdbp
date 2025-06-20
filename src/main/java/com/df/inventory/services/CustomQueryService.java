@@ -59,4 +59,39 @@ public class CustomQueryService {
         return result;
     }
 
+    public Page<?> findAllWithPagingAndSortingByParam(Class entity, String searchBy, String keyword, String extraFilter, Pageable page) {
+        String className = entity.getName();
+
+        Sort sort = page.getSort();
+        String sortBy = sort.get().findFirst().get().getProperty();
+        String sortType = sort.get().findFirst().get().getDirection().name();
+        String sql = String.format("SELECT e FROM %s e WHERE %s ORDER BY %s %s ", className, extraFilter, sortBy, sortType);
+        if (!keyword.isBlank()) {
+            sql = String.format("SELECT e FROM %s e WHERE %s AND %s ILIKE ?1  ORDER BY %s %s", className, searchBy, extraFilter, sortBy, sortType);
+        }
+
+        Query query = enma.createQuery(sql, entity);
+        if (!keyword.isBlank()) {
+            query.setParameter(1, "%" + keyword + "%");
+        }
+
+        List<?> content = query
+                .setFirstResult(page.getPageNumber() * page.getPageSize())
+                .setMaxResults(page.getPageSize())
+                .getResultList();
+
+        String sqlCount = String.format("SELECT COUNT(e)  WHERE %s FROM %s e", className, extraFilter);
+        if (!keyword.isBlank()) {
+            sqlCount = String.format("SELECT COUNT(e) FROM %s e WHERE %s AND %s ILIKE ?1 ", className, extraFilter, searchBy);
+        }
+        Query queryCount = enma.createQuery(sqlCount, Long.class);
+        if (!keyword.isBlank()) {
+            queryCount.setParameter(1, "%" + keyword + "%");
+        }
+        long countData = (long) queryCount.getSingleResult();
+        Page<?> result = new PageImpl(content, page, countData);
+
+        return result;
+    }
+
 }

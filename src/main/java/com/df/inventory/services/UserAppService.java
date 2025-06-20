@@ -107,7 +107,7 @@ public class UserAppService {
             LocalDateTime curentDateTime = LocalDateTime.now();
             LocalDateTime expireDateTime = LocalDateTime.parse(expiredTimeStr);
 
-            Duration dura = Duration.between(expireDateTime, curentDateTime);
+            Duration dura = Duration.between(curentDateTime, expireDateTime);
             if (dura.isNegative()) {
                 return response.setFailedBadRequest("Token expired");
             }
